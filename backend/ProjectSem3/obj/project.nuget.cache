@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kXvLt8ZvSlQ=",
+  "dgSpecHash": "arBw9cI96+E=",
   "success": true,
-  "projectFilePath": "D:\\ProjectSem3\\backend\\ProjectSem3\\ProjectSem3.csproj",
+  "projectFilePath": "D:\\TeamProjectSem3\\backend\\ProjectSem3\\ProjectSem3.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\marku\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\marku\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
