@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaSearch, FaShoppingCart } from 'react-icons/fa'; // Cần cài react-icons: npm install react-icons
+import { FaSearch, FaShoppingCart } from 'react-icons/fa';
 
 function Navbar() {
   const styles = {
@@ -7,13 +7,17 @@ function Navbar() {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: '#1C1C1C',
-      padding: '10px 20px',
+      backgroundColor: '#1C1C27',
+      padding: '20px 20px',
       color: 'white',
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     },
-    logo: {
-      height: '40px',
-      marginRight: '10px',
+    centerContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px', // Spacing between elements
+      justifyContent: 'center',
+      flex: 1, // Takes available space to center the elements
     },
     menuBtn: {
       background: 'none',
@@ -23,38 +27,47 @@ function Navbar() {
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
-    },
-    menuIcon: {
-      fontSize: '24px',
-      marginRight: '5px',
-    },
-    navbarCenter: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
+      gap: '5px',
     },
     categorySelect: {
-      padding: '5px',
-      width: '80px',
+      backgroundColor: 'white',
+      color: 'black',
+      border: '1px solid #ccc',
+      padding: '5px 25px 5px 10px',
+      borderRadius: '4px',
+      fontSize: '14px',
+      fontWeight: 'bold',
+      appearance: 'none',
+      backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 24 24\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M7 10l5 5 5-5z\' fill=\'%23000000\'/%3E%3C/svg%3E")',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'right 10px center',
+      backgroundSize: '16px 16px',
     },
     searchContainer: {
-      position: 'relative', // Để nút tìm kiếm nằm chồng lên ô nhập liệu
+      position: 'relative',
       width: '300px',
     },
     searchInput: {
-      padding: '5px 40px 5px 10px', // Chừa khoảng trống cho nút tìm kiếm
+      padding: '8px 40px 8px 12px',
       width: '100%',
+      height: '30px',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      fontSize: '14px',
+      backgroundColor: 'white',
+      color: 'black',
+      outline: 'none',
     },
     searchBtn: {
-      position: 'absolute', // Nút tìm kiếm sẽ nằm chồng lên ô nhập liệu
-      right: '10px',       // Căn bên phải của ô tìm kiếm
-      top: '50%',          // Căn giữa theo chiều dọc
-      transform: 'translateY(-50%)', // Điều chỉnh căn giữa
+      position: 'absolute',
+      right: '12px',
+      top: '50%',
+      transform: 'translateY(-50%)',
       background: 'none',
       border: 'none',
       color: 'gray',
       cursor: 'pointer',
-      fontSize: '18px',
+      fontSize: '16px',
     },
     navbarRight: {
       display: 'flex',
@@ -65,6 +78,7 @@ function Navbar() {
       color: 'white',
       textDecoration: 'none',
       fontWeight: 'bold',
+      fontSize: '14px',
     },
     cart: {
       display: 'flex',
@@ -72,26 +86,26 @@ function Navbar() {
     },
     cartCount: {
       marginLeft: '5px',
+      fontSize: '14px',
     },
     languageSelect: {
-      background: 'none',
-      border: 'none',
+      backgroundColor: '#2C2C3D',
       color: 'white',
+      border: 'none',
+      padding: '5px 10px',
+      borderRadius: '4px',
+      fontSize: '14px',
       cursor: 'pointer',
     },
   };
 
   return (
     <nav style={styles.navbar}>
-      {/* Left Side */}
-      <div className="navbar-left" style={{ display: 'flex', alignItems: 'center' }}>
+      {/* Center Section: Menu, Category Select, and Search */}
+      <div style={styles.centerContainer}>
         <button style={styles.menuBtn}>
-          <span style={styles.menuIcon}>&#9776;</span> Menu
+          <span>&#9776;</span> Menu
         </button>
-      </div>
-
-      {/* Center Section */}
-      <div style={styles.navbarCenter}>
         <select style={styles.categorySelect}>
           <option value="all">All</option>
         </select>
@@ -103,7 +117,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Right Side */}
+      {/* Right Side: Links + Cart + Language */}
       <div style={styles.navbarRight}>
         <a href="#" style={styles.navbarLink}>Shop</a>
         <a href="#" style={styles.navbarLink}>Watchlist</a>
@@ -112,7 +126,12 @@ function Navbar() {
           <FaShoppingCart /> <span style={styles.cartCount}>(0)</span>
         </div>
         <select style={styles.languageSelect}>
-          <option value="en">EN</option>
+          <option value="en">English (United States)</option>
+          <option value="vi">Vietnamese (Vietnam)</option>
+          <option value="fr">French (France)</option>
+          <option value="es">Spanish (Spain)</option>
+          <option value="de">German (Germany)</option>
+          <option value="jp">Japanese (Japan)</option>
         </select>
       </div>
     </nav>
