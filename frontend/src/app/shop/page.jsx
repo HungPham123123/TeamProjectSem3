@@ -3,6 +3,16 @@
 import React, { useState } from 'react';
 
 function Shop() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 9;
+  const totalPages = Math.ceil(products.length / productsPerPage);
+
+  const indexOfFirstProduct = (currentPage - 1) * productsPerPage;
+  const indexOfLastProduct = currentPage * productsPerPage;
+
+  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const goToPage = (page) => setCurrentPage(page);
   return (
     <>
       <nav style={navContainerStyle}>
