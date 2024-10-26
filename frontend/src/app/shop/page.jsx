@@ -31,55 +31,83 @@ function Shop() {
 </div>
 
       <div style={shopContainerStyle}>
-        <section style={productGridStyle}>
-          {currentProducts.map((product, index) => (
-            
-            <div key={index} style={productCardStyle}>
-              {product.outOfStock && <div style={outOfStockStyle}>OUT OF STOCK</div>}
-              {product.onSale && <div style={saleStyle}>Sale</div>}
-              <h4>{product.name}</h4>
-              <p style={priceStyle}>
-                {product.onSale ? (
-                  <>
-                    <span style={originalPriceStyle}>{product.originalPrice}</span> {product.price}
-                  </>
-                ) : (
-                  product.price
-                )}
-              </p>
-            </div>
-          ))}
-        </section>
+      <section style={productGridStyle}>
+  {currentProducts.map((product, index) => (
+    <div key={index} style={{ position: 'relative' }}>
+      <div style={productCardStyle}>
+        {product.outOfStock && <div style={outOfStockStyle}>OUT OF STOCK</div>}
+        {product.onSale && <div style={saleStyle}>Sale</div>}
+        <img src={product.image} alt={product.name} style={productImageStyle} />
+      </div>
 
-        <aside style={sidebarStyle}>
-          <h3 style={sidebarHeadingStyle}>CATEGORIES</h3>
-          <ul style={categoryListStyle}>
-            {['Scary', 'Action', 'Adventure', 'Romantic'].map((category, index) => (
-              <li key={index} style={categoryItemStyle}>
-                <input type="checkbox" />
-                <span style={{ marginLeft: '8px' }}>{category}</span>
-              </li>
-            ))}
-          </ul>
+      {/* Di chuyển thông tin sản phẩm ra ngoài vùng có border */}
+      <div style={productInfoStyle}>
+        <h4>{product.name}</h4>
+        <p style={priceStyle}>
+          {product.onSale ? (
+            <>
+              <span style={originalPriceStyle}>{product.originalPrice}</span> {product.price}
+            </>
+          ) : (
+            product.price
+          )}
+        </p>
+      </div>
+    </div>
+  ))}
+</section>
 
+
+<aside style={sidebarStyle}>
+  <h3 style={sidebarHeadingStyle}>CATEGORIES</h3>
+  <ul style={categoryListStyle}>
+  {[
+    { name: 'Scary', count: 1 },
+    { name: 'Action', count: 12 },
+    { name: 'Scary', count: 1 },
+    { name: 'Scary', count: 1 },
+    { name: 'Scary', count: 1 },
+    { name: 'Scary', count: 1 }
+  ].map((category, index) => (
+    <li key={index} style={{ ...categoryItemStyle, padding: '5px 0' }}> 
+      <input type="checkbox" />
+      <span style={{ marginLeft: '8px', opacity: 0.6 }}>
+        {category.name}
+        <sup>{category.count}</sup>
+      </span>
+    </li>
+  ))}
+</ul>
           <h3 style={sidebarHeadingStyle}>PRICE FILTER</h3>
           <input type="range" min="10" max="60" style={priceFilterStyle} />
           <div style={{ fontFamily: 'Arial, sans-serif' }}>
             <div style={{ margin: '20px' }}>
-              <p>Price: 10 - 60</p>
-              <button style={{ padding: '5px 10px', border: '1px solid #000', backgroundColor: '#fff', cursor: 'pointer' }}>
-                Filter
-              </button>
+              <p >Price: 10 - 60</p>
+              <button
+  style={{
+    padding: '3px 18px',          // Cài đặt khoảng cách bên trong nút: 3px ở trên/dưới và 12px ở trái/phải
+    border: '1px solid #ddd',      // Đặt đường viền xung quanh nút, màu xám nhạt (#ddd)
+    backgroundColor: 'fff',// Đặt nền của nút trong suốt, giúp nó nhìn thoáng hơn
+    cursor: 'pointer',             // Khi di chuột qua nút, con trỏ sẽ chuyển thành hình tay, tạo cảm giác có thể nhấn vào
+    color: '#333',                 // Màu chữ của nút là xám đậm (#333), tương tự với màu trên ảnh
+    fontSize: '14px',              // Kích thước chữ nhỏ (12px), giống trong ảnh
+    fontWeight: 'bold',            // Đặt chữ đậm hơn một chút, làm cho chữ "Filter" nổi bật
+    boxShadow: 'none'              // Loại bỏ hiệu ứng đổ bóng (nếu có) để nút trông phẳng hơn, tương tự như ảnh
+  }}
+>
+  Filter
+</button>
+
             </div>
 
             <div style={{ margin: '20px' }}>
-              <h2 style={{ fontWeight: 'bold', fontSize: '1.5em' }}>Sale & Offers</h2>
+              <h2 style={sidebarHeadingStyle}>Sale & Offers</h2>
               <input type="checkbox" id="sales" />
               <label htmlFor="sales">Sales<sup>1</sup></label>
             </div>
 
             <div style={{ margin: '20px' }}>
-              <h2 style={{ fontWeight: 'bold', fontSize: '1.5em' }}>INSTAGRAM</h2>
+              <h2 style={sidebarHeadingStyle}>INSTAGRAM</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '5px' }}>
                 <img src="https://via.placeholder.com/100" alt="Image 1" style={productImageStyle} />
                 <img src="https://via.placeholder.com/100" alt="Image 2" style={productImageStyle} />
@@ -91,7 +119,7 @@ function Shop() {
             </div>
 
             <div style={{ margin: '20px' }}>
-              <h2 style={{ fontWeight: 'bold', fontSize: '1.5em' }}>FOLLOW US</h2>
+              <h2 style={sidebarHeadingStyle}>FOLLOW US</h2>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <div style={iconStyle}>Icon</div>
                 <div style={iconStyle}>Icon</div>
@@ -159,10 +187,11 @@ function Pagination({ currentPage, totalPages, goToPage }) {
 }
 
 const navContainerStyle = {
-  backgroundColor: '#3A3A49',
-  padding: '10px 0',
+  backgroundColor: '#262146',
+  padding: '16px 0',
   maxWidth: '1000px',
-  margin: '40px auto 0',
+  margin: '40px 180px 100px',
+  borderRadius: '12px'
 };
 
 const navMenuStyle = {
@@ -196,10 +225,10 @@ const sidebarStyle = {
 };
 
 const sidebarHeadingStyle = {
-  fontSize: '18px',
+  fontSize: '24px', // Tăng kích thước chữ
+  fontWeight: '800', // In đậm
   marginBottom: '10px',
 };
-
 const categoryListStyle = {
   listStyleType: 'none',
   padding: 0,
@@ -210,9 +239,16 @@ const categoryItemStyle = {
 };
 
 const priceFilterStyle = {
-  width: '100%',
-  marginTop: '10px',
+  width: '100%',         // Độ rộng thanh kéo
+  appearance: 'none',    // Loại bỏ kiểu mặc định để có thể tùy chỉnh
+  outline: 'none',
+  // Định dạng cho thanh kéo (track)
+  backgroundColor: '#ddd',
+  height: '4px',         // Độ dày của thanh kéo mỏng lại
+  borderRadius: '5px',
 };
+
+
 
 const productGridStyle = {
   display: 'grid',
@@ -225,15 +261,22 @@ const productGridStyle = {
 
 
 const productCardStyle = {
-  border: '1px solid #ddd',
-  padding: '5px',
-  position: 'relative',
+  display: 'flex', // Sử dụng flexbox
+  flexDirection: 'column', // Xếp các phần tử theo cột
+  justifyContent: 'space-between', // Căn đều các phần
+  border: '1px solid #ccc',
+  padding: '16px',
+  height: '220px', // Đặt chiều cao cố định nếu cần
+  width: '250px',
+  position: 'relative', // Cho các thẻ "Sale" và "Out of Stock"
+};
+
+const productInfoStyle = {
+  position: 'absolute', // Đặt vị trí của tên và giá
+  bottom: '16px', // Khoảng cách từ dưới lên
+  left: '16px', // Khoảng cách từ trái vào
+  right: '16px', // Khoảng cách từ phải vào
   textAlign: 'center',
-  fontSize: '14px',
-  width: '200px',
-  height: '200px',
-  overflow: 'hidden',
-  margin: '10px auto',
 };
 
 const productImageStyle = {
@@ -247,7 +290,7 @@ const outOfStockStyle = {
   left: '10px',
   backgroundColor: 'black',
   color: 'white',
-  padding: '5px',
+  padding: '1px',
 };
 
 const saleStyle = {
@@ -256,7 +299,7 @@ const saleStyle = {
   right: '10px',
   backgroundColor: 'purple',
   color: 'white',
-  padding: '5px',
+  padding: '1px',
 };
 
 const priceStyle = {
