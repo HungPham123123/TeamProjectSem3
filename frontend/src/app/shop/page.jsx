@@ -42,18 +42,19 @@ function Shop() {
         <img src={product.image} alt={product.name} style={productImageStyle} />
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
-      <h4 style={{ margin: 0, fontWeight: 'bold' }}>{product.name}</h4>
-      <p style={priceStyle}>
-          {product.onSale ? (
-            <>
-              <span style={originalPriceStyle}>{product.originalPrice}</span> {product.price}
-            </>
-          ) : (
-            product.price
-          )}
-        </p>
-      </div>
+      <div style={{ textAlign: 'left', marginTop: '10px' }}>
+  <h4 style={{ margin: 0, fontWeight: 'bold' }}>{product.name}</h4> {/* Tên sản phẩm in đậm */}
+  <p style={priceStyle}> {/* Giá sản phẩm nằm dưới tên */}
+    {product.onSale ? (
+      <>
+        <span style={originalPriceStyle}>{product.originalPrice}</span> {product.price}
+      </>
+    ) : (
+      product.price
+    )}
+  </p>
+</div>
+
     </div>
   ))}
 </section>
