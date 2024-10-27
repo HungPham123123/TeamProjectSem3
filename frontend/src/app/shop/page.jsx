@@ -33,17 +33,18 @@ function Shop() {
       <div style={shopContainerStyle}>
       <section style={productGridStyle}>
   {currentProducts.map((product, index) => (
-    <div key={index} style={{ position: 'relative' }}>
+    <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+
+      {/* Vùng chứa ảnh sản phẩm và thông báo "Sale" hoặc "Out of Stock" */}
       <div style={productCardStyle}>
         {product.outOfStock && <div style={outOfStockStyle}>OUT OF STOCK</div>}
         {product.onSale && <div style={saleStyle}>Sale</div>}
         <img src={product.image} alt={product.name} style={productImageStyle} />
       </div>
 
-      {/* Di chuyển thông tin sản phẩm ra ngoài vùng có border */}
-      <div style={productInfoStyle}>
-        <h4>{product.name}</h4>
-        <p style={priceStyle}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+      <h4 style={{ margin: 0, fontWeight: 'bold' }}>{product.name}</h4>
+      <p style={priceStyle}>
           {product.onSale ? (
             <>
               <span style={originalPriceStyle}>{product.originalPrice}</span> {product.price}
@@ -56,6 +57,7 @@ function Shop() {
     </div>
   ))}
 </section>
+
 
 
 <aside style={sidebarStyle}>
