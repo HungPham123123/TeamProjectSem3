@@ -5,15 +5,18 @@ import React from 'react';
 const Introduce = () => {
   return (
     <div style={introduceContainerStyle}>
-      <h1 style={titleStyle}>Introduce</h1>
+      <h1 style={titleStyle}>About Waves</h1>
       <p style={textStyle}>
-        Welcome to our company! We are dedicated to providing the highest quality products and exceptional services to our customers.
+        Welcome to *Waves*! We are an online store specializing in high-quality DVDs, offering a wide selection of titles from movies and documentaries to popular television series from around the world.
       </p>
       <p style={textStyle}>
-        Our mission is to create value through innovation, sustainability, and customer satisfaction. We believe in building long-term relationships based on trust and integrity.
+        At *Waves*, we are committed to providing you with an easy, fast, and secure online shopping experience. Not only do we offer quality DVDs, but we also ensure the best customer support services. Our team is always ready to answer any questions to bring you maximum satisfaction.
       </p>
       <p style={textStyle}>
-        Join us on this journey as we continue to grow and make a positive impact in our industry.
+        With a mission to build trust and satisfaction among our customers, *Waves* upholds the highest standards for product quality and service. Discover our extensive DVD collection today to find the ideal entertainment experience for you and your family!
+      </p>
+      <p style={highlightTextStyle}>
+        Trust *Waves* for your memorable entertainment moments!
       </p>
     </div>
   );
@@ -22,22 +25,36 @@ const Introduce = () => {
 const introduceContainerStyle = {
   maxWidth: '800px',
   margin: '20px auto',
-  padding: '20px',
+  padding: '30px',
   border: '1px solid #ddd',
-  borderRadius: '5px',
-  backgroundColor: '#f9f9f9', // Background color for better visibility
+  borderRadius: '8px',
+  backgroundColor: '#f3f7f9',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Adds shadow for a polished look
 };
 
 const titleStyle = {
   textAlign: 'center',
-  color: '#3A3A49',
-  marginBottom: '20px',
+  color: '#2c3e50',
+  marginBottom: '25px',
+  fontSize: '30px',
+  fontWeight: 'bold',
 };
 
 const textStyle = {
-  lineHeight: '1.6',
-  fontSize: '16px',
+  lineHeight: '1.8',
+  fontSize: '17px',
   color: '#555',
+  marginBottom: '15px',
+  textAlign: 'justify', // Justify text for neat alignment
+};
+
+const highlightTextStyle = {
+  ...textStyle,
+  fontWeight: 'bold',
+  fontSize: '18px',
+  color: '#2c3e50',
+  textAlign: 'center',
+  marginTop: '20px',
 };
 
 export default Introduce;

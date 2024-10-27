@@ -23,6 +23,7 @@ function Navbar() {
       background: 'linear-gradient(45deg, #ff6b6b, #ff9a9e)',
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
+      cursor: 'pointer',
     },
     menuBtn: {
       background: 'none',
@@ -128,7 +129,7 @@ function Navbar() {
   return (
     <nav style={styles.navbar}>
       <div style={styles.centerContainer}>
-        <div style={styles.logo}>waves</div>
+        <a href="http://localhost:3000/" style={styles.logo}>waves</a>
         <button style={styles.menuBtn}>
           <span>&#9776;</span> Menu
         </button>

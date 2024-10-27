@@ -42,8 +42,8 @@ function Shop() {
         <img src={product.image} alt={product.name} style={productImageStyle} />
       </div>
 
-      <div style={{ textAlign: 'left', marginTop: '10px' }}>
-  <h4 style={{ margin: 0, fontWeight: 'bold' }}>{product.name}</h4> {/* Tên sản phẩm in đậm */}
+      <div style={{ textAlign: 'left', marginTop: '10px', marginLeft: '-150px' }}>
+  <h4 style={{ marginBottom: 0, fontSize: '20px', fontWeight: '800' }}>{product.name}</h4> {/* Tên sản phẩm in đậm */}
   <p style={priceStyle}> {/* Giá sản phẩm nằm dưới tên */}
     {product.onSale ? (
       <>
