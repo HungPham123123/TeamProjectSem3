@@ -18,11 +18,14 @@ function Navbar() {
       gap: '10px',
     },
     logo: {
-      fontSize: '40px',
+      fontSize: '30px',
       fontWeight: 'bold',
+      color: 'white', // Đặt màu chữ là trắng
       background: 'linear-gradient(45deg, #ff6b6b, #ff9a9e)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
+      padding: '1px 25px', // Thêm khoảng cách để trông giống nút bấm
+      borderRadius: '15px', // Bo góc tròn
+      display: 'inline-block', // Chuyển sang inline-block để bọc vừa chữ
+      textDecoration: 'none', // Bỏ gạch chân nếu là liên kết
       cursor: 'pointer',
     },
     menuBtn: {

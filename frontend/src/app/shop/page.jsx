@@ -221,6 +221,7 @@ const shopContainerStyle = {
   maxWidth: '1200px',
   margin: '20px auto',
   gap: '20px',
+  backgroundColor: 'white'
 };
 
 const sidebarStyle = {
