@@ -151,7 +151,7 @@ function Pagination({ currentPage, totalPages, goToPage }) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '10px',
+    gap: '10px',    
     margin: '20px 0',
   };
 
@@ -204,6 +204,11 @@ const navMenuStyle = {
   margin: 0,
   padding: 0,
 };
+
+const bodyStyle = {
+  backgroundColor: 'white', // Đặt màu nền là trắng
+};
+
 
 const navItemStyle = {
   margin: '0 20px',
