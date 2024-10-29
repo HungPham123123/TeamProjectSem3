@@ -205,11 +205,6 @@ const navMenuStyle = {
   padding: 0,
 };
 
-const bodyStyle = {
-  backgroundColor: 'white', // Đặt màu nền là trắng
-};
-
-
 const navItemStyle = {
   margin: '0 20px',
 };
