@@ -20,20 +20,20 @@ function Navbar() {
     logo: {
       fontSize: '30px',
       fontWeight: 'bold',
-      color: 'white', // Đặt màu chữ là trắng
+      color: 'white',
       background: 'linear-gradient(45deg, #ff6b6b, #ff9a9e)',
-      padding: '1px 25px', // Thêm khoảng cách để trông giống nút bấm
-      borderRadius: '15px', // Bo góc tròn
-      display: 'inline-block', // Chuyển sang inline-block để bọc vừa chữ
-      textDecoration: 'none', // Bỏ gạch chân nếu là liên kết
+      padding: '1px 25px',
+      borderRadius: '15px', 
+      display: 'inline-block', 
+      textDecoration: 'none',
       cursor: 'pointer',
     },
     menuBtn: {
       background: 'none',
       border: 'none',
       color: 'white',
-      fontSize: '20px', // Tăng kích thước chữ menu
-      fontWeight: 'bold', // Làm cho chữ in đậm
+      fontSize: '20px', 
+      fontWeight: 'bold', 
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
@@ -124,7 +124,7 @@ function Navbar() {
       right: '10px',
       top: '50%',
       transform: 'translateY(-50%)',
-      color: 'white', // Đặt màu biểu tượng thành trắng
+      color: 'white', 
       pointerEvents: 'none',
     },
   };
