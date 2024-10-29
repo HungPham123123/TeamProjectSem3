@@ -88,14 +88,14 @@ function Shop() {
               <p >Price: 10 - 60</p>
               <button
   style={{
-    padding: '3px 18px',          // Cài đặt khoảng cách bên trong nút: 3px ở trên/dưới và 12px ở trái/phải
-    border: '1px solid #ddd',      // Đặt đường viền xung quanh nút, màu xám nhạt (#ddd)
-    backgroundColor: 'fff',// Đặt nền của nút trong suốt, giúp nó nhìn thoáng hơn
-    cursor: 'pointer',             // Khi di chuột qua nút, con trỏ sẽ chuyển thành hình tay, tạo cảm giác có thể nhấn vào
-    color: '#333',                 // Màu chữ của nút là xám đậm (#333), tương tự với màu trên ảnh
-    fontSize: '14px',              // Kích thước chữ nhỏ (12px), giống trong ảnh
-    fontWeight: 'bold',            // Đặt chữ đậm hơn một chút, làm cho chữ "Filter" nổi bật
-    boxShadow: 'none'              // Loại bỏ hiệu ứng đổ bóng (nếu có) để nút trông phẳng hơn, tương tự như ảnh
+    padding: '3px 18px',          
+    border: '1px solid #ddd',      
+    backgroundColor: 'fff',
+    cursor: 'pointer',
+    color: '#333',                 
+    fontSize: '14px',              
+    fontWeight: 'bold',            
+    boxShadow: 'none'              
   }}
 >
   Filter
@@ -151,7 +151,7 @@ function Pagination({ currentPage, totalPages, goToPage }) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '10px',
+    gap: '10px',    
     margin: '20px 0',
   };
 
