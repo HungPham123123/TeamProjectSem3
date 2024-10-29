@@ -6,7 +6,7 @@ export default function Movies() {
   return (
     <>
       <Head>
-        <title>Waves - Movie Collections</title>
+        <title>Waves - Movie & Games Collections</title>
       </Head>
 
       <div style={styles.container}>
@@ -91,46 +91,119 @@ export default function Movies() {
             ))}
           </div>
         </section>
+
+        {/* Popular Games DVDs Section */}
+        <section id="popular-games-dvds" style={styles.section}>
+          <h2 style={styles.sectionTitle}>Popular Games DVDs</h2>
+          <div style={styles.cardContainer}>
+            {[...Array(4)].map((_, i) => (
+              <div key={i} style={styles.card}>
+                <Image src="/placeholder-image.jpg" alt="Games DVD Item" width={200} height={150} />
+                <p style={styles.cardLabel}>SHOOTER GAME</p>
+                <p style={styles.cardRating}>★ 9.0</p>
+                <p style={styles.cardDescription}>Call of Duty</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Games Section */}
+        <section id="games" style={styles.section}>
+          <h2 style={styles.sectionTitle}>Games</h2>
+          <div style={styles.cardContainer}>
+            {[...Array(4)].map((_, i) => (
+              <div key={i} style={styles.card}>
+                <Image src="/placeholder-image.jpg" alt="Games Item" width={200} height={150} />
+                <p style={styles.cardLabel}>TRENDING</p>
+                <p style={styles.cardRating}>★ 8.8</p>
+                <p style={styles.cardDescription}>5 New Games to Play</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Fighting Games Section */}
+        <section id="fighting-games" style={styles.section}>
+          <h2 style={styles.sectionTitle}>Fighting Games</h2>
+          <div style={styles.cardContainer}>
+            {[...Array(3)].map((_, i) => (
+              <div key={i} style={styles.card}>
+                <Image src="/placeholder-image.jpg" alt="Fighting Games Item" width={200} height={150} />
+                <p style={styles.cardLabel}>FIGHTING GAME</p>
+                <p style={styles.cardRating}>★ 8.6</p>
+                <p style={styles.cardDescription}>Top Fighters</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Adventure Games Section */}
+        <section id="adventure-games" style={styles.section}>
+          <h2 style={styles.sectionTitle}>Adventure Games</h2>
+          <div style={styles.cardContainer}>
+            {[...Array(3)].map((_, i) => (
+              <div key={i} style={styles.card}>
+                <Image src="/placeholder-image.jpg" alt="Adventure Games Item" width={200} height={150} />
+                <p style={styles.cardLabel}>ADVENTURE GAME</p>
+                <p style={styles.cardRating}>★ 8.7</p>
+                <p style={styles.cardDescription}>Adventure Awaits</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Most Popular Genre of Games Section */}
+        <section id="popular-genre-games" style={styles.section}>
+          <h2 style={styles.sectionTitle}>Most Popular Genre of Games</h2>
+          <div style={styles.artistContainer}>
+            {[...Array(5)].map((_, i) => (
+              <div key={i} style={styles.artistCard}>
+                <div style={styles.artistImage}></div>
+                <p style={styles.artistName}>Luis Damilton</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </>
   );
 }
 
-const linkStyle = {
-  color: '#FFFFFF',
-  textDecoration: 'none',
-  fontSize: '16px',
-  fontWeight: 'bold',
-};
-
-const navItemStyle = {
-  margin: '0 20px',
-};
-
-const navMenuStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  listStyleType: 'none',
-  margin: 0,
-  padding: 0,
-};
-
 const navContainerStyle = {
-  backgroundColor: '#262146',
-  padding: '16px 0',
-  maxWidth: '1000px',
-  margin: '40px 180px 100px',
-  borderRadius: '12px'
-};
+    backgroundColor: '#262146',
+    padding: '16px 0',
+    maxWidth: '1000px',
+    margin: '40px 180px 100px',
+    borderRadius: '12px'
+  };
+
+  const linkStyle = {
+    color: '#FFFFFF',
+    textDecoration: 'none',
+    fontSize: '16px',
+    fontWeight: 'bold',
+  };
+  
+  const navItemStyle = {
+    margin: '0 20px',
+  };
+  
+  const navMenuStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    listStyleType: 'none',
+    margin: 0,
+    padding: 0,
+  };
 
 const styles = {
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffff',
     color: '#fff',
     fontFamily: 'Arial, sans-serif',
   },
   tabsWrapper: {
-    backgroundColor: '#ffff', // Dark blue wrapper around all tabs
+    backgroundColor: '#004080', // Dark blue wrapper around all tabs
     padding: '10px 0',
     display: 'flex',
     justifyContent: 'center',
@@ -200,7 +273,7 @@ const styles = {
     width: '150px',
     height: '150px',
     borderRadius: '50%',
-    backgroundColor: '#ffff',
+    backgroundColor: '#ccc',
     marginBottom: '10px',
   },
   artistName: {
@@ -209,4 +282,3 @@ const styles = {
     fontWeight: 'bold',
   },
 };
-
