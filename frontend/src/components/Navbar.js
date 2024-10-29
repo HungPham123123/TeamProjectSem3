@@ -1,29 +1,39 @@
 import React from 'react';
-import { FaSearch, FaShoppingCart } from 'react-icons/fa';
+import { FaSearch, FaShoppingCart, FaBookmark } from 'react-icons/fa';
 
 function Navbar() {
   const styles = {
     navbar: {
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#1C1C27',
-      padding: '20px 20px',
+      backgroundColor: '#14141A',
+      padding: '15px 20px',
       color: 'white',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     },
     centerContainer: {
       display: 'flex',
       alignItems: 'center',
-      gap: '10px', // Spacing between elements
-      justifyContent: 'center',
-      flex: 1, // Takes available space to center the elements
+      gap: '10px',
+    },
+    logo: {
+      fontSize: '30px',
+      fontWeight: 'bold',
+      color: 'white', // Đặt màu chữ là trắng
+      background: 'linear-gradient(45deg, #ff6b6b, #ff9a9e)',
+      padding: '1px 25px', // Thêm khoảng cách để trông giống nút bấm
+      borderRadius: '15px', // Bo góc tròn
+      display: 'inline-block', // Chuyển sang inline-block để bọc vừa chữ
+      textDecoration: 'none', // Bỏ gạch chân nếu là liên kết
+      cursor: 'pointer',
     },
     menuBtn: {
       background: 'none',
       border: 'none',
       color: 'white',
-      fontSize: '18px',
+      fontSize: '20px', // Tăng kích thước chữ menu
+      fontWeight: 'bold', // Làm cho chữ in đậm
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
@@ -72,13 +82,21 @@ function Navbar() {
     navbarRight: {
       display: 'flex',
       alignItems: 'center',
-      gap: '20px',
+      gap: '25px',
     },
     navbarLink: {
       color: 'white',
       textDecoration: 'none',
       fontWeight: 'bold',
-      fontSize: '14px',
+      fontSize: '18px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '5px',
+    },
+    separator: {
+      height: '20px',
+      width: '1px',
+      backgroundColor: '#555',
     },
     cart: {
       display: 'flex',
@@ -88,21 +106,33 @@ function Navbar() {
       marginLeft: '5px',
       fontSize: '14px',
     },
+    languageSelectContainer: {
+      position: 'relative',
+    },
     languageSelect: {
-      backgroundColor: '#2C2C3D',
-      color: 'white',
+      backgroundColor: '#1C1C27',
       border: 'none',
       padding: '5px 10px',
       borderRadius: '4px',
       fontSize: '14px',
       cursor: 'pointer',
+      appearance: 'none',
+      paddingRight: '30px',
+    },
+    chevronIcon: {
+      position: 'absolute',
+      right: '10px',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      color: 'white', // Đặt màu biểu tượng thành trắng
+      pointerEvents: 'none',
     },
   };
 
   return (
     <nav style={styles.navbar}>
-      {/* Center Section: Menu, Category Select, and Search */}
       <div style={styles.centerContainer}>
+        <a href="http://localhost:3000/" style={styles.logo}>waves</a>
         <button style={styles.menuBtn}>
           <span>&#9776;</span> Menu
         </button>
@@ -115,24 +145,30 @@ function Navbar() {
             <FaSearch />
           </button>
         </div>
-      </div>
-
-      {/* Right Side: Links + Cart + Language */}
-      <div style={styles.navbarRight}>
-        <a href="#" style={styles.navbarLink}>Shop</a>
-        <a href="#" style={styles.navbarLink}>Watchlist</a>
-        <a href="#" style={styles.navbarLink}>Sign in</a>
-        <div style={styles.cart}>
-          <FaShoppingCart /> <span style={styles.cartCount}>(0)</span>
+        <div style={styles.navbarRight}>
+          <div><a href="#" style={styles.navbarLink}>Shop</a></div>
+          <div><span style={styles.separator}></span></div>
+          <div>
+            <a href="#" style={styles.navbarLink}>
+              <FaBookmark /> Watchlist
+            </a>
+          </div>
+          <div><a href="#" style={styles.navbarLink}>Sign in</a></div>
+          <div style={styles.cart}>
+            <FaShoppingCart /> <span style={styles.cartCount}>(0)</span>
+          </div>
+          <div style={styles.languageSelectContainer}>
+            <select style={styles.languageSelect}>
+              <option value="en">EN</option>
+              <option value="vi">VN</option>
+              <option value="fr">FR</option>
+              <option value="es">ES</option>
+              <option value="de">DE</option>
+              <option value="jp">JP</option>
+            </select>
+            <i className="bi bi-chevron-down" style={styles.chevronIcon}></i>
+          </div>
         </div>
-        <select style={styles.languageSelect}>
-          <option value="en">English (United States)</option>
-          <option value="vi">Vietnamese (Vietnam)</option>
-          <option value="fr">French (France)</option>
-          <option value="es">Spanish (Spain)</option>
-          <option value="de">German (Germany)</option>
-          <option value="jp">Japanese (Japan)</option>
-        </select>
       </div>
     </nav>
   );
