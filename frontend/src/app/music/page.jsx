@@ -19,12 +19,11 @@ function Music() {
   
   return (
     <div style={styles.container}> 
-      <nav style={navContainerStyle}>
+    <nav style={navContainerStyle}>
         <ul style={navMenuStyle}>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>Pop</a></li>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>Rock</a></li>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>Jazz</a></li>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>Hip-Hop</a></li>
+          <li style={navItemStyle}><a href="#" style={linkStyle}>MUSIC</a></li>
+          <li style={navItemStyle}><a href="#" style={linkStyle}>MOVIE</a></li>
+          <li style={navItemStyle}><a href="#" style={linkStyle}>GAME</a></li>
         </ul>
       </nav>
 

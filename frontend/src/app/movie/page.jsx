@@ -13,10 +13,9 @@ export default function Movies() {
         {/* Navigation Tabs */}
         <nav style={navContainerStyle}>
         <ul style={navMenuStyle}>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>Action</a></li>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>Comedy</a></li>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>Drama</a></li>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>Thriller</a></li>
+          <li style={navItemStyle}><a href="#" style={linkStyle}>MUSIC</a></li>
+          <li style={navItemStyle}><a href="#" style={linkStyle}>MOVIE</a></li>
+          <li style={navItemStyle}><a href="#" style={linkStyle}>GAME</a></li>
         </ul>
       </nav>
 
