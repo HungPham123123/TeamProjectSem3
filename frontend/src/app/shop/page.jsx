@@ -1,342 +1,132 @@
-"use client";
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../css/Shop.css';
+import cuaHangBangDia from '../../img/cua_hang_bang_dia_goc_available_now_332f289aeaf346c3a5c9e3f7361a414b_master.png';
 
-import React, { useState } from 'react';
+const Shop = () => {
+  const categories = [
+    "+84 INDIE CITY", "HÀ TRẦN COLLECTION", "AVAILABLE NOW",
+    "ẤN BẢN THỜI ĐẠI", "ẤN BẢN CÓ CHỮ KÝ", "AUDIO",
+    "SẢN PHẨM MỚI", "LIFESTYLE", "STAFF PICKS", "PRE-ORDER",
+    "CD / DVD", "ĐĨA THAN / VINYL", "BĂNG CASSETTE",
+    "BĂNG CỐI", "ĐĨA ĐƠN / SINGLE", "MERCH",
+    "SÁCH / BOOK", "TRENDING", "SALE"
+  ];
 
-function Shop() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 9;
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  const products = [
+    { title: "Lập Lòe Tour 2020", price: "350,000", img: "https://via.placeholder.com/150" },
+    { title: "Special Package - Out of This World", price: "500,000", img: "https://via.placeholder.com/150" },
+    { title: "Blocbob Card", price: "430,000", img: "https://via.placeholder.com/150" },
+    { title: "Coldplay - Music of the Spheres", price: "390,000", img: "https://via.placeholder.com/150" },
+    { title: "Phoebe Bridgers - Stranger in the Alps", price: "300,000", img: "https://via.placeholder.com/150" },
+    { title: "Mac DeMarco - Salad Days", price: "350,000", img: "https://via.placeholder.com/150" },
+    { title: "Aaliyah - Aaliyah", price: "390,000", img: "https://via.placeholder.com/150" },
+    { title: "Solange - When I Get Home", price: "350,000", img: "https://via.placeholder.com/150" },
+    { title: "The Weeknd - After Hours", price: "450,000", img: "https://via.placeholder.com/150" },
+    { title: "Taylor Swift - 1989 (Taylor's Version)", price: "500,000", img: "https://via.placeholder.com/150" },
+    { title: "Billie Eilish - Happier Than Ever", price: "420,000", img: "https://via.placeholder.com/150" },
+    { title: "Daft Punk - Random Access Memories", price: "400,000", img: "https://via.placeholder.com/150" },
+    { title: "Adele - 25", price: "450,000", img: "https://via.placeholder.com/150" },
+    { title: "Bruno Mars - 24K Magic", price: "380,000", img: "https://via.placeholder.com/150" },
+    { title: "Lana Del Rey - Born to Die", price: "370,000", img: "https://via.placeholder.com/150" },
+    { title: "Kanye West - Donda", price: "490,000", img: "https://via.placeholder.com/150" }
+  ];
 
-  const indexOfFirstProduct = (currentPage - 1) * productsPerPage;
-  const indexOfLastProduct = currentPage * productsPerPage;
-
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-
-  const goToPage = (page) => setCurrentPage(page);
-  return (
-    <>
-      <nav style={navContainerStyle}>
-        <ul style={navMenuStyle}>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>MUSIC</a></li>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>MOVIE</a></li>
-          <li style={navItemStyle}><a href="#" style={linkStyle}>GAME</a></li>
-        </ul>
-      </nav>
-
-      <div className="results-header" style={resultsHeaderStyle}>
-  <div>Showing {indexOfFirstProduct + 1}–{Math.min(indexOfLastProduct, products.length)} of {products.length} results</div>
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <div className="sort-dropdown" style={sortDropdownStyle}>Sort by Default ▼</div>
-  </div>
-</div>
-
-      <div style={shopContainerStyle}>
-      <section style={productGridStyle}>
-  {currentProducts.map((product, index) => (
-    <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-
-      {/* Vùng chứa ảnh sản phẩm và thông báo "Sale" hoặc "Out of Stock" */}
-      <div style={productCardStyle}>
-        {product.outOfStock && <div style={outOfStockStyle}>OUT OF STOCK</div>}
-        {product.onSale && <div style={saleStyle}>Sale</div>}
-        <img src={product.image} alt={product.name} style={productImageStyle} />
-      </div>
-
-      <div style={{ textAlign: 'left', marginTop: '10px', marginLeft: '-150px' }}>
-  <h4 style={{ marginBottom: 0, fontSize: '20px', fontWeight: '800' }}>{product.name}</h4> {/* Tên sản phẩm in đậm */}
-  <p style={priceStyle}> {/* Giá sản phẩm nằm dưới tên */}
-    {product.onSale ? (
-      <>
-        <span style={originalPriceStyle}>{product.originalPrice}</span> {product.price}
-      </>
-    ) : (
-      product.price
-    )}
-  </p>
-</div>
-
-    </div>
-  ))}
-</section>
-
-
-
-<aside style={sidebarStyle}>
-  <h3 style={sidebarHeadingStyle}>CATEGORIES</h3>
-  <ul style={categoryListStyle}>
-  {[
-    { name: 'Scary', count: 1 },
-    { name: 'Action', count: 12 },
-    { name: 'Scary', count: 1 },
-    { name: 'Scary', count: 1 },
-    { name: 'Scary', count: 1 },
-    { name: 'Scary', count: 1 }
-  ].map((category, index) => (
-    <li key={index} style={{ ...categoryItemStyle, padding: '5px 0' }}> 
-      <input type="checkbox" />
-      <span style={{ marginLeft: '8px', opacity: 0.6 }}>
-        {category.name}
-        <sup>{category.count}</sup>
-      </span>
-    </li>
-  ))}
-</ul>
-          <h3 style={sidebarHeadingStyle}>PRICE FILTER</h3>
-          <input type="range" min="10" max="60" style={priceFilterStyle} />
-          <div style={{ fontFamily: 'Arial, sans-serif' }}>
-            <div style={{ margin: '20px' }}>
-              <p >Price: 10 - 60</p>
-              <button
-  style={{
-    padding: '3px 18px',          // Cài đặt khoảng cách bên trong nút: 3px ở trên/dưới và 12px ở trái/phải
-    border: '1px solid #ddd',      // Đặt đường viền xung quanh nút, màu xám nhạt (#ddd)
-    backgroundColor: 'fff',// Đặt nền của nút trong suốt, giúp nó nhìn thoáng hơn
-    cursor: 'pointer',             // Khi di chuột qua nút, con trỏ sẽ chuyển thành hình tay, tạo cảm giác có thể nhấn vào
-    color: '#333',                 // Màu chữ của nút là xám đậm (#333), tương tự với màu trên ảnh
-    fontSize: '14px',              // Kích thước chữ nhỏ (12px), giống trong ảnh
-    fontWeight: 'bold',            // Đặt chữ đậm hơn một chút, làm cho chữ "Filter" nổi bật
-    boxShadow: 'none'              // Loại bỏ hiệu ứng đổ bóng (nếu có) để nút trông phẳng hơn, tương tự như ảnh
-  }}
->
-  Filter
-</button>
-
-            </div>
-
-            <div style={{ margin: '20px' }}>
-              <h2 style={sidebarHeadingStyle}>Sale & Offers</h2>
-              <input type="checkbox" id="sales" />
-              <label htmlFor="sales">Sales<sup>1</sup></label>
-            </div>
-
-            <div style={{ margin: '20px' }}>
-              <h2 style={sidebarHeadingStyle}>INSTAGRAM</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '5px' }}>
-                <img src="https://via.placeholder.com/100" alt="Image 1" style={productImageStyle} />
-                <img src="https://via.placeholder.com/100" alt="Image 2" style={productImageStyle} />
-                <img src="https://via.placeholder.com/100" alt="Image 3" style={productImageStyle} />
-                <img src="https://via.placeholder.com/100" alt="Image 4" style={productImageStyle} />
-                <img src="https://via.placeholder.com/100" alt="Image 5" style={productImageStyle} />
-                <img src="https://via.placeholder.com/100" alt="Image 6" style={productImageStyle} />
-              </div>
-            </div>
-
-            <div style={{ margin: '20px' }}>
-              <h2 style={sidebarHeadingStyle}>FOLLOW US</h2>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <div style={iconStyle}>Icon</div>
-                <div style={iconStyle}>Icon</div>
-                <div style={iconStyle}>Icon</div>
-              </div>
-            </div>
-          </div>
-        </aside>
-      </div>
-
-      <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={goToPage} />
-    </>
-  );
-}
-
-const products = Array.from({ length: 36 }, (_, i) => ({
-  name: `Product ${i + 1}`,
-  price: `${(i + 1) * 10}$`,
-  originalPrice: `${(i + 1) * 12}$`,
-  outOfStock: i % 5 === 0,
-  onSale: i % 3 === 0,
-}));
-
-function Pagination({ currentPage, totalPages, goToPage }) {
   const paginationStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '10px',
-    margin: '20px 0',
+    marginBottom: '1em',
+    display: 'block',
+    borderTop: '1px solid #50222b',
+    padding: '8px 10px',
   };
 
-  const pageStyle = (page) => ({
-    width: '30px',
-    height: '30px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: page === currentPage ? 'purple' : 'transparent',
-    color: page === currentPage ? 'white' : 'black',
+  const pageStyle = {
+    margin: '0 5px',
+    display: 'inline-block',
+    fontWeight: 'bold',
+    color: '#50222b',
+  };
+
+  const currentPageStyle = {
+    ...pageStyle,
+    color: 'white',
+    backgroundColor: '#50222b',
     borderRadius: '4px',
-    cursor: 'pointer',
-    border: '1px solid #ddd',
-  });
+    padding: '4px 8px',
+  };
+
+  const decoStyle = {
+    color: '#999',
+    margin: '0 5px',
+  };
+
+  const nextStyle = {
+    fontWeight: 'bold',
+  };
 
   return (
-    <div style={paginationStyle}>
-      {[...Array(totalPages)].map((_, index) => (
-        <div
-          key={index}
-          style={pageStyle(index + 1)}
-          onClick={() => goToPage(index + 1)}
-        >
-          {index + 1}
+    <div className="container-fluid">
+      <div className="text-center mb-4">
+        <img
+          src={cuaHangBangDia}
+          alt="Cửa hàng băng đĩa"
+          style={{ maxWidth: '100%', height: 'auto' }}
+        />
+      </div>
+      <div className="row">
+        <div className="col-md-3" style={{ padding: '20px', backgroundColor: '#f9f9f9' }}>
+          <h4 style={{ fontSize: '16px', marginBottom: '15px', color: '#b30000', fontWeight: 'bold', borderLeft: '4px solid #b30000', paddingLeft: '10px' }}>
+            Thể Loại
+          </h4>
+          <ul className="list-unstyled">
+            {categories.map((item, index) => (
+              <li key={index} className="d-flex justify-content-between align-items-center mb-2" style={{ borderBottom: '1px solid #b30000', paddingBottom: '5px' }}>
+                <a href="#" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold' }}>{item}</a>
+                <span style={{ color: '#999', fontWeight: 'bold' }}>15</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-5 text-center">
+            <h4 style={{ fontWeight: 'bold', marginBottom: '20px' }}>NOW PLAYING</h4>
+            <iframe
+              src="https://open.spotify.com/embed/playlist/0lLgC9zfleQhs3l4CI1k8g"
+              width="100%"
+              height="380"
+              frameBorder="0"
+              allow="encrypted-media"
+              title="Now Playing"
+            />
+          </div>
         </div>
-      ))}
-      <span
-        style={{ cursor: 'pointer', fontSize: '24px' }}
-        onClick={() => currentPage < totalPages && goToPage(currentPage + 1)}
-      >
-        →
-      </span>
+
+        <div className="col-md-9">
+          <div className="row mt-3">
+            {products.map((product, index) => (
+              <div key={index} className="col-md-3 mb-4">
+                <div className="card">
+                  <img src={product.img} className="card-img-top" alt={product.title} />
+                  <div className="card-body text-center">
+                    <h6 className="card-title">{product.title}</h6>
+                    <p className="card-text" style={{ fontWeight: 'bold' }}>{product.price} đ</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination Section */}
+          <div style={paginationStyle}>
+            <span style={currentPageStyle}>1</span>
+            <span style={pageStyle}><a href="/collections/available-now?page=2">2</a></span>
+            <span style={pageStyle}><a href="/collections/available-now?page=3">3</a></span>
+            <span style={decoStyle}>...</span>
+            <span style={pageStyle}><a href="/collections/available-now?page=21">21</a></span>
+            <span style={nextStyle}><a href="/collections/available-now?page=2">→</a></span>
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
-
-const navContainerStyle = {
-  backgroundColor: '#262146',
-  padding: '16px 0',
-  maxWidth: '1000px',
-  margin: '40px 180px 100px',
-  borderRadius: '12px'
-};
-
-const navMenuStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  listStyleType: 'none',
-  margin: 0,
-  padding: 0,
-};
-
-const navItemStyle = {
-  margin: '0 20px',
-};
-
-const linkStyle = {
-  color: '#FFFFFF',
-  textDecoration: 'none',
-  fontSize: '16px',
-  fontWeight: 'bold',
-};
-
-const shopContainerStyle = {
-  display: 'flex',
-  maxWidth: '1200px',
-  margin: '20px auto',
-  gap: '20px',
-};
-
-const sidebarStyle = {
-  width: '250px',
-};
-
-const sidebarHeadingStyle = {
-  fontSize: '24px', // Tăng kích thước chữ
-  fontWeight: '800', // In đậm
-  marginBottom: '10px',
-};
-const categoryListStyle = {
-  listStyleType: 'none',
-  padding: 0,
-};
-
-const categoryItemStyle = {
-  marginBottom: '5px',
-};
-
-const priceFilterStyle = {
-  width: '100%',         // Độ rộng thanh kéo
-  appearance: 'none',    // Loại bỏ kiểu mặc định để có thể tùy chỉnh
-  outline: 'none',
-  // Định dạng cho thanh kéo (track)
-  backgroundColor: '#ddd',
-  height: '4px',         // Độ dày của thanh kéo mỏng lại
-  borderRadius: '5px',
-};
-
-
-
-const productGridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)',
-  gap: '20px',
-  flex: 1,
-  borderTop: '2px solid #ccc', // Đường kẻ trên đầu
-  paddingTop: '20px', // Khoảng cách với phần nội dung bên trong
-};
-
-
-const productCardStyle = {
-  display: 'flex', // Sử dụng flexbox
-  flexDirection: 'column', // Xếp các phần tử theo cột
-  justifyContent: 'space-between', // Căn đều các phần
-  border: '1px solid #ccc',
-  padding: '16px',
-  height: '220px', // Đặt chiều cao cố định nếu cần
-  width: '250px',
-  position: 'relative', // Cho các thẻ "Sale" và "Out of Stock"
-};
-
-const productInfoStyle = {
-  position: 'absolute', // Đặt vị trí của tên và giá
-  bottom: '16px', // Khoảng cách từ dưới lên
-  left: '16px', // Khoảng cách từ trái vào
-  right: '16px', // Khoảng cách từ phải vào
-  textAlign: 'center',
-};
-
-const productImageStyle = {
-  width: '100%',
-  height: 'auto',
-};
-
-const outOfStockStyle = {
-  position: 'absolute',
-  top: '10px',
-  left: '10px',
-  backgroundColor: 'black',
-  color: 'white',
-  padding: '1px',
-};
-
-const saleStyle = {
-  position: 'absolute',
-  top: '10px',
-  right: '10px',
-  backgroundColor: 'purple',
-  color: 'white',
-  padding: '1px',
-};
-
-const priceStyle = {
-  fontSize: '16px',
-  marginTop: '10px',
-};
-
-const originalPriceStyle = {
-  textDecoration: 'line-through',
-  marginRight: '5px',
-};
-
-// In the resultsHeaderStyle, change justifyContent
-const resultsHeaderStyle = {
-  display: 'flex',
-  justifyContent: 'flex-start', // Change this to flex-start
-  alignItems: 'center',
-  maxWidth: '1200px',
-  margin: '20px auto',
-};
-
-// Add margin to sortDropdownStyle
-const sortDropdownStyle = {
-  cursor: 'pointer',
-  marginLeft: '600px', // Adjust this value as needed for spacing
-};
-
-const iconStyle = {
-  width: '30px',
-  height: '30px',
-  backgroundColor: '#ddd',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
 };
 
 export default Shop;

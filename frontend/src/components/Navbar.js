@@ -18,19 +18,22 @@ function Navbar() {
       gap: '10px',
     },
     logo: {
-      fontSize: '40px',
+      fontSize: '30px',
       fontWeight: 'bold',
+      color: 'white',
       background: 'linear-gradient(45deg, #ff6b6b, #ff9a9e)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
+      padding: '1px 25px',
+      borderRadius: '15px', 
+      display: 'inline-block', 
+      textDecoration: 'none',
       cursor: 'pointer',
     },
     menuBtn: {
       background: 'none',
       border: 'none',
       color: 'white',
-      fontSize: '20px', // Tăng kích thước chữ menu
-      fontWeight: 'bold', // Làm cho chữ in đậm
+      fontSize: '20px', 
+      fontWeight: 'bold', 
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
@@ -121,7 +124,7 @@ function Navbar() {
       right: '10px',
       top: '50%',
       transform: 'translateY(-50%)',
-      color: 'white', // Đặt màu biểu tượng thành trắng
+      color: 'white', 
       pointerEvents: 'none',
     },
   };
