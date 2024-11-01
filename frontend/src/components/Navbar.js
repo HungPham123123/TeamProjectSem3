@@ -23,10 +23,12 @@ function Navbar() {
       color: 'white',
       background: 'linear-gradient(45deg, #ff6b6b, #ff9a9e)',
       padding: '1px 25px',
-      borderRadius: '15px', 
-      display: 'inline-block', 
+      borderRadius: '15px',
+      display: 'inline-block',
       textDecoration: 'none',
       cursor: 'pointer',
+      textShadow: '0 0 10px rgba(255, 255, 255, 0.8)', // Thêm hiệu ứng phát sáng
+      fontFamily: 'YourChosenFont, sans-serif', // Chọn font chữ hiện đại và mượt mà
     },
     menuBtn: {
       background: 'none',
@@ -132,7 +134,7 @@ function Navbar() {
   return (
     <nav style={styles.navbar}>
       <div style={styles.centerContainer}>
-        <a href="http://localhost:3000/" style={styles.logo}>waves</a>
+        <a href="http://localhost:3000/" style={styles.logo}>ᴡᴀᴠᴇs</a>
         <button style={styles.menuBtn}>
           <span>&#9776;</span> Menu
         </button>
