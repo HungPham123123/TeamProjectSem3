@@ -110,9 +110,9 @@ const LoginPage = () => {
                 </a>
               </p>
               <p style={styles.paragraph}>
-              <a href="#" style={{ color: '#5c2a1d', fontSize: '14px', textDecoration: 'none' }}>Bạn chưa có tài khoản </a>
+              <a href="#" style={{ color: '#5c2a1d', fontSize: '14px', textDecoration: 'none' }}>Bạn chưa có tài khoản ? </a>
                 <a href="#signup" onClick={() => setShowSignUpForm(true)} style={{ ...styles.link, color: 'blue' }}>
-                  Đăng ký !
+                  Đăng ký
                 </a>
               </p>
             </form>
