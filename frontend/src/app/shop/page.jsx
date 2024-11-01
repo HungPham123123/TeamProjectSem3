@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/Shop.css';
-import cuaHangBangDia from '../../img/cua_hang_bang_dia_goc_available_now_332f289aeaf346c3a5c9e3f7361a414b_master.png';
 
 const Shop = () => {
   const categories = [
@@ -65,29 +64,67 @@ const Shop = () => {
 
   return (
     <div className="container-fluid">
+      {/* Breadcrumb Section */}
+      <nav className="breadcrumb" role="navigation" aria-label="breadcrumbs" style={{
+    display: 'flex',
+    justifyContent: 'center', // Căn giữa breadcrumb
+    flexWrap: 'wrap',
+    padding: '0',
+    marginBottom: '1rem',
+    fontSize: '14px',
+    listStyle: 'none',
+    backgroundColor: 'transparent',
+    borderRadius: '0',
+}}>
+    <div className="inner" style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '15px 30px', // Thay đổi padding để làm dài phần nền xám
+        backgroundColor: '#f5f5f5',
+        borderRadius: '4px',
+        width: '100%', // Đảm bảo phần nền chiếm toàn bộ chiều rộng
+        maxWidth: '8000px', // Tùy chọn: Giới hạn chiều rộng tối đa
+    }}>
+        <a href="/" title="Quay lại trang chủ" style={{
+            textDecoration: 'none',
+            color: '#a2a2a2',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            fontStyle: 'italic',
+        }}>Trang chủ</a>
+        <span aria-hidden="true" style={{ margin: '0 10px' }}> / </span>
+        <span style={{ fontStyle: 'italic', fontSize: '16px' }}>AVAILABLE NOW</span>
+    </div>
+</nav>
+
+
+      {/* Image Section */}
       <div className="text-center mb-4">
         <img
-          src={cuaHangBangDia}
+          src="https://file.hstatic.net/1000304920/collection/cua_hang_bang_dia_goc_available_now_332f289aeaf346c3a5c9e3f7361a414b_master.png"
           alt="Cửa hàng băng đĩa"
-          style={{ maxWidth: '100%', height: 'auto' }}
+          style={{ maxWidth: '70%', height: 'auto', margin: '0 auto' }} // Giảm kích thước hình ảnh
         />
       </div>
+
       <div className="row">
-        <div className="col-md-3" style={{ padding: '20px', backgroundColor: '#f9f9f9' }}>
-          <h4 style={{ fontSize: '16px', marginBottom: '15px', color: '#b30000', fontWeight: 'bold', borderLeft: '4px solid #b30000', paddingLeft: '10px' }}>
+        {/* Categories Section */}
+        <div className="col-md-3" style={{ padding: '45px' }}>
+          <h4 style={{ fontSize: '14px', marginBottom: '10px', color: '#b30000', fontWeight: 'bold', borderLeft: '4px solid #b30000', paddingLeft: '10px' }}>
             Thể Loại
           </h4>
-          <ul className="list-unstyled">
+          <ul className="list-unstyled" style={{ padding: 0 }}>
             {categories.map((item, index) => (
-              <li key={index} className="d-flex justify-content-between align-items-center mb-2" style={{ borderBottom: '1px solid #b30000', paddingBottom: '5px' }}>
-                <a href="#" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold' }}>{item}</a>
-                <span style={{ color: '#999', fontWeight: 'bold' }}>15</span>
+              <li key={index} className="d-flex justify-content-between align-items-center mb-1" style={{ borderBottom: '1px solid #b30000', paddingBottom: '5px', fontSize: '12px' }}>
+                <a href="#" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold', display: 'block', padding: '7px 20px' }}>{item}</a>
+                <span style={{ color: '#b30000', fontWeight: 'bold' }}>15</span>
               </li>
             ))}
           </ul>
 
-          <div className="mt-5 text-center">
-            <h4 style={{ fontWeight: 'bold', marginBottom: '20px' }}>NOW PLAYING</h4>
+          <div className="mt-3 text-center">
+            <h4 style={{ fontWeight: 'bold', marginBottom: '10px', fontSize: '14px' }}>NOW PLAYING</h4>
             <iframe
               src="https://open.spotify.com/embed/playlist/0lLgC9zfleQhs3l4CI1k8g"
               width="100%"
@@ -99,15 +136,16 @@ const Shop = () => {
           </div>
         </div>
 
-        <div className="col-md-9">
+        {/* Products Section */}
+        <div className="col-md-9" style={{ padding: '40px' }}>
           <div className="row mt-3">
             {products.map((product, index) => (
               <div key={index} className="col-md-3 mb-4">
-                <div className="card">
+                <div className="card" style={{ border: 'none', boxShadow: 'none' }}>
                   <img src={product.img} className="card-img-top" alt={product.title} />
                   <div className="card-body text-center">
-                    <h6 className="card-title">{product.title}</h6>
-                    <p className="card-text" style={{ fontWeight: 'bold' }}>{product.price} đ</p>
+                    <h6 className="card-title" style={{ fontSize: '14px' }}>{product.title}</h6>
+                    <p className="card-text" style={{ fontWeight: 'bold', fontSize: '12px' }}>{product.price} đ</p>
                   </div>
                 </div>
               </div>

@@ -7,20 +7,22 @@ function Footer() {
     justifyContent: 'center',
     alignItems: 'center',
     height: '75vh',
-    backgroundColor: '#000',
+    backgroundColor: '#1c1c1c',
     color: 'white',
     padding: '20px',
   };
 
   const buttonStyle = {
-    backgroundColor: 'yellow',
-    color: 'black',
-    padding: '10px 20px',
-    borderRadius: '5px',
+    backgroundColor: 'blue', // Thay đổi thành màu xanh dương
+    color: 'white', // Thay đổi màu chữ thành trắng
+    padding: '10px 25px',
+    borderRadius: '10px',
     cursor: 'pointer',
     fontWeight: 'bold',
     marginBottom: '20px',
+    fontSize: '14px',
   };
+  
 
   const containerStyle = {
     display: 'flex',
@@ -32,8 +34,7 @@ function Footer() {
 
   const boxStyle = {
     flex: 1,
-    backgroundColor: '#1a1a1a',
-    padding: '20px',
+    backgroundColor: '#000',
     borderRadius: '8px',
     margin: '0 10px',
     textAlign: 'center',
@@ -55,7 +56,9 @@ function Footer() {
 
   const textContainerStyle = {
     textAlign: 'left',
+    paddingLeft: '20px', // Hoặc marginLeft: '10px' nếu bạn muốn dùng margin
   };
+  
 
   const qrCodeStyle = {
     width: '100px',
@@ -90,7 +93,7 @@ function Footer() {
       <button style={buttonStyle}>Sign in for more access</button>
       <div style={containerStyle}>
         <div style={boxStyle}>
-          <div>Follow IMDb on social</div>
+        <div style={{ marginTop: '20px' }}>Follow IMDb on social</div>
           <ul style={socialListStyle}>
             <li style={{ marginRight: '20px' }}>
               <a
@@ -191,7 +194,6 @@ function Footer() {
               <div>For Android and iOS</div>
             </div>
             <div style={qrCodeStyle}>
-              {/* Replace this with an actual QR code image */}
               QR Code
             </div>
           </div>
