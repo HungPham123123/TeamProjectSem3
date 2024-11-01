@@ -111,30 +111,45 @@ const Shop = () => {
       <div className="row">
         {/* Categories Section */}
         <div className="col-md-3" style={{ padding: '45px' }}>
-          <h4 style={{ fontSize: '14px', marginBottom: '10px', color: '#b30000', fontWeight: 'bold', borderLeft: '4px solid #b30000', paddingLeft: '10px' }}>
-            Thể Loại
-          </h4>
-          <ul className="list-unstyled" style={{ padding: 0 }}>
-            {categories.map((item, index) => (
-              <li key={index} className="d-flex justify-content-between align-items-center mb-1" style={{ borderBottom: '1px solid #b30000', paddingBottom: '5px', fontSize: '12px' }}>
-                <a href="#" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold', display: 'block', padding: '7px 20px' }}>{item}</a>
-                <span style={{ color: '#b30000', fontWeight: 'bold' }}>15</span>
-              </li>
-            ))}
-          </ul>
+        <h4 style={{ 
+    fontSize: '24px', 
+    marginBottom: '0', // Để không có khoảng cách giữa tiêu đề và gạch chân
+    color: '#b30000', 
+    fontWeight: 'bold', 
+    borderLeft: '24px solid #d60000', 
+    paddingLeft: '10px'
+}}>
+    Thể Loại
+</h4>
+<div style={{ 
+    width: '100%', 
+    height: '2px', // Độ dày của đường gạch chân
+    backgroundColor: '#b30000', // Màu của đường gạch chân
+    marginTop: '28px', // Khoảng cách giữa tiêu đề và đường gạch chân
+}}></div>
 
-          <div className="mt-3 text-center">
-            <h4 style={{ fontWeight: 'bold', marginBottom: '10px', fontSize: '14px' }}>NOW PLAYING</h4>
-            <iframe
-              src="https://open.spotify.com/embed/playlist/0lLgC9zfleQhs3l4CI1k8g"
-              width="100%"
-              height="380"
-              frameBorder="0"
-              allow="encrypted-media"
-              title="Now Playing"
-            />
-          </div>
-        </div>
+  <ul className="list-unstyled" style={{ padding: 0 }}>
+    {categories.map((item, index) => (
+      <li key={index} className="d-flex justify-content-between align-items-center mb-1" style={{ borderBottom: '1px solid #b30000', paddingBottom: '5px', fontSize: '12px' }}>
+        <a href="#" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold', display: 'block', padding: '7px 20px' }}>{item}</a>
+        <span style={{ color: '#b30000', fontWeight: 'bold' }}>15</span>
+      </li>
+    ))}
+  </ul>
+
+  <div className="mt-3 text-center">
+    <h4 style={{ fontWeight: 'bold', marginBottom: '10px', fontSize: '14px' }}>NOW PLAYING</h4>
+    <iframe
+      src="https://open.spotify.com/embed/playlist/0lLgC9zfleQhs3l4CI1k8g"
+      width="100%"
+      height="380"
+      frameBorder="0"
+      allow="encrypted-media"
+      title="Now Playing"
+    />
+  </div>
+</div>
+
 
         {/* Products Section */}
         <div className="col-md-9" style={{ padding: '40px' }}>
