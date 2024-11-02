@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Link from 'next/link'; // Import Link
 
 const LoginPage = () => {
   const [showRecoverForm, setShowRecoverForm] = useState(false);
@@ -19,11 +20,10 @@ const LoginPage = () => {
     },
     title: {
       fontSize: '24px',
-      color: '#50222b', // Đã sửa màu
+      color: '#50222b',
       fontWeight: 'bold',
-      marginBottom: '10px', // Đã sửa khoảng cách
+      marginBottom: '10px',
     },
-
     input: {
       width: '100%',
       maxWidth: '400px',
@@ -34,21 +34,19 @@ const LoginPage = () => {
       fontSize: '16px',
     },
     button: {
-        backgroundColor: '#000',
-        color: '#fff',
-        padding: '12px 0',
-        width: '100%',
-        padding: '7px 0', // Tăng chiều cao của nút
-        maxWidth: '400px',
-        fontSize: '16px',
-        fontWeight: 'bold',
-        fontStyle: 'italic', // Chữ in nghiêng
-        border: 'none',
-        borderRadius: '3px',
-        cursor: 'pointer',
-        marginTop: '10px',
-      },
-      
+      backgroundColor: '#000',
+      color: '#fff',
+      padding: '12px 0',
+      width: '100%',
+      maxWidth: '400px',
+      fontSize: '16px',
+      fontWeight: 'bold',
+      fontStyle: 'italic',
+      border: 'none',
+      borderRadius: '3px',
+      cursor: 'pointer',
+      marginTop: '10px',
+    },
     buttonHover: {
       backgroundColor: '#333',
     },
@@ -56,9 +54,6 @@ const LoginPage = () => {
       color: '#5c2a1d',
       fontSize: '14px',
       textDecoration: 'none',
-    },
-    linkHover: {
-      textDecoration: 'underline',
     },
     paragraph: {
       marginTop: '10px',
@@ -87,7 +82,7 @@ const LoginPage = () => {
                 style={styles.input}
               />
 
-               <input
+              <input
                 type="password"
                 name="customer[password]"
                 id="CustomerPassword"
@@ -110,10 +105,10 @@ const LoginPage = () => {
                 </a>
               </p>
               <p style={styles.paragraph}>
-              <a href="#" style={{ color: '#5c2a1d', fontSize: '14px', textDecoration: 'none' }}>Bạn chưa có tài khoản ? </a>
-                <a href="#signup" onClick={() => setShowSignUpForm(true)} style={{ ...styles.link, color: 'blue' }}>
+                <span style={{ color: '#5c2a1d', fontSize: '14px' }}>Bạn chưa có tài khoản? </span>
+                <Link href="/signup" style={{ ...styles.link, color: 'blue' }}> 
                   Đăng ký
-                </a>
+                </Link>
               </p>
             </form>
           </div>
