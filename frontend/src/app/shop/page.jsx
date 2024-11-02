@@ -99,7 +99,7 @@ const Shop = () => {
             fontStyle: 'italic',
           }}>Trang chủ</a>
           <span aria-hidden="true" style={{ margin: '0 10px' }}> / </span>
-          <span style={{ fontStyle: 'italic', fontSize: '16px' }}>AVAILABLE NOW</span>
+          <span style={{ fontStyle: 'italic', fontSize: '16px' }}>Shop</span>
         </div>
       </nav>
 
