@@ -15,6 +15,9 @@ public partial class User
 
     public bool? Enabled { get; set; }
 
+    public string? VerificationToken { get; set; }
+    public DateTime? TokenExpiryDate { get; set; }
+
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
