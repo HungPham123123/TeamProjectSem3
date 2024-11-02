@@ -151,7 +151,7 @@ const Shop = () => {
             <iframe
               src="https://open.spotify.com/embed/playlist/0lLgC9zfleQhs3l4CI1k8g"
               width="100%"
-              height="380"
+              height="620"
               frameBorder="0"
               allow="encrypted-media"
               title="Now Playing"
@@ -176,6 +176,7 @@ const Shop = () => {
   <option value="created-descending">Ngày, mới đến cũ</option>
   <option value="created-ascending">Ngày, cũ đến mới</option>
 </select>
+
               </div>
               <div style={{
             width: '100%',
@@ -189,64 +190,94 @@ const Shop = () => {
 
           {/* Products Section */}
           <div className="row mt-3">
-            {products.map((product, index) => (
-              <div
-                key={index}
-                className="col-md-3 mb-4"
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                <div
-                  className="card product-card"
-                  style={{
-                    border: 'none',
-                    boxShadow: 'none',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <img src={product.img} className="card-img-top" alt={product.title} />
-                  <div className="card-body text-center">
-                    <h6 className="card-title" style={{ fontSize: '14px' }}>{product.title}</h6>
-                    <p className="card-text" style={{ fontWeight: 'bold', fontSize: '12px' }}>{product.price} đ</p>
-                  </div>
-                  <div
-                    className="product-actions"
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      opacity: hoveredIndex === index ? 1 : 0,
-                      transition: 'opacity 0.3s ease',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      gap: '10px',
-                      color: '#fff',
-                    }}
-                  >
-                    <a
-                      className="btn wishlist awe-button product-quick-whistlist"
-                      href="/account/login"
-                      title="Add to wishlist"
-                      style={{ color: '#fff', textDecoration: 'none' }}
-                    >
-                      <i className="fas fa-heart" style={{ marginTop: '90px' }}></i>
-                    </a>
-                    <span style={{ marginTop: '90px' }}>/</span>
-                    <a
-                      href="/collections/available-now/products/linkin-park-one-more-light-di-a-cd"
-                      className="btn product-quick-view btn-quickview"
-                      title="Quickview"
-                      style={{ color: '#fff', textDecoration: 'none' }}
-                    >
-                      <i className="fas fa-eye" style={{ marginTop: '90px' }}></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+  {products.map((product, index) => (
+    <div
+      key={index}
+      className="col-md-3 mb-4"
+      onMouseEnter={() => setHoveredIndex(index)}
+      onMouseLeave={() => setHoveredIndex(null)}
+    >
+      <div
+        className="card product-card"
+        style={{
+          border: 'none',
+          boxShadow: 'none',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <img src={product.img} className="card-img-top" alt={product.title} />
+        <div className="card-body text-center">
+          <h6 className="card-title" style={{ fontSize: '14px' }}>{product.title}</h6>
+          <p className="card-text" style={{ fontWeight: 'bold', fontSize: '12px' }}>{product.price} đ</p>
+
+          {/* Add to Cart Button */}
+          <form method="post" action="/cart/add" className="add-to-cart">
+            <input type="hidden" name="id" value="1132218057" />
+            <button
+  type="submit"
+  name="add"
+  className="add_to_cart"
+  style={{
+    color: '#000', // Text color set to black
+    backgroundColor: '#fff', // Background color set to white
+    border: '1px solid #50222b', // Border color specified
+    padding: '5px 25px', // Padding as specified
+    borderRadius: '0px', // No border radius
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    marginTop: '10px', // Adjusted for better spacing
+    fontSize: '12px',
+    opacity: hoveredIndex === index ? 1 : 0, // Conditional opacity
+    transition: 'opacity 0.3s ease', // Smooth transition for opacity
+    visibility: hoveredIndex === index ? 'visible' : 'hidden', // Control visibility
+  }}
+>
+  Thêm vào giỏ
+</button>
+
+          </form>
+        </div>
+
+        {/* Overlay with Wishlist and Quickview icons */}
+        <div
+          className="product-actions"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            opacity: hoveredIndex === index ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '10px',
+            color: '#fff',
+          }}
+        >
+          <a
+            className="btn wishlist awe-button product-quick-whistlist"
+            href="/account/login"
+            title="Add to wishlist"
+            style={{ color: '#fff', textDecoration: 'none' }}
+          >
+            <i className="fas fa-heart"></i>
+          </a>
+          <span>/</span>
+          <a
+            href="/collections/available-now/products/linkin-park-one-more-light-di-a-cd"
+            className="btn product-quick-view btn-quickview"
+            title="Quickview"
+            style={{ color: '#fff', textDecoration: 'none' }}
+          >
+            <i className="fas fa-eye"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
 
           {/* Pagination Section */}
           <div style={paginationStyle}>
