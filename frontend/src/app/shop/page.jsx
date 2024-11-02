@@ -1,7 +1,9 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/Shop.css';
-import cuaHangBangDia from '../../img/cua_hang_bang_dia_goc_available_now_332f289aeaf346c3a5c9e3f7361a414b_master.png';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Shop = () => {
   const categories = [
@@ -31,6 +33,8 @@ const Shop = () => {
     { title: "Lana Del Rey - Born to Die", price: "370,000", img: "https://via.placeholder.com/150" },
     { title: "Kanye West - Donda", price: "490,000", img: "https://via.placeholder.com/150" }
   ];
+
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const paginationStyle = {
     marginBottom: '1em',
@@ -65,33 +69,89 @@ const Shop = () => {
 
   return (
     <div className="container-fluid">
+      {/* Breadcrumb Section */}
+      <nav className="breadcrumb" role="navigation" aria-label="breadcrumbs" style={{
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        padding: '0',
+        marginBottom: '1rem',
+        fontSize: '14px',
+        listStyle: 'none',
+        backgroundColor: 'transparent',
+        borderRadius: '0',
+      }}>
+        <div className="inner" style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '15px 30px',
+          backgroundColor: '#f5f5f5',
+          borderRadius: '4px',
+          width: '100%',
+          maxWidth: '800px',
+        }}>
+          <a href="/" title="Quay lại trang chủ" style={{
+            textDecoration: 'none',
+            color: '#a2a2a2',
+            fontWeight: 'bold',
+            fontSize: '16px',
+            fontStyle: 'italic',
+          }}>Trang chủ</a>
+          <span aria-hidden="true" style={{ margin: '0 10px' }}> / </span>
+          <span style={{ fontStyle: 'italic', fontSize: '16px' }}>Shop</span>
+        </div>
+      </nav>
+
+      {/* Image Section */}
       <div className="text-center mb-4">
         <img
-          src={cuaHangBangDia}
+          src="https://file.hstatic.net/1000304920/collection/cua_hang_bang_dia_goc_available_now_332f289aeaf346c3a5c9e3f7361a414b_master.png"
           alt="Cửa hàng băng đĩa"
-          style={{ maxWidth: '100%', height: 'auto' }}
+          style={{
+            display: 'block',
+            maxWidth: '1200px',
+            height: 'auto',
+            margin: '0 auto',
+          }}
         />
       </div>
+
       <div className="row">
-        <div className="col-md-3" style={{ padding: '20px', backgroundColor: '#f9f9f9' }}>
-          <h4 style={{ fontSize: '16px', marginBottom: '15px', color: '#b30000', fontWeight: 'bold', borderLeft: '4px solid #b30000', paddingLeft: '10px' }}>
+        {/* Categories Section */}
+        <div className="col-md-3" style={{ padding: '45px' }}>
+          <h4 style={{
+            fontSize: '24px',
+            marginBottom: '0',
+            color: '#b30000',
+            fontWeight: 'bold',
+            borderLeft: '24px solid #d60000',
+            paddingLeft: '10px'
+          }}>
             Thể Loại
           </h4>
-          <ul className="list-unstyled">
+          <div style={{
+            width: '100%',
+            height: '2px',
+            backgroundColor: '#b30000',
+            marginTop: '28px',
+          }}></div>
+
+          <ul className="list-unstyled" style={{ padding: 0 }}>
             {categories.map((item, index) => (
-              <li key={index} className="d-flex justify-content-between align-items-center mb-2" style={{ borderBottom: '1px solid #b30000', paddingBottom: '5px' }}>
-                <a href="#" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold' }}>{item}</a>
-                <span style={{ color: '#999', fontWeight: 'bold' }}>15</span>
+              <li key={index} className="d-flex justify-content-between align-items-center mb-1" style={{ borderBottom: '1px solid #b30000', paddingBottom: '5px', fontSize: '12px' }}>
+                <a href="#" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold', display: 'block', padding: '7px 20px' }}>{item}</a>
+                <span style={{ color: '#b30000', fontWeight: 'bold' }}>15</span>
               </li>
             ))}
           </ul>
 
-          <div className="mt-5 text-center">
-            <h4 style={{ fontWeight: 'bold', marginBottom: '20px' }}>NOW PLAYING</h4>
+          <div className="mt-3 text-center">
+            <h4 style={{ fontWeight: 'bold', marginBottom: '10px', fontSize: '14px' }}>NOW PLAYING</h4>
             <iframe
               src="https://open.spotify.com/embed/playlist/0lLgC9zfleQhs3l4CI1k8g"
               width="100%"
-              height="380"
+              height="620"
               frameBorder="0"
               allow="encrypted-media"
               title="Now Playing"
@@ -99,20 +159,125 @@ const Shop = () => {
           </div>
         </div>
 
-        <div className="col-md-9">
-          <div className="row mt-3">
-            {products.map((product, index) => (
-              <div key={index} className="col-md-3 mb-4">
-                <div className="card">
-                  <img src={product.img} className="card-img-top" alt={product.title} />
-                  <div className="card-body text-center">
-                    <h6 className="card-title">{product.title}</h6>
-                    <p className="card-text" style={{ fontWeight: 'bold' }}>{product.price} đ</p>
-                  </div>
-                </div>
+        {/* Sort and View Options Section */}
+        <div className="col-md-9" style={{ padding: '40px' }}>
+          <div className="collection__sort section-header">
+            <div className="section-header__right">
+              {/* Sorting Dropdown */}
+              <div className="form-horizontal left">
+              <label htmlFor="SortBy" style={{ fontWeight: 'bold', marginRight: '10px' }}>Sắp xếp bởi</label>
+<select name="SortBy" id="SortBy" defaultValue="created-descending">
+  <option value="manual">Đặc tính</option>
+  <option value="best-selling">Bán chạy nhất</option>
+  <option value="title-ascending">Theo thứ tự, A-Z</option>
+  <option value="title-descending">Theo thứ tự, Z-A</option>
+  <option value="price-ascending">Giá, từ thấp đến cao</option>
+  <option value="price-descending">Giá, Từ cao đến thấp</option>
+  <option value="created-descending">Ngày, mới đến cũ</option>
+  <option value="created-ascending">Ngày, cũ đến mới</option>
+</select>
+
               </div>
-            ))}
+              <div style={{
+            width: '100%',
+            height: '2px',
+            backgroundColor: '#b30000',
+            marginTop: '28px',
+          }}>          
           </div>
+            </div>
+          </div>
+
+          {/* Products Section */}
+          <div className="row mt-3">
+  {products.map((product, index) => (
+    <div
+      key={index}
+      className="col-md-3 mb-4"
+      onMouseEnter={() => setHoveredIndex(index)}
+      onMouseLeave={() => setHoveredIndex(null)}
+    >
+      <div
+        className="card product-card"
+        style={{
+          border: 'none',
+          boxShadow: 'none',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <img src={product.img} className="card-img-top" alt={product.title} />
+        <div className="card-body text-center">
+          <h6 className="card-title" style={{ fontSize: '14px' }}>{product.title}</h6>
+          <p className="card-text" style={{ fontWeight: 'bold', fontSize: '12px' }}>{product.price} đ</p>
+
+          {/* Add to Cart Button */}
+          <form method="post" action="/cart/add" className="add-to-cart">
+            <input type="hidden" name="id" value="1132218057" />
+            <button
+  type="submit"
+  name="add"
+  className="add_to_cart"
+  style={{
+    color: '#000', // Text color set to black
+    backgroundColor: '#fff', // Background color set to white
+    border: '1px solid #50222b', // Border color specified
+    padding: '5px 25px', // Padding as specified
+    borderRadius: '0px', // No border radius
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    marginTop: '10px', // Adjusted for better spacing
+    fontSize: '12px',
+    opacity: hoveredIndex === index ? 1 : 0, // Conditional opacity
+    transition: 'opacity 0.3s ease', // Smooth transition for opacity
+    visibility: hoveredIndex === index ? 'visible' : 'hidden', // Control visibility
+  }}
+>
+  Thêm vào giỏ
+</button>
+
+          </form>
+        </div>
+
+        {/* Overlay with Wishlist and Quickview icons */}
+        <div
+          className="product-actions"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            opacity: hoveredIndex === index ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '10px',
+            color: '#fff',
+          }}
+        >
+          <a
+            className="btn wishlist awe-button product-quick-whistlist"
+            href="/account/login"
+            title="Add to wishlist"
+            style={{ color: '#fff', textDecoration: 'none' }}
+          >
+            <i className="fas fa-heart"></i>
+          </a>
+          <span>/</span>
+          <a
+            href="/collections/available-now/products/linkin-park-one-more-light-di-a-cd"
+            className="btn product-quick-view btn-quickview"
+            title="Quickview"
+            style={{ color: '#fff', textDecoration: 'none' }}
+          >
+            <i className="fas fa-eye"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
 
           {/* Pagination Section */}
           <div style={paginationStyle}>

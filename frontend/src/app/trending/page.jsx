@@ -1,5 +1,6 @@
 "use client";
 
+
 import React, { useState } from 'react';
 
 function Trending() {
@@ -43,7 +44,7 @@ function Trending() {
       <div style={cardsContainerStyle}>
         {currentProducts.map((product, index) => (
           <div key={index} style={cardStyle}>
-            <img src="https://via.placeholder.com/150" alt="Product" style={cardImageStyle} />
+            <img src="https://via.placeholder.com/250" alt="Product" style={cardImageStyle} />
             <div style={cardContentStyle}>
               <h3 style={cardTitleStyle}>TRENDING</h3>
               <div style={cardRatingStyle}>
@@ -56,10 +57,153 @@ function Trending() {
         ))}
       </div>
 
+      <div style={dividerContainerStyle}>
+  <div style={lineStyle}></div>
+  <button style={viewMoreButtonStyle}>View More</button>
+  <div style={lineStyle}></div>
+</div>
+
+<div style={sectionContainerStyle}>
+  <div style={musicSectionStyle}>
+    <h2 style={musicTitleStyle}>MUSIC</h2>
+    <div style={underlineStyle}></div>
+  </div>
+
+  <div style={cardsContainerStyle}>
+  {currentProducts.slice(0, 3).map((product, index) => (
+      <div key={index} style={cardStyle}>
+        <img src="https://via.placeholder.com/250" alt="Product" style={cardImageStyle} />
+        <div style={cardContentStyle}>
+          <h3 style={cardTitleStyle}>TRENDING</h3>
+          <div style={cardRatingStyle}>
+            <span style={starStyle}>⭐️</span>
+            <span>8.8</span>
+          </div>
+          <p style={cardDescriptionStyle}>5 New Comedies to Watch</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div style={sectionContainerStyle}>
+  <div style={musicSectionStyle}>
+    <h2 style={musicTitleStyle}>MOVIE</h2>
+    <div style={underlineStyle}></div>
+  </div>
+
+  <div style={cardsContainerStyle}>
+  {currentProducts.slice(0, 3).map((product, index) => (
+      <div key={index} style={cardStyle}>
+        <img src="https://via.placeholder.com/250" alt="Product" style={cardImageStyle} />
+        <div style={cardContentStyle}>
+          <h3 style={cardTitleStyle}>TRENDING</h3>
+          <div style={cardRatingStyle}>
+            <span style={starStyle}>⭐️</span>
+            <span>8.8</span>
+          </div>
+          <p style={cardDescriptionStyle}>5 New Comedies to Watch</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div style={sectionContainerStyle}>
+  <div style={musicSectionStyle}>
+    <h2 style={musicTitleStyle}>GAME</h2>
+    <div style={underlineStyle}></div>
+  </div>
+
+  <div style={cardsContainerStyle}>
+  {currentProducts.slice(0, 3).map((product, index) => (
+      <div key={index} style={cardStyle}>
+        <img src="https://via.placeholder.com/250" alt="Product" style={cardImageStyle} />
+        <div style={cardContentStyle}>
+          <h3 style={cardTitleStyle}>TRENDING</h3>
+          <div style={cardRatingStyle}>
+            <span style={starStyle}>⭐️</span>
+            <span>8.8</span>
+          </div>
+          <p style={cardDescriptionStyle}>5 New Comedies to Watch</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
       <Pagination currentPage={currentPage} totalPages={totalPages} goToPage={goToPage} />
     </div>
   );
 }
+
+const sectionContainerStyle = {
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  margin: '20px 0',
+  padding: '0 20px',
+};
+
+const musicSectionStyle = {
+  flex: 1,
+  maxWidth: '200px',
+  display: 'flex',            // Sử dụng Flexbox
+  flexDirection: 'column',    // Đặt hướng theo cột
+  alignItems: 'center',       // Căn giữa theo chiều ngang
+  marginTop: '100px', // Thêm khoảng cách trên để dịch xuống dưới
+  paddingLeft: '55px', // Điều chỉnh giá trị này để dịch sang bên phải
+};  
+
+const musicTitleStyle = {
+  fontSize: '24px',
+  fontWeight: '1000',
+  color: '#FFF',
+  textTransform: 'uppercase',
+  margin: '0',
+  paddingLeft: '0', // Đặt lại paddingLeft thành 0
+  marginBottom: '5px', // Thêm khoảng cách giữa tiêu đề và đường gạch chân
+};
+
+const underlineStyle = {
+  width: '30px', // Giữ nguyên chiều rộng này
+  height: '4px',
+  backgroundColor: 'purple',
+  marginTop: '0', // Đặt marginTop thành 0 để gạch chân nằm sát ngay dưới tiêu đề
+  marginLeft: '-45px', // Điều chỉnh giá trị này để di chuyển sang trái   
+};
+
+
+
+
+const dividerContainerStyle = {
+  display: 'flex',
+  alignItems: 'center', // Căn giữa các phần tử theo chiều dọc
+  justifyContent: 'space-between', // Căn đều khoảng cách giữa các phần tử
+};
+
+const lineStyle = {
+  flex: 1, // Chiếm không gian còn lại
+  height: '1px', // Độ dày của đường kẻ
+  backgroundColor: '#555', // Màu của đường kẻ
+};
+
+// Khung nút View More
+const viewMoreButtonStyle = {
+  backgroundColor: 'black', // Đổi màu nền thành màu đen
+  color: 'rgba(255, 255, 255, 0.5)', // Màu chữ vẫn là trắng mờ
+  border: '1px solid #555',
+  borderRadius: '20px',
+  padding: '7px 35px', // Tăng padding bên trái và bên phải để làm cho khung chữ dài hơn
+  margin: '0', // Đảm bảo không có margin
+  cursor: 'pointer',
+  textTransform: 'uppercase',
+  fontSize: '10px', // Giảm kích cỡ chữ xuống 10px
+};
+
+
+
+
 
 const products = Array.from({ length: 36 }, (_, i) => ({
   name: `Product ${i + 1}`,
@@ -97,14 +241,18 @@ const heroImageStyle = {
   width: '100%',
   height: '500px',
   overflow: 'hidden',
-  backgroundColor: 'transparent',
+  backgroundColor: '#000000',
+  marginBottom: '60px', // Thêm khoảng cách giữa tiêu đề và phần hero
 };
 
 const imageStyle = {
-  width: '100%',
-  height: '100%',
+  width: '90%',
+  height: '90%',
   objectFit: 'cover',
+  marginLeft: 'auto', // Đẩy ảnh sang bên phải
+  display: 'block' // Đảm bảo ảnh không bị giãn ra toàn bộ chiều ngang
 };
+
 
 const overlayStyle = {
   position: 'absolute',
@@ -118,10 +266,10 @@ const overlayStyle = {
   alignItems: 'flex-start',
   backgroundColor: 'rgba(0, 0, 0, 0.3)',
   color: '#FFF',
-  padding: '60px',
-  paddingLeft: '90px',
+  padding: '200px',     // Giảm padding để dịch vào trong ảnh
   textAlign: 'left',
 };
+
 
 const textStyle = {
   fontSize: '24px',
@@ -146,7 +294,7 @@ const buttonStyle = {
 
 const pageStyle = {
   padding: '20px',
-  backgroundColor: '#000000',
+  backgroundColor: '#1c1c1c',
 };
 
 const navContainerStyle = {
@@ -177,20 +325,22 @@ const linkStyle = {
 
 const cardsContainerStyle = {
   display: 'flex',
-  justifyContent: 'space-around',
+  justifyContent: 'center', // Đổi từ 'space-around' thành 'center' để căn giữa
   flexWrap: 'wrap',
   margin: '20px 0',
+  gap: '20px', // Khoảng cách giữa các thẻ
 };
 
 const cardStyle = {
-  width: '230px',
-  height: '220px',
+  width: '250px',
+  height: '270px',
   backgroundColor: '#1c1c1e',
   borderRadius: '8px',
   overflow: 'hidden',
-  margin: '10px',
+  margin: '10px', // Có thể giữ lại nếu bạn muốn khoảng cách giữa các card
   color: '#FFF',
 };
+
 
 const cardImageStyle = {
   width: '100%',
@@ -199,26 +349,38 @@ const cardImageStyle = {
 };
 
 const cardContentStyle = {
-  padding: '500px',
+  padding: '8px',           // Giảm padding để nội dung sát hơn
+  borderRadius: '5px',       // Đặt bo góc cho viền
+  marginTop: '0px',          // Đặt marginTop thành 0 để gần sát hình ảnh
+  backgroundColor: '#1c1c1c', // Đặt màu nền tối hơn để dễ đọc chữ
+  marginLeft: '-7px', // Dịch sang bên trái 10px
 };
 
+
+
 const cardTitleStyle = {
-  fontSize: '14px',
+  fontSize: '11px',
   fontWeight: 'bold',
   margin: '5px 0',
   color: '#ff4c4c',
+  marginTop: '-5px',
 };
 
 const cardRatingStyle = {
   display: 'flex',
   alignItems: 'center',
   marginBottom: '5px',
+  fontSize: '12px', // Giảm kích cỡ chung cho cả biểu tượng sao và số đánh giá
+  marginTop: '-5px',
 };
 
 const starStyle = {
   marginRight: '5px',
   color: '#ffcc00',
+  fontSize: '12px', // Giảm riêng kích cỡ biểu tượng sao
+  marginTop: '-5px',
 };
+
 
 const cardDescriptionStyle = {
   fontSize: '16px',
@@ -228,23 +390,25 @@ const cardDescriptionStyle = {
 
 const styles = {
   title: {
-    fontSize: '24px', // Giảm kích thước chữ
+    fontSize: '32px', // Tăng kích thước chữ lên 36px
     fontWeight: 'bold', // Vẫn in đậm
-    marginBottom: '10px',
+    marginBottom: '60px', // Khoảng cách giữa tiêu đề và phần hero
     textTransform: 'uppercase',
     position: 'relative',
     textAlign: 'center', // Căn giữa văn bản
-    color: '#FFF', // Đổi màu thành trắng
+    color: '#ffffff', // Màu chữ trắng
   },
   titleAfter: {
     content: '""',
     display: 'block',
-    width: '30px', // Giữ kích thước này
+    width: '30px', // Kích thước đường gạch chân
     height: '4px',
-    backgroundColor: 'purple',
+    backgroundColor: 'purple', // Màu của đường gạch chân
     margin: '10px auto',
   },
 };
+
+
 
 
 export default Trending;
