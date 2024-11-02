@@ -1,4 +1,4 @@
-"use client"; // Thêm dòng này
+"use client";
 
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -72,7 +72,7 @@ const Shop = () => {
       {/* Breadcrumb Section */}
       <nav className="breadcrumb" role="navigation" aria-label="breadcrumbs" style={{
         display: 'flex',
-        justifyContent: 'center', // Căn giữa breadcrumb
+        justifyContent: 'center',
         flexWrap: 'wrap',
         padding: '0',
         marginBottom: '1rem',
@@ -85,11 +85,11 @@ const Shop = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '15px 30px', // Thay đổi padding để làm dài phần nền xám
+          padding: '15px 30px',
           backgroundColor: '#f5f5f5',
           borderRadius: '4px',
-          width: '100%', // Đảm bảo phần nền chiếm toàn bộ chiều rộng
-          maxWidth: '8000px', // Tùy chọn: Giới hạn chiều rộng tối đa
+          width: '100%',
+          maxWidth: '800px',
         }}>
           <a href="/" title="Quay lại trang chủ" style={{
             textDecoration: 'none',
@@ -122,7 +122,7 @@ const Shop = () => {
         <div className="col-md-3" style={{ padding: '45px' }}>
           <h4 style={{
             fontSize: '24px',
-            marginBottom: '0', // Để không có khoảng cách giữa tiêu đề và gạch chân
+            marginBottom: '0',
             color: '#b30000',
             fontWeight: 'bold',
             borderLeft: '24px solid #d60000',
@@ -132,9 +132,9 @@ const Shop = () => {
           </h4>
           <div style={{
             width: '100%',
-            height: '2px', // Độ dày của đường gạch chân
-            backgroundColor: '#b30000', // Màu của đường gạch chân
-            marginTop: '28px', // Khoảng cách giữa tiêu đề và đường gạch chân
+            height: '2px',
+            backgroundColor: '#b30000',
+            marginTop: '28px',
           }}></div>
 
           <ul className="list-unstyled" style={{ padding: 0 }}>
@@ -159,8 +159,35 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Products Section */}
+        {/* Sort and View Options Section */}
         <div className="col-md-9" style={{ padding: '40px' }}>
+          <div className="collection__sort section-header">
+            <div className="section-header__right">
+              {/* Sorting Dropdown */}
+              <div className="form-horizontal left">
+              <label htmlFor="SortBy" style={{ fontWeight: 'bold', marginRight: '10px' }}>Sắp xếp bởi</label>
+<select name="SortBy" id="SortBy" defaultValue="created-descending">
+  <option value="manual">Đặc tính</option>
+  <option value="best-selling">Bán chạy nhất</option>
+  <option value="title-ascending">Theo thứ tự, A-Z</option>
+  <option value="title-descending">Theo thứ tự, Z-A</option>
+  <option value="price-ascending">Giá, từ thấp đến cao</option>
+  <option value="price-descending">Giá, Từ cao đến thấp</option>
+  <option value="created-descending">Ngày, mới đến cũ</option>
+  <option value="created-ascending">Ngày, cũ đến mới</option>
+</select>
+              </div>
+              <div style={{
+            width: '100%',
+            height: '2px',
+            backgroundColor: '#b30000',
+            marginTop: '28px',
+          }}>          
+          </div>
+            </div>
+          </div>
+
+          {/* Products Section */}
           <div className="row mt-3">
             {products.map((product, index) => (
               <div
@@ -179,52 +206,43 @@ const Shop = () => {
                   }}
                 >
                   <img src={product.img} className="card-img-top" alt={product.title} />
-
-                  {/* Nội dung chi tiết sản phẩm */}
                   <div className="card-body text-center">
                     <h6 className="card-title" style={{ fontSize: '14px' }}>{product.title}</h6>
                     <p className="card-text" style={{ fontWeight: 'bold', fontSize: '12px' }}>{product.price} đ</p>
                   </div>
-
-
-<div
-  className="product-actions"
-  style={{
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    opacity: hoveredIndex === index ? 1 : 0,
-    transition: 'opacity 0.3s ease',
-    display: 'flex', // Sử dụng flexbox để căn chỉnh
-    justifyContent: 'center', // Căn giữa các nút
-    gap: '10px',
-    color: '#fff',
-  }}
->
-<a
-  className="btn wishlist awe-button product-quick-whistlist"
-  href="/account/login"
-  title="Add to wishlist"
-  style={{ color: '#fff', textDecoration: 'none' }}
->
-  <i className="fas fa-heart" style={{ marginTop: '90px' }}></i>
-</a>
-<a style={{ marginTop: '90px' }}>
-  /
-</a>
-
-<a
-  href="/collections/available-now/products/linkin-park-one-more-light-di-a-cd"
-  className="btn product-quick-view btn-quickview"
-  title="Quickview"
-  style={{ color: '#fff', textDecoration: 'none' }}
->
-  <i className="fas fa-eye" style={{ marginTop: '90px' }}></i>
-</a>
-
-</div>
-
+                  <div
+                    className="product-actions"
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      opacity: hoveredIndex === index ? 1 : 0,
+                      transition: 'opacity 0.3s ease',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      gap: '10px',
+                      color: '#fff',
+                    }}
+                  >
+                    <a
+                      className="btn wishlist awe-button product-quick-whistlist"
+                      href="/account/login"
+                      title="Add to wishlist"
+                      style={{ color: '#fff', textDecoration: 'none' }}
+                    >
+                      <i className="fas fa-heart" style={{ marginTop: '90px' }}></i>
+                    </a>
+                    <span style={{ marginTop: '90px' }}>/</span>
+                    <a
+                      href="/collections/available-now/products/linkin-park-one-more-light-di-a-cd"
+                      className="btn product-quick-view btn-quickview"
+                      title="Quickview"
+                      style={{ color: '#fff', textDecoration: 'none' }}
+                    >
+                      <i className="fas fa-eye" style={{ marginTop: '90px' }}></i>
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
