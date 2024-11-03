@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectSem3.Data;
 using ProjectSem3.Service;
+using ProjectSem3.Service.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<OnlineDvdsContext>(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<EmailService>(); // Ensure EmailService is registered if used
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // Configure JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
