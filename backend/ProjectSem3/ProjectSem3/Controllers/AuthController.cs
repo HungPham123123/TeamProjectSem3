@@ -32,28 +32,27 @@ namespace ProjectSem3.Controllers
             }
         }
 
-        // Login a user
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             try
             {
-                var userDto = await _userService.LoginAsync(loginDto);
-                return Ok(userDto);
+                var token = await _userService.LoginAsync(loginDto);
+                return Ok(new { Token = token });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { Message = ex.Message });
             }
         }
 
-        // Verify user account
+
         [HttpGet("verify")]
-        public async Task<IActionResult> VerifyAccount(string email)
+        public async Task<IActionResult> VerifyAccount(string verificationToken)
         {
             try
             {
-                await _userService.VerifyAccountAsync(email);
+                await _userService.VerifyAccountAsync(verificationToken);
                 return Ok(new { message = "Account successfully verified!" });
             }
             catch (Exception ex)
@@ -62,13 +61,27 @@ namespace ProjectSem3.Controllers
             }
         }
 
-        // Reset password
+        [HttpPost("request-reset-password")]
+        public async Task<IActionResult> RequestPasswordReset([FromBody] ResetPasswordRequestDto resetPasswordRequestDto)
+        {
+            try
+            {
+                await _userService.RequestPasswordResetAsync(resetPasswordRequestDto.Email);
+                return Ok(new { message = "Password reset link sent to your email." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
         {
             try
             {
-                await _userService.ResetPasswordAsync(resetPasswordDto.Email, resetPasswordDto.NewPassword);
+                await _userService.ResetPasswordAsync(resetPasswordDto.VerificationToken, resetPasswordDto.NewPassword, resetPasswordDto.ConfirmPassword);
                 return Ok(new { message = "Password reset successfully!" });
             }
             catch (Exception ex)

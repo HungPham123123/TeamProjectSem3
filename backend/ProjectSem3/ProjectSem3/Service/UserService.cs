@@ -1,8 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BCrypt.Net; // Add this import for BCrypt
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using ProjectSem3.Configurations; // Add this namespace for JwtSettings
 using ProjectSem3.Data;
 using ProjectSem3.DTOs;
 using ProjectSem3.Models;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,15 +19,18 @@ namespace ProjectSem3.Service
         private readonly ILogger<UserService> _logger;
         private readonly OnlineDvdsContext _context; // Assume this is your DbContext
         private readonly EmailService _emailService;
+        private readonly JwtSettings _jwtSettings;
 
         public UserService(
             ILogger<UserService> logger,
             OnlineDvdsContext context,
-            EmailService emailService)
+            EmailService emailService,
+            IOptions<JwtSettings> jwtSettings) // Inject JwtSettings
         {
             _logger = logger;
             _context = context;
             _emailService = emailService;
+            _jwtSettings = jwtSettings.Value; // Get the actual settings
         }
 
         public async Task SaveAsync(RegisterUserDto registerUserDto)
@@ -36,9 +45,11 @@ namespace ProjectSem3.Service
             {
                 Username = registerUserDto.Username,
                 Email = registerUserDto.Email,
-                Password = HashPassword(registerUserDto.Password), // Hash the password manually
+                Password = HashPassword(registerUserDto.Password),
                 CreatedAt = DateTime.UtcNow,
-                Enabled = false
+                Enabled = false,
+                VerificationToken = GenerateVerificationToken(),
+                TokenExpiryDate = DateTime.UtcNow.AddHours(24) // Token valid for 24 hours
             };
 
             _context.Users.Add(user);
@@ -49,89 +60,155 @@ namespace ProjectSem3.Service
 
         private async Task SendVerificationEmailAsync(User user)
         {
-            var encodedEmail = EncodeEmail(user.Email); // Encode the email
-            var verificationLink = $"https://yourwebsite.com/{encodedEmail}";
+            var verificationLink = $"https://yourwebsite.com/verify/{user.VerificationToken}";
             var subject = "Account Verification from Waves Dvds";
             var body = $"Please verify your account by clicking this link: <a href='{verificationLink}'>Verify Account</a>";
             await _emailService.SendMailAsync(user.Email, subject, body);
         }
 
-        // Verify the user's account
-        public async Task VerifyAccountAsync(string encodedEmail)
-        {
-            var email = DecodeEmail(encodedEmail); // Decode the email
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == email);
 
-            if (user == null) throw new Exception("Invalid verification link.");
+        // Verify the user's account
+        public async Task VerifyAccountAsync(string verificationToken)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.VerificationToken == verificationToken && u.TokenExpiryDate > DateTime.UtcNow);
+
+            if (user == null) throw new Exception("Invalid or expired verification token.");
 
             user.Enabled = true;
+            user.VerificationToken = null;
+            user.TokenExpiryDate = null;
             await _context.SaveChangesAsync();
 
             _logger.LogInformation("User with email {Email} successfully verified.", user.Email);
         }
 
-        // Login the user
-        public async Task<UserDto> LoginAsync(LoginDto loginDto)
+        public async Task RequestPasswordResetAsync(string email)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == loginDto.Email)
-                       ?? throw new Exception("User not found.");
+                .FirstOrDefaultAsync(u => u.Email == email)
+                ?? throw new Exception("User not found.");
 
-            if (!VerifyPassword(loginDto.Password, user.Password))
-                throw new Exception("Invalid password.");
+            user.VerificationToken = GenerateVerificationToken();
+            user.TokenExpiryDate = DateTime.UtcNow.AddHours(1); // Token valid for 1 hour
+            await _context.SaveChangesAsync();
 
-            // Check if the account is enabled
-            if (!user.Enabled.GetValueOrDefault())
-                throw new Exception("Account is not verified.");
-
-            return new UserDto
-            {
-                UserId = user.UserId,
-                Email = user.Email,
-                Username = user.Username
-            };
+            var resetLink = $"https://yourwebsite.com/reset-password/{user.VerificationToken}";
+            var subject = "Password Reset Request";
+            var body = $"Click the link to reset your password: <a href='{resetLink}'>Reset Password</a>";
+            await _emailService.SendMailAsync(user.Email, subject, body);
         }
 
-        // Reset password
-        public async Task ResetPasswordAsync(string email, string newPassword)
+        public async Task ResetPasswordAsync(string verificationToken, string newPassword, string confirmPassword)
         {
+            if (newPassword != confirmPassword)
+                throw new Exception("Passwords do not match.");
+
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception("User not found.");
+                .FirstOrDefaultAsync(u => u.VerificationToken == verificationToken && u.TokenExpiryDate > DateTime.UtcNow)
+                ?? throw new Exception("Invalid or expired token.");
 
             user.Password = HashPassword(newPassword);
+            user.VerificationToken = null;
+            user.TokenExpiryDate = null;
             await _context.SaveChangesAsync();
         }
 
-        // Hash password using HMACSHA256
+        public async Task<string> LoginAsync(LoginDto loginDto)
+        {
+            if (loginDto == null)
+            {
+                _logger.LogError("LoginDto is null.");
+                throw new ArgumentNullException(nameof(loginDto));
+            }
+
+            if (string.IsNullOrWhiteSpace(loginDto.Email))
+            {
+                _logger.LogError("Email is null or empty.");
+                throw new ArgumentException("Email cannot be null or empty.", nameof(loginDto.Email));
+            }
+
+            if (string.IsNullOrWhiteSpace(loginDto.Password))
+            {
+                _logger.LogError("Password is null or empty.");
+                throw new ArgumentException("Password cannot be null or empty.", nameof(loginDto.Password));
+            }
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == loginDto.Email)
+                ?? throw new Exception("User not found.");
+
+            if (user.Password == null)
+            {
+                _logger.LogError("User password is null for email {Email}.", loginDto.Email);
+                throw new Exception("User password is null.");
+            }
+
+            if (!VerifyPassword(loginDto.Password, user.Password))
+            {
+                _logger.LogWarning("Invalid password attempt for email {Email}.", loginDto.Email);
+                throw new Exception("Invalid password.");
+            }
+
+            if (!user.Enabled.GetValueOrDefault())
+            {
+                _logger.LogWarning("Account is not verified for email {Email}.", loginDto.Email);
+                throw new Exception("Account is not verified.");
+            }
+
+            var token = GenerateJwtToken(user);
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                _logger.LogError("Generated token is null or empty for user {Email}.", user.Email);
+                throw new Exception("Failed to generate token.");
+            }
+
+            return token;
+        }
+
+
+
+        private string GenerateVerificationToken()
+        {
+            using var rng = RandomNumberGenerator.Create();
+            var tokenData = new byte[32];
+            rng.GetBytes(tokenData);
+            return Convert.ToBase64String(tokenData);
+        }
+
         private string HashPassword(string password)
         {
-            using var hmac = new HMACSHA256();
-            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(hash);
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        // Verify password
         private bool VerifyPassword(string password, string storedHash)
         {
-            var hash = Convert.FromBase64String(storedHash);
-            using var hmac = new HMACSHA256();
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return computedHash.SequenceEqual(hash);
+            return BCrypt.Net.BCrypt.Verify(password, storedHash);
         }
 
-        // Encode email to Base64
-        private string EncodeEmail(string email)
+        private string GenerateJwtToken(User user)
         {
-            var plainTextBytes = Encoding.UTF8.GetBytes(email);
-            return Convert.ToBase64String(plainTextBytes);
-        }
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey)); // Use the injected JwtSettings
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        // Decode email from Base64
-        private string DecodeEmail(string encodedEmail)
-        {
-            var base64EncodedBytes = Convert.FromBase64String(encodedEmail);
-            return Encoding.UTF8.GetString(base64EncodedBytes);
+            var claims = new[]
+            {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim("UserId", user.UserId.ToString()),
+        new Claim("Username", user.Username)
+    };
+
+            var token = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(30),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
