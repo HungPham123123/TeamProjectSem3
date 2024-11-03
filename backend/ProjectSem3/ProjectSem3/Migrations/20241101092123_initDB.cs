@@ -70,6 +70,7 @@ namespace ProjectSem3.Migrations
                     table.PrimaryKey("PK__Artists__25706B70DAE69137", x => x.ArtistID);
                 });
 
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
