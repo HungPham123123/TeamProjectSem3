@@ -89,7 +89,7 @@ const Shop = () => {
           backgroundColor: '#f5f5f5',
           borderRadius: '4px',
           width: '100%',
-          maxWidth: '800px',
+          maxWidth: 'none',
         }}>
           <a href="/" title="Quay lại trang chủ" style={{
             textDecoration: 'none',
@@ -189,7 +189,8 @@ const Shop = () => {
           </div>
 
           {/* Products Section */}
-          <div className="row mt-3">
+          {/* Products Section */}
+<div className="row mt-3">
   {products.map((product, index) => (
     <div
       key={index}
@@ -206,40 +207,43 @@ const Shop = () => {
           overflow: 'hidden',
         }}
       >
-        <img src={product.img} className="card-img-top" alt={product.title} />
-        <div className="card-body text-center">
-          <h6 className="card-title" style={{ fontSize: '14px' }}>{product.title}</h6>
-          <p className="card-text" style={{ fontWeight: 'bold', fontSize: '12px' }}>{product.price} đ</p>
+        {/* Link vào trang chi tiết sản phẩm */}
+        <a href={`/products/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <img src={product.img} className="card-img-top" alt={product.title} />
+          <div className="card-body text-center">
+            <h6 className="card-title" style={{ fontSize: '14px' }}>{product.title}</h6>
+            <p className="card-text" style={{ fontWeight: 'bold', fontSize: '12px' }}>{product.price} đ</p>
+          </div>
+        </a>
 
-          {/* Add to Cart Button */}
-          <form method="post" action="/cart/add" className="add-to-cart">
-            <input type="hidden" name="id" value="1132218057" />
-            <button
-  type="submit"
-  name="add"
-  className="add_to_cart"
-  style={{
-    color: '#000', // Text color set to black
-    backgroundColor: '#fff', // Background color set to white
-    border: '1px solid #50222b', // Border color specified
-    padding: '5px 25px', // Padding as specified
-    borderRadius: '0px', // No border radius
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    marginTop: '10px', // Adjusted for better spacing
-    fontSize: '12px',
-    opacity: hoveredIndex === index ? 1 : 0, // Conditional opacity
-    transition: 'opacity 0.3s ease', // Smooth transition for opacity
-    visibility: hoveredIndex === index ? 'visible' : 'hidden', // Control visibility
-  }}
->
-  Thêm vào giỏ
-</button>
+        {/* Nút Thêm vào giỏ */}
+        <form method="post" action="/cart/add" className="add-to-cart">
+          <input type="hidden" name="id" value="1132218057" />
+          <button
+            type="submit"
+            name="add"
+            className="add_to_cart"
+            style={{
+              color: '#000',
+              backgroundColor: '#fff',
+              border: '1px solid #50222b',
+              padding: '5px 25px',
+              borderRadius: '0px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              marginTop: '10px',
+              marginLeft: '46px',
+              fontSize: '12px',
+              opacity: hoveredIndex === index ? 1 : 0,
+              visibility: hoveredIndex === index ? 'visible' : 'hidden',
+              transition: 'opacity 0.3s ease',
+            }}
+          >
+            Thêm vào giỏ
+          </button>
+        </form>
 
-          </form>
-        </div>
-
-        {/* Overlay with Wishlist and Quickview icons */}
+        {/* Overlay Wishlist và Quickview */}
         <div
           className="product-actions"
           style={{
@@ -265,7 +269,7 @@ const Shop = () => {
           </a>
           <span>/</span>
           <a
-            href="/collections/available-now/products/linkin-park-one-more-light-di-a-cd"
+            href={`/products/${product.id}`}
             className="btn product-quick-view btn-quickview"
             title="Quickview"
             style={{ color: '#fff', textDecoration: 'none' }}
@@ -277,6 +281,7 @@ const Shop = () => {
     </div>
   ))}
 </div>
+
 
 
           {/* Pagination Section */}

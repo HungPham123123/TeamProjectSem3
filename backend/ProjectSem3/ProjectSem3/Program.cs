@@ -3,8 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectSem3.Configurations; // Make sure to include the namespace for JwtSettings
 using ProjectSem3.Data;
+using ProjectSem3.DTOs;
+using ProjectSem3.Models;
 using ProjectSem3.Service;
+using ProjectSem3.Service.Interfaces;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,8 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"))
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<EmailService>(); // Ensure EmailService is registered if used
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IArtistService, ArtistService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -43,6 +49,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
