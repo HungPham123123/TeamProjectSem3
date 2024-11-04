@@ -71,11 +71,28 @@ namespace ProjectSem3.Service
 
         private async Task SendVerificationEmailAsync(User user)
         {
-            var verificationLink = $"https://yourwebsite.com/verify/{user.VerificationToken}";
+            var verificationLink = $"https://localhost:3000/user-verfication/{user.VerificationToken}";
             var subject = "Account Verification from Waves Dvds";
-            var body = $"Please verify your account by clicking this link: <a href='{verificationLink}'>Verify Account</a>";
+            var body = $@"
+        <div style='font-family: Arial, sans-serif; background-color: #f6f9fc; padding: 20px;'>
+            <div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
+                <div style='text-align: center;'>
+                    <img src='https://res.cloudinary.com/dklnlcse3/image/upload/v1730739115/website_name_l3j1ew.png' alt='Waves Dvds' style='width: 120px; margin-bottom: 20px;'/>
+                </div>
+                <h2 style='color: #32325d;'>Verify Your Email</h2>
+                <p style='color: #525f7f;'>Thanks for creating an account with Waves Dvds. Please verify your email so you can get up and running quickly.</p>
+                <div style='text-align: center; margin: 20px 0;'>
+                    <a href='{verificationLink}' style='background-color: #F64F4F; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Verify Account</a>
+                </div>
+                <p style='color: #525f7f;'>Once your email is verified, you can start setting up your account. If you have any questions, please <a href='https://yourwebsite.com/support' style='color: #F64F4F; text-decoration: none;'>visit our support site</a>.</p>
+                <hr style='border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;' />
+                <p style='font-size: 12px; color: #aab7c4; text-align: center;'>Waves Dvds, 1234 Your Address St, Your City, ST 12345</p>
+            </div>
+        </div>";
+
             await _emailService.SendMailAsync(user.Email, subject, body);
         }
+
 
 
         // Verify the user's account
@@ -104,11 +121,28 @@ namespace ProjectSem3.Service
             user.TokenExpiryDate = DateTime.UtcNow.AddHours(1); // Token valid for 1 hour
             await _context.SaveChangesAsync();
 
-            var resetLink = $"https://yourwebsite.com/reset-password/{user.VerificationToken}";
+            var resetLink = $"https://localhost:3000/reset-password/{user.VerificationToken}";
             var subject = "Password Reset Request";
-            var body = $"Click the link to reset your password: <a href='{resetLink}'>Reset Password</a>";
+            var body = $@"
+        <div style='font-family: Arial, sans-serif; background-color: #f6f9fc; padding: 20px;'>
+            <div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
+                <div style='text-align: center;'>
+                    <img src='https://res.cloudinary.com/dklnlcse3/image/upload/v1730739115/website_name_l3j1ew.png' alt='Waves Dvds' style='width: 120px; margin-bottom: 20px;'/>
+                </div>
+                <h2 style='color: #32325d;'>Reset Your Password</h2>
+                <p style='color: #525f7f;'>We received a request to reset your password. Click the button below to reset it. If you did not request this, you can safely ignore this email.</p>
+                <div style='text-align: center; margin: 20px 0;'>
+                    <a href='{resetLink}' style='background-color: #F64F4F; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Reset Password</a>
+                </div>
+                <p style='color: #525f7f;'>This link will expire in 1 hour.</p>
+                <hr style='border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;' />
+                <p style='font-size: 12px; color: #aab7c4; text-align: center;'>Waves Dvds, 1234 Your Address St, Your City, ST 12345</p>
+            </div>
+        </div>";
+
             await _emailService.SendMailAsync(user.Email, subject, body);
         }
+
 
         public async Task ResetPasswordAsync(string verificationToken, string newPassword, string confirmPassword)
         {
@@ -185,7 +219,11 @@ namespace ProjectSem3.Service
             using var rng = RandomNumberGenerator.Create();
             var tokenData = new byte[32];
             rng.GetBytes(tokenData);
-            return Convert.ToBase64String(tokenData);
+
+            string token = Convert.ToBase64String(tokenData);
+            token = token.Replace("+", "-").Replace("/", "_").TrimEnd('=');
+
+            return token;
         }
 
         private string HashPassword(string password)
@@ -221,5 +259,20 @@ namespace ProjectSem3.Service
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public async Task ResendVerificationEmailAsync(string email)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email && u.Enabled == false);
+            if (user == null) throw new Exception("User not found or account already verified.");
+
+            user.VerificationToken = GenerateVerificationToken();
+            user.TokenExpiryDate = DateTime.UtcNow.AddHours(24);
+
+            await _context.SaveChangesAsync();
+
+            await SendVerificationEmailAsync(user);
+        }
+
     }
 }

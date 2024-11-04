@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectSem3.Migrations
 {
     /// <inheritdoc />
-    public partial class initDB : Migration
+    public partial class NewDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -70,14 +70,13 @@ namespace ProjectSem3.Migrations
                     table.PrimaryKey("PK__Artists__25706B70DAE69137", x => x.ArtistID);
                 });
 
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
                     CategoryID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    CategoryName = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -191,6 +190,8 @@ namespace ProjectSem3.Migrations
                     Email = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
                     Password = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
                     Enabled = table.Column<bool>(type: "bit", nullable: true),
+                    VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TokenExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },

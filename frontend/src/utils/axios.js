@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
 // Thiết lập mặc định cho axios
 const instance = axios.create({
-  baseURL: 'http://localhost:5000/api', // Thay bằng URL của backend của bạn
+  baseURL: 'https://localhost:7071', // Thay bằng URL của backend của bạn
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

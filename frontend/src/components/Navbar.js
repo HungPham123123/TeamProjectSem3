@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FaShoppingCart, FaUser, FaSearch } from 'react-icons/fa';
 import 'bootstrap-icons/font/bootstrap-icons.css'; // Ensure Bootstrap Icons are imported
 import { FaSmile } from 'react-icons/fa';
+import Link from 'next/link';
 
 
 function Navbar() {
@@ -152,7 +153,7 @@ function Navbar() {
       display: 'none',
       width: '210px',
       left: '0',
-      top: '40px', // Adjust to position below account
+      top: '20px', // Adjust to position below account
       borderRadius: '4px',
     },
   };
@@ -176,22 +177,22 @@ function Navbar() {
             <ul style={{ listStyleType: 'none', padding: '0', marginLeft: '15px' }}>
             <li style={{ display: 'flex', alignItems: 'center' }}>
               <FaSmile style={{ marginRight: '5px' }} />
-              <a href="/account/login" className="customer_login_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đăng nhập</a>
+              <a href="/login" className="customer_login_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đăng nhập</a>
             </li>
 
               <li><i className="fa fa-key"></i>
-                 <a href="/account/register" className="customer_register_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Tạo tài khoản</a>
+                 <a href="/signup" className="customer_register_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Tạo tài khoản</a>
               </li>
 
               <li style={{ display: 'flex', alignItems: 'center' }}>
                 <i className="far fa-star" style={{ marginRight: '5px' }}></i>
-                <a href="/pages/favourite" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Được yêu thích nhất</a>
+                <a href="/favourite" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Được yêu thích nhất</a>
               </li>
 
               
               <li style={{ display: 'flex', alignItems: 'center' }}>
   <i className="fa fa-heart" style={{ marginRight: '5px' }}></i>
-  <a href="/pages/wishlist" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Sản phẩm yêu thích</a>
+  <a href="/wishlist" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Sản phẩm yêu thích</a>
 </li>
 
             </ul>
@@ -269,10 +270,10 @@ function Navbar() {
   onMouseLeave={() => setShopDropdownOpen(false)}
   style={{ position: 'relative' }}
 >
-  <a href="#" style={styles.menuItem}>SHOP
+  <Link href="/shop" style={styles.menuItem}>SHOP
   <span className="fa fa-angle-down" aria-hidden="true"></span>
 
-  </a>
+  </Link>
   <div
     style={{
       ...styles.dropdown,

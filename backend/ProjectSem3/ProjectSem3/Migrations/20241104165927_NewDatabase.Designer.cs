@@ -12,8 +12,8 @@ using ProjectSem3.Data;
 namespace ProjectSem3.Migrations
 {
     [DbContext(typeof(OnlineDvdsContext))]
-    [Migration("20241102082713_AddVerficationTokenOnUser")]
-    partial class AddVerficationTokenOnUser
+    [Migration("20241104165927_NewDatabase")]
+    partial class NewDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,6 +286,7 @@ namespace ProjectSem3.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("CategoryName")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)");

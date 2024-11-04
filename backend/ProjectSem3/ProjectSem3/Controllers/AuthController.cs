@@ -89,5 +89,25 @@ namespace ProjectSem3.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpPost("resend-verification")]
+        public async Task<IActionResult> ResendVerification([FromBody] ResendVerificationDto resendVerificationDto)
+        {
+            if (string.IsNullOrEmpty(resendVerificationDto.Email))
+            {
+                return BadRequest("Email cannot be empty.");
+            }
+
+            try
+            {
+                await _userService.ResendVerificationEmailAsync(resendVerificationDto.Email);
+                return Ok("Verification email resent.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
