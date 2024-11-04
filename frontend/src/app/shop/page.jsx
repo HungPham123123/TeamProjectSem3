@@ -89,7 +89,7 @@ const Shop = () => {
           backgroundColor: '#f5f5f5',
           borderRadius: '4px',
           width: '100%',
-          maxWidth: '800px',
+          maxWidth: 'none',
         }}>
           <a href="/" title="Quay lại trang chủ" style={{
             textDecoration: 'none',

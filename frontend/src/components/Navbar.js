@@ -1,175 +1,335 @@
-import React from 'react';
-import { FaSearch, FaShoppingCart, FaBookmark } from 'react-icons/fa';
+"use client"; // This directive tells Next.js that this component is a client component
+
+import React, { useState } from 'react';
+import { FaShoppingCart, FaUser, FaSearch } from 'react-icons/fa';
+import 'bootstrap-icons/font/bootstrap-icons.css'; // Ensure Bootstrap Icons are imported
 
 function Navbar() {
+  // State for managing dropdown visibility
+  const [isNewsDropdownOpen, setNewsDropdownOpen] = useState(false);
+  const [isServiceDropdownOpen, setServiceDropdownOpen] = useState(false);
+  const [isShopDropdownOpen, setShopDropdownOpen] = useState(false);
+
+  // Styles object
   const styles = {
     navbar: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#14141A',
-      padding: '15px 20px',
-      color: 'white',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+      backgroundColor: '#fff',
+      padding: '10px 40px',
+      color: '#333',
     },
-    centerContainer: {
+    topSection: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '10px',
+      padding: '0 35px', // Adjust padding to move content inward
+    },
+    account: {
       display: 'flex',
       alignItems: 'center',
-      gap: '10px',
+      fontSize: '14px',
+      gap: '5px',
     },
     logo: {
-      fontSize: '30px',
+      fontSize: '32px',
       fontWeight: 'bold',
-      color: 'white',
-      background: 'linear-gradient(45deg, #ff6b6b, #ff9a9e)',
-      padding: '1px 25px',
-      borderRadius: '15px',
-      display: 'inline-block',
+      color: '#d60000',
       textDecoration: 'none',
-      cursor: 'pointer',
-      textShadow: '0 0 10px rgba(255, 255, 255, 0.8)', // Thêm hiệu ứng phát sáng
-      fontFamily: 'YourChosenFont, sans-serif', // Chọn font chữ hiện đại và mượt mà
-    },
-    menuBtn: {
-      background: 'none',
-      border: 'none',
-      color: 'white',
-      fontSize: '20px', 
-      fontWeight: 'bold', 
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '5px',
-    },
-    categorySelect: {
-      backgroundColor: 'white',
-      color: 'black',
-      border: '1px solid #ccc',
-      padding: '5px 25px 5px 10px',
-      borderRadius: '4px',
-      fontSize: '14px',
-      fontWeight: 'bold',
-      appearance: 'none',
-      backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 24 24\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M7 10l5 5 5-5z\' fill=\'%23000000\'/%3E%3C/svg%3E")',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'right 10px center',
-      backgroundSize: '16px 16px',
-    },
-    searchContainer: {
-      position: 'relative',
-      width: '300px',
-    },
-    searchInput: {
-      padding: '8px 40px 8px 12px',
-      width: '100%',
-      height: '30px',
-      border: '1px solid #ccc',
-      borderRadius: '4px',
-      fontSize: '14px',
-      backgroundColor: 'white',
-      color: 'black',
-      outline: 'none',
-    },
-    searchBtn: {
-      position: 'absolute',
-      right: '12px',
-      top: '50%',
-      transform: 'translateY(-50%)',
-      background: 'none',
-      border: 'none',
-      color: 'gray',
-      cursor: 'pointer',
-      fontSize: '16px',
-    },
-    navbarRight: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '25px',
-    },
-    navbarLink: {
-      color: 'white',
-      textDecoration: 'none',
-      fontWeight: 'bold',
-      fontSize: '18px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '5px',
-    },
-    separator: {
-      height: '20px',
-      width: '1px',
-      backgroundColor: '#555',
+      fontFamily: 'Arial, sans-serif',
+      textAlign: 'center',
     },
     cart: {
       display: 'flex',
       alignItems: 'center',
-    },
-    cartCount: {
-      marginLeft: '5px',
+      gap: '10px',
       fontSize: '14px',
+      color: '#333',
     },
-    languageSelectContainer: {
+    cartIcon: {
+      fontSize: '24px',
+    },
+    cartText: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+    },
+    cartTitle: {
+      borderBottom: '1px solid #333',
+      marginBottom: '5px',
+      fontSize: '14px',
+      fontStyle: 'italic',
+    },
+    separator: {
+      borderBottom: '2px solid #000',
+      margin: '25px auto',
+      width: '95%',
+    },
+    bottomSection: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    menu: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '30px',
+      fontSize: '18px',
+      fontWeight: 'bold',
+      padding: '0 35px',
+    },
+    menuItem: {
+      display: 'block',
+      textDecoration: 'none',
+      whiteSpace: 'nowrap',
+      color: '#50222b',
+      textTransform: 'uppercase',
       position: 'relative',
+      fontWeight: 'normal',
+      letterSpacing: '1px', // Giảm letterSpacing nếu cần
+      fontSize: '15px',
+      fontFamily: 'Oswald',
+      padding: '0', // Đảm bảo không có padding
+      margin: '0', // Đảm bảo không có margin
     },
-    languageSelect: {
-      backgroundColor: '#1C1C27',
-      border: 'none',
-      padding: '5px 10px',
-      borderRadius: '4px',
-      fontSize: '14px',
-      cursor: 'pointer',
-      appearance: 'none',
-      paddingRight: '30px',
-    },
-    chevronIcon: {
+    
+    dropdown: {
       position: 'absolute',
-      right: '10px',
-      top: '50%',
-      transform: 'translateY(-50%)',
-      color: 'white', 
-      pointerEvents: 'none',
+      backgroundColor: '#333333',
+      color: '#fff',
+      border: '1px solid #ccc',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+      zIndex: 1000,
+      padding: '10px',
+      display: 'none',
+      width: '1100px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+    },
+    dropdownVisible: {
+      display: 'block',
+    },
+    gearIconContainer: {
+      backgroundImage: `url('https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/307533544_167121575906876_2523275442803878991_n.png?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=qe8wKJFSqt8Q7kNvgHPXpVo&_nc_zt=23&_nc_ht=scontent.fhan3-3.fna&_nc_gid=ACNd8K6iBDDyXhiTmnWkQhe&oh=00_AYAiGNO3DeFwVbp3LfI7yZPOn862U0y2jF7cXcoJB1Orog&oe=672E16ED')`,
+      padding: '10px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: '10px',
+      width: '50px',
+      height: '40px',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+    gearIcon: {
+      color: '#fff',
+      fontSize: '23px',
+    },
+    searchContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      borderRadius: '4px',
+      padding: '5px 10px',
+    },
+    searchInput: {
+      border: 'none',
+      outline: 'none',
+      fontSize: '14px',
+      color: '#333',
+      marginLeft: '5px',
     },
   };
 
   return (
     <nav style={styles.navbar}>
-      <div style={styles.centerContainer}>
-        <a href="http://localhost:3000/" style={styles.logo}>ᴡᴀᴠᴇs</a>
-        <button style={styles.menuBtn}>
-          <span>&#9776;</span> Menu
-        </button>
-        <select style={styles.categorySelect}>
-          <option value="all">All</option>
-        </select>
-        <div style={styles.searchContainer}>
-          <input type="text" style={styles.searchInput} placeholder="Search" />
-          <button style={styles.searchBtn}>
-            <FaSearch />
-          </button>
+      <div style={styles.topSection}>
+        <div style={styles.account}>
+          <i className="bi bi-gear" style={{ color: '#333', fontSize: '18px' }}></i>
+          <span>Tài Khoản</span>
         </div>
-        <div style={styles.navbarRight}>
-          <div><a href="#" style={styles.navbarLink}>Shop</a></div>
-          <div><span style={styles.separator}></span></div>
-          <div>
-            <a href="#" style={styles.navbarLink}>
-              <FaBookmark /> Watchlist
+        <a href="/" style={styles.logo}>ᴡᴀᴠᴇs</a>
+        <div style={styles.cart}>
+          <FaShoppingCart style={styles.cartIcon} />
+          <div style={styles.cartText}>
+            <span style={styles.cartTitle}>Giỏ hàng</span>
+            <span>1 Sản phẩm 900,000₫</span>
+          </div>
+        </div>
+      </div>
+      <div style={styles.separator}></div>
+      <div style={styles.bottomSection}>
+        <div style={styles.menu}>
+          <div style={styles.gearIconContainer}>
+            <i className="#" style={styles.gearIcon}></i>
+          </div>
+          <a href="#" style={styles.menuItem}>Home</a>
+          <div
+            onMouseEnter={() => setNewsDropdownOpen(true)}
+            onMouseLeave={() => setNewsDropdownOpen(false)}
+            style={{ position: 'relative' }}
+          >
+            <a href="#" style={styles.menuItem}>BẢN TIN THỜI ĐẠI
+            <span className="fa fa-angle-down" aria-hidden="true"></span>
+            </a>
+            <div
+              style={{
+                ...styles.dropdown,
+                ...(isNewsDropdownOpen ? styles.dropdownVisible : {}),
+                width: '210px', // Thay đổi kích thước tại đây
+                padding: '10px', // Điều chỉnh padding nếu cần
+              
+              }}
+            >
+              <a href="#" className="site-nav__link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>US-UK</a>
+            </div>
+          </div>
+          <div
+  onMouseEnter={() => setServiceDropdownOpen(true)}
+  onMouseLeave={() => setServiceDropdownOpen(false)}
+  style={{ position: 'relative' }}
+>
+  <a href="#" style={styles.menuItem}>DỊCH VỤ
+  <span className="fa fa-angle-down" aria-hidden="true"></span>
+  </a>
+  <div
+    style={{
+      ...styles.dropdown,
+      ...(isServiceDropdownOpen ? { ...styles.dropdownVisible, width: '150px', padding: '10px' } : {}),
+      width: '210px', // Thay đổi kích thước tại đây
+      padding: '10px', // Điều chỉnh padding nếu cần
+    }}
+  >
+    <ul className="site-nav__dropdown">
+      <li>
+        <a href="https://www.hangdiathoidai.com" className="site-nav__link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Phát Hành Vật Lý</a>
+      </li>
+      <li>
+        <a href="https://84vnw.com" className="site-nav__link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Phát Hành Nhạc Số</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+          <div
+  onMouseEnter={() => setShopDropdownOpen(true)}
+  onMouseLeave={() => setShopDropdownOpen(false)}
+  style={{ position: 'relative' }}
+>
+  <a href="#" style={styles.menuItem}>SHOP
+  <span className="fa fa-angle-down" aria-hidden="true"></span>
+
+  </a>
+  <div
+    style={{
+      ...styles.dropdown,
+      ...(isShopDropdownOpen ? styles.dropdownVisible : {}),
+    }}
+  >
+    <ul className="site-nav__dropdown">
+      <li className="awemenu-megamenu-item">
+        <div className="grid" style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div className="grid__item" style={{ flex: '1', marginRight: '20px' }}>
+            <h3 style={{
+              fontSize: '15px',
+              lineHeight: '30px',
+              fontWeight: 'normal',
+              color: '#e2e2e2',
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+            }}>ẤN BẢN THỜI ĐẠI</h3>
+            <ul className="super" style={{ margin: '4px 0 5px 20px' }}>
+            <li><a href="/collections/an-ban-thoi-dai-times-exclusives/Signed" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Ấn Bản Có Chữ Ký</a></li>
+<li><a href="/collections/an-ban-thoi-dai-times-exclusives/CD" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>CD + DVD</a></li>
+<li><a href="/collections/an-ban-thoi-dai-times-exclusives/Cassette" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Băng Cassette</a></li>
+<li><a href="/collections/an-ban-thoi-dai-times-exclusives/Single" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đĩa đơn</a></li>
+<li><a href="/collections/times-life-style/times-merch" style={{ color: '#999999', textDecoration: 'none' , fontSize: '16px'}}>Times' Merchandise</a></li>
+
+            </ul>
+          </div>
+
+          <div className="grid__item" style={{ flex: '1', marginRight: '20px' }}>
+            <h3 style={{
+              fontSize: '15px',
+              lineHeight: '30px',
+              fontWeight: 'normal',
+              color: '#e2e2e2',
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+            }}>ĐĨA HÁT VIỆT NAM</h3>
+            <ul className="super" style={{ margin: '4px 0 5px 20px' }}>
+              <li><a href="/collections/an-ban-co-chu-ky/nhac-viet-nam" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Ấn Bản Có Chữ Ký</a></li>
+              <li><a href="/collections/bang-dia-nhac-cd-dvd/nhac-viet-nam" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}> CD + DVD</a></li>
+              <li><a href="/collections/dia-than-vinyl/nhac-viet-nam" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đĩa Than</a></li>
+              <li><a href="/collections/dia-don-single/nhac-viet-nam" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đĩa Đơn</a></li>
+              <li><a href="/collections/bang-cassette/nhac-viet-nam" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Băng Cassette</a></li>
+              <li><a href="/collections/bang-coi" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Băng Cối</a></li>
+            </ul>
+          </div>
+
+          <div className="grid__item" style={{ flex: '1', marginRight: '20px' }}>
+          <h3 style={{
+    fontSize: '15px',
+    lineHeight: '30px',
+    fontWeight: 'normal',
+    color: '#e2e2e2', // Đã thay đổi màu sắc
+    textTransform: 'uppercase',
+    letterSpacing: '2px',
+}}>BĂNG ĐĨA QUỐC TẾ</h3>
+
+            <ul className="super" style={{ margin: '4px 0 5px 20px' }}>
+              <li><a href="/collections/an-ban-co-chu-ky/nhac-quoc-te" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Autographed</a></li>
+              <li><a href="/collections/bang-dia-nhac-cd-dvd/nhac-quoc-te" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>CD + DVD</a></li>
+              <li><a href="/collections/dia-than-vinyl/nhac-quoc-te" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Vinyl</a></li>
+              <li><a href="/collections/dia-don-single/nhac-quoc-te" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Single</a></li>
+              <li><a href="/collections/bang-cassette/nhac-quoc-te" style={{ color: '#999999', textDecoration: 'none' , fontSize: '16px'}}>Cassette Tape</a></li>
+              <li><a href="/collections/bang-coi/nhac-quoc-te" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Reel To Reel</a></li>
+              <li><a href="#" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>8-Track Tape</a></li>
+            </ul>
+          </div>
+
+          <div className="grid__item" style={{ flex: '1', marginRight: '20px' }}>
+            <h3 style={{
+              fontSize: '15px',
+              lineHeight: '30px',
+              fontWeight: 'normal',
+              color: '#e2e2e2',
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+            }}>TIMES LIFESTYLE</h3>
+            <ul className="super" style={{ margin: '4px 0 5px 20px' }}>
+              <li><a href="/collections/audio" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Audio</a></li>
+              <li><a href="#" style={{ color: '#999999', textDecoration: 'none' , fontSize: '16px'}}>Home</a></li>
+              <li><a href="/collections/times-life-style/book" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Book</a></li>
+              <li><a href="/collections/times-life-style/magazine" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Magazine</a></li>
+              <li><a href="#" style={{ color: '#999999', textDecoration: 'none' , fontSize: '16px'}}>Tech</a></li>
+              <li><a href="#" style={{ color: '#999999', textDecoration: 'none' , fontSize: '16px'}}>Beauty</a></li>
+              <li><a href="/collections/merch" style={{ color: '#999999', textDecoration: 'none' , fontSize: '16px'}}>Merchandise</a></li>
+            </ul>
+          </div>
+
+          <div className="grid__item" style={{ flex: '1' }}>
+            <h3 style={{
+              fontSize: '15px',
+              lineHeight: '30px',
+              fontWeight: 'normal',
+              color: '#e2e2e2',
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+            }}>VINYL VIBES 8791</h3>
+            <a href="https://shop.hangdiathoidai.com/collections/dia-than-vinyl">
+              <img src="//theme.hstatic.net/1000304920/1001035765/14/megamenu_1_image_1.jpg?v=249" alt="menu" />
             </a>
           </div>
-          <div><a href="#" style={styles.navbarLink}>Sign in</a></div>
-          <div style={styles.cart}>
-            <FaShoppingCart /> <span style={styles.cartCount}>(0)</span>
-          </div>
-          <div style={styles.languageSelectContainer}>
-            <select style={styles.languageSelect}>
-              <option value="en">EN</option>
-              <option value="vi">VN</option>
-              <option value="fr">FR</option>
-              <option value="es">ES</option>
-              <option value="de">DE</option>
-              <option value="jp">JP</option>
-            </select>
-            <i className="bi bi-chevron-down" style={styles.chevronIcon}></i>
-          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+        </div>
+        <div style={styles.searchContainer}>
+          <FaSearch />
+          <input type="text" placeholder="Tìm kiếm..." style={styles.searchInput} />
         </div>
       </div>
     </nav>
