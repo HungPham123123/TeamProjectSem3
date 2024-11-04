@@ -1,8 +1,8 @@
-﻿using BCrypt.Net; // Add this import for BCrypt
+﻿using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using ProjectSem3.Configurations; // Add this namespace for JwtSettings
+using ProjectSem3.Configurations;
 using ProjectSem3.Data;
 using ProjectSem3.DTOs;
 using ProjectSem3.Models;
@@ -17,7 +17,7 @@ namespace ProjectSem3.Service
     public class UserService : IUserService
     {
         private readonly ILogger<UserService> _logger;
-        private readonly OnlineDvdsContext _context; // Assume this is your DbContext
+        private readonly OnlineDvdsContext _context;
         private readonly EmailService _emailService;
         private readonly JwtSettings _jwtSettings;
 
