@@ -25,12 +25,12 @@ namespace ProjectSem3.Service
             ILogger<UserService> logger,
             OnlineDvdsContext context,
             EmailService emailService,
-            IOptions<JwtSettings> jwtSettings) // Inject JwtSettings
+            IOptions<JwtSettings> jwtSettings)
         {
             _logger = logger;
             _context = context;
             _emailService = emailService;
-            _jwtSettings = jwtSettings.Value; // Get the actual settings
+            _jwtSettings = jwtSettings.Value;
         }
 
         public async Task SaveAsync(RegisterUserDto registerUserDto)
@@ -49,14 +49,25 @@ namespace ProjectSem3.Service
                 CreatedAt = DateTime.UtcNow,
                 Enabled = false,
                 VerificationToken = GenerateVerificationToken(),
-                TokenExpiryDate = DateTime.UtcNow.AddHours(24) // Token valid for 24 hours
+                TokenExpiryDate = DateTime.UtcNow.AddHours(24)
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            var userRole = new UserRole
+            {
+                UserId = user.UserId,
+                RoleId = 3,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.UserRoles.Add(userRole);
+            await _context.SaveChangesAsync();
+
             await SendVerificationEmailAsync(user);
         }
+
 
         private async Task SendVerificationEmailAsync(User user)
         {
