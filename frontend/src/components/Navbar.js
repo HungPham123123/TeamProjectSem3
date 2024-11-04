@@ -3,12 +3,15 @@
 import React, { useState } from 'react';
 import { FaShoppingCart, FaUser, FaSearch } from 'react-icons/fa';
 import 'bootstrap-icons/font/bootstrap-icons.css'; // Ensure Bootstrap Icons are imported
+import { FaSmile } from 'react-icons/fa';
+
 
 function Navbar() {
   // State for managing dropdown visibility
   const [isNewsDropdownOpen, setNewsDropdownOpen] = useState(false);
   const [isServiceDropdownOpen, setServiceDropdownOpen] = useState(false);
   const [isShopDropdownOpen, setShopDropdownOpen] = useState(false);
+  const [isAccountDropdownOpen, setAccountDropdownOpen] = useState(false);
 
   // Styles object
   const styles = {
@@ -29,6 +32,7 @@ function Navbar() {
       alignItems: 'center',
       fontSize: '14px',
       gap: '5px',
+      position: 'relative', 
     },
     logo: {
       fontSize: '32px',
@@ -137,14 +141,62 @@ function Navbar() {
       color: '#333',
       marginLeft: '5px',
     },
+    accountDropdown: {
+      position: 'absolute',
+      backgroundColor: '#333333',
+      color: '#fff',
+      border: '1px solid #ccc',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+      zIndex: 1000,
+      padding: '10px',
+      display: 'none',
+      width: '210px',
+      left: '0',
+      top: '40px', // Adjust to position below account
+      borderRadius: '4px',
+    },
   };
 
   return (
     <nav style={styles.navbar}>
       <div style={styles.topSection}>
-        <div style={styles.account}>
+        <div 
+          style={styles.account}
+          onMouseEnter={() => setAccountDropdownOpen(true)}
+          onMouseLeave={() => setAccountDropdownOpen(false)}
+        >
           <i className="bi bi-gear" style={{ color: '#333', fontSize: '18px' }}></i>
           <span>Tài Khoản</span>
+          <div 
+            style={{
+              ...styles.accountDropdown,
+              ...(isAccountDropdownOpen ? styles.dropdownVisible : {}),
+            }}
+          >
+            <ul style={{ listStyleType: 'none', padding: '0', marginLeft: '15px' }}>
+            <li style={{ display: 'flex', alignItems: 'center' }}>
+              <FaSmile style={{ marginRight: '5px' }} />
+              <a href="/account/login" className="customer_login_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đăng nhập</a>
+            </li>
+
+              <li><i className="fa fa-key"></i>
+                 <a href="/account/register" className="customer_register_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Tạo tài khoản</a>
+              </li>
+
+              <li style={{ display: 'flex', alignItems: 'center' }}>
+                <i className="far fa-star" style={{ marginRight: '5px' }}></i>
+                <a href="/pages/favourite" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Được yêu thích nhất</a>
+              </li>
+
+              
+              <li style={{ display: 'flex', alignItems: 'center' }}>
+  <i className="fa fa-heart" style={{ marginRight: '5px' }}></i>
+  <a href="/pages/wishlist" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Sản phẩm yêu thích</a>
+</li>
+
+            </ul>
+
+          </div>
         </div>
         <a href="/" style={styles.logo}>ᴡᴀᴠᴇs</a>
         <div style={styles.cart}>
@@ -158,9 +210,12 @@ function Navbar() {
       <div style={styles.separator}></div>
       <div style={styles.bottomSection}>
         <div style={styles.menu}>
-          <div style={styles.gearIconContainer}>
-            <i className="#" style={styles.gearIcon}></i>
-          </div>
+        <a href="/" style={{ textDecoration: 'none' }}>
+  <div style={styles.gearIconContainer}>
+    <i className="#" style={styles.gearIcon}></i>
+  </div>
+</a>
+
           <a href="#" style={styles.menuItem}>Home</a>
           <div
             onMouseEnter={() => setNewsDropdownOpen(true)}
