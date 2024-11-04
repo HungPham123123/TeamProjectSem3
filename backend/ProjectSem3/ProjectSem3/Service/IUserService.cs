@@ -6,10 +6,13 @@ namespace ProjectSem3.Service
     public interface IUserService
     {
         Task SaveAsync(RegisterUserDto registerUserDto);
-        Task VerifyAccountAsync(string email);
 
-        Task<UserDto> LoginAsync(LoginDto loginDto);
-        Task ResetPasswordAsync(string email, string newPassword);
+        Task VerifyAccountAsync(string verificationToken);
 
+        Task<string> LoginAsync(LoginDto loginDto);
+
+        Task RequestPasswordResetAsync(string email);
+
+        Task ResetPasswordAsync(string verificationToken, string newPassword, string confirmPassword);
     }
 }
