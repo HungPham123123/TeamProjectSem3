@@ -22,6 +22,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<EmailService>(); // Ensure EmailService is registered if used
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArtistService, ArtistService>();
+builder.Services.AddScoped<CartService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -63,6 +64,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAllOrigins"); 
 app.UseHttpsRedirection();
 app.UseAuthentication(); // Ensure authentication is included
 app.UseAuthorization();

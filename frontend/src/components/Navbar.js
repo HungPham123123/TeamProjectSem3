@@ -156,7 +156,7 @@ function Navbar() {
       borderRadius: '4px',
     },
   };
-
+ 
   return (
     <nav style={styles.navbar}>
       <div style={styles.topSection}>

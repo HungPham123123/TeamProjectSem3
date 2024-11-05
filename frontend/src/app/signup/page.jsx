@@ -1,9 +1,38 @@
 "use client";
 
-import React from 'react';
-import Link from 'next/link'; // Import Link
+import React, { useState } from 'react';
+import Link from 'next/link';
+import axios from "@/utils/axios";
 
 const SignUpPage = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('/api/Auth/register', {
+        username,
+        email,
+        password,
+      });
+
+      setSuccessMessage("Đăng ký thành công! Bạn có thể đăng nhập.");
+      setErrorMessage('');
+      setUsername('');
+      setEmail('');
+      setPassword('');
+      setPasswordConfirmation('');
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+      setSuccessMessage('');
+    }
+  };
+
   const styles = {
     wrapper: {
       display: 'flex',
@@ -62,56 +91,44 @@ const SignUpPage = () => {
       <div style={styles.mainContent}>
         <div style={styles.title}>Đăng Ký</div>
         <div id="CustomerLoginForm" className="form-vertical">
-          <form acceptCharset="UTF-8" action="/account/login" id="customer_login" method="post">
-            <input name="form_type" type="hidden" value="customer_login" />
-            <input name="utf8" type="hidden" value="✓" />
-
+          <form onSubmit={handleRegister} id="customer_login">
             <input
               type="text"
-              name="customer[first_name]"
-              id="CustomerFirstName"
-              placeholder="Họ"
+              name="Username"
+              id="CustomerUsername"
+              placeholder="Username"
               style={styles.input}
-              required
-            />
-
-            <input
-              type="text"
-              name="customer[last_name]"
-              id="CustomerLastName"
-              placeholder="Tên"
-              style={styles.input}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
 
             <input
               type="email"
-              name="customer[email]"
+              name="email"
               id="CustomerEmail"
               placeholder="Email"
               autoCorrect="off"
               autoCapitalize="off"
               style={styles.input}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
 
             <input
               type="password"
-              name="customer[password]"
+              name="password"
               id="CustomerPassword"
               placeholder="Mật khẩu"
               style={styles.input}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
 
-            <input
-              type="password"
-              name="customer[password_confirmation]"
-              id="CustomerPasswordConfirmation"
-              placeholder="Xác nhận mật khẩu"
-              style={styles.input}
-              required
-            />
+            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
 
             <p>
               <input

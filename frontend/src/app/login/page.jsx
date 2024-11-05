@@ -1,12 +1,34 @@
 "use client";
 
 import React, { useState } from 'react';
-import Link from 'next/link'; // Import Link
+import Link from 'next/link';
+import axios from "@/utils/axios";
+import Cookies from 'js-cookie';
 
 const LoginPage = () => {
   const [showRecoverForm, setShowRecoverForm] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // CSS nội tuyến
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await axios.post('/api/Auth/login', { email, password });
+        const { token } = response.data;
+
+        // Log the token to check if it is received correctly
+        console.log('Token received:', token);
+
+        // Set the token in a cookie
+        Cookies.set('token', token, { expires: 1 });
+
+        window.location.href = '/';
+    } catch (error) {
+        setErrorMessage(error.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+    }
+};
+
   const styles = {
     wrapper: {
       display: 'flex',
@@ -67,10 +89,7 @@ const LoginPage = () => {
 
         {!showRecoverForm ? (
           <div id="CustomerLoginForm" className="form-vertical">
-            <form acceptCharset="UTF-8" action="/account/login" id="customer_login" method="post">
-              <input name="form_type" type="hidden" value="customer_login" />
-              <input name="utf8" type="hidden" value="✓" />
-
+            <form onSubmit={handleLogin} id="customer_login">
               <input
                 type="email"
                 name="customer[email]"
@@ -80,6 +99,8 @@ const LoginPage = () => {
                 autoCapitalize="off"
                 autoFocus
                 style={styles.input}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
 
               <input
@@ -88,7 +109,11 @@ const LoginPage = () => {
                 id="CustomerPassword"
                 placeholder="Mật khẩu"
                 style={styles.input}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
+
+              {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
 
               <p>
                 <input
@@ -106,7 +131,7 @@ const LoginPage = () => {
               </p>
               <p style={styles.paragraph}>
                 <span style={{ color: '#5c2a1d', fontSize: '14px' }}>Bạn chưa có tài khoản? </span>
-                <Link href="/signup" style={{ ...styles.link, color: 'blue' }}> 
+                <Link href="/signup" style={{ ...styles.link, color: 'blue' }}>
                   Đăng ký
                 </Link>
               </p>
@@ -114,43 +139,6 @@ const LoginPage = () => {
           </div>
         ) : (
           <div id="RecoverPasswordForm">
-            <h2>Đặt lại mật khẩu của bạn</h2>
-            <p>Chúng tôi sẽ gửi cho bạn một email để đặt lại mật khẩu của bạn.</p>
-
-            <div className="form-vertical">
-              <form acceptCharset="UTF-8" action="/account/recover" method="post">
-                <input name="form_type" type="hidden" value="recover_customer_password" />
-                <input name="utf8" type="hidden" value="✓" />
-
-                <label htmlFor="RecoverEmail" className="hidden-label">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="RecoverEmail"
-                  placeholder="Email"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  style={styles.input}
-                />
-
-                <p>
-                  <input
-                    type="submit"
-                    value="Gửi"
-                    style={styles.button}
-                    onMouseOver={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
-                    onMouseOut={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
-                  />
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setShowRecoverForm(false)}
-                  style={{ ...styles.link, border: 'none', background: 'none', cursor: 'pointer' }}
-                >
-                  Thoát
-                </button>
-              </form>
-            </div>
           </div>
         )}
       </div>
