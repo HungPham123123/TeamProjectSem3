@@ -175,12 +175,12 @@ function Navbar() {
     <ul style={{ listStyleType: 'none', padding: '0', marginLeft: '15px' }}>
       <li style={{ display: 'flex', alignItems: 'center' }}>
         <FaSmile style={{ marginRight: '5px' }} />
-        <a href="/account/login" className="customer_login_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đăng nhập</a>
+        <a href="/login" className="customer_login_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đăng nhập</a>
       </li>
 
       <li style={{ display: 'flex', alignItems: 'center' }}>
         <i className="fa fa-key" style={{ marginRight: '5px' }}></i>
-        <a href="/account/register" className="customer_register_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Tạo tài khoản</a>
+        <a href="/register" className="customer_register_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Tạo tài khoản</a>
       </li>
 
       <li style={{ display: 'flex', alignItems: 'center' }}>
