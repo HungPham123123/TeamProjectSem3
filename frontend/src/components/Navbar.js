@@ -160,44 +160,42 @@ function Navbar() {
   return (
     <nav style={styles.navbar}>
       <div style={styles.topSection}>
-        <div 
-          style={styles.account}
-          onMouseEnter={() => setAccountDropdownOpen(true)}
-          onMouseLeave={() => setAccountDropdownOpen(false)}
-        >
-          <i className="bi bi-gear" style={{ color: '#333', fontSize: '18px' }}></i>
-          <span>Tài Khoản</span>
-          <div 
-            style={{
-              ...styles.accountDropdown,
-              ...(isAccountDropdownOpen ? styles.dropdownVisible : {}),
-            }}
-          >
-            <ul style={{ listStyleType: 'none', padding: '0', marginLeft: '15px' }}>
-            <li style={{ display: 'flex', alignItems: 'center' }}>
-              <FaSmile style={{ marginRight: '5px' }} />
-              <a href="/account/login" className="customer_login_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đăng nhập</a>
-            </li>
+      <div 
+  style={styles.account}
+  onClick={() => setAccountDropdownOpen(!isAccountDropdownOpen)}
+>
+  <i className="bi bi-gear" style={{ color: '#333', fontSize: '18px' }}></i>
+  <span>Tài Khoản</span>
+  <div 
+    style={{
+      ...styles.accountDropdown,
+      ...(isAccountDropdownOpen ? styles.dropdownVisible : {}),
+    }}
+  >
+    <ul style={{ listStyleType: 'none', padding: '0', marginLeft: '15px' }}>
+      <li style={{ display: 'flex', alignItems: 'center' }}>
+        <FaSmile style={{ marginRight: '5px' }} />
+        <a href="/account/login" className="customer_login_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Đăng nhập</a>
+      </li>
 
-              <li><i className="fa fa-key"></i>
-                 <a href="/account/register" className="customer_register_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Tạo tài khoản</a>
-              </li>
+      <li style={{ display: 'flex', alignItems: 'center' }}>
+        <i className="fa fa-key" style={{ marginRight: '5px' }}></i>
+        <a href="/account/register" className="customer_register_link" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Tạo tài khoản</a>
+      </li>
 
-              <li style={{ display: 'flex', alignItems: 'center' }}>
-                <i className="far fa-star" style={{ marginRight: '5px' }}></i>
-                <a href="/pages/favourite" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Được yêu thích nhất</a>
-              </li>
+      <li style={{ display: 'flex', alignItems: 'center' }}>
+        <i className="far fa-star" style={{ marginRight: '5px' }}></i>
+        <a href="/pages/favourite" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Được yêu thích nhất</a>
+      </li>
 
-              
-              <li style={{ display: 'flex', alignItems: 'center' }}>
-  <i className="fa fa-heart" style={{ marginRight: '5px' }}></i>
-  <a href="/pages/wishlist" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Sản phẩm yêu thích</a>
-</li>
+      <li style={{ display: 'flex', alignItems: 'center' }}>
+        <i className="fa fa-heart" style={{ marginRight: '5px' }}></i>
+        <a href="/pages/wishlist" style={{ color: '#999999', textDecoration: 'none', fontSize: '16px' }}>Sản phẩm yêu thích</a>
+      </li>
+    </ul>
+  </div>
+</div>
 
-            </ul>
-
-          </div>
-        </div>
         <a href="/" style={styles.logo}>ᴡᴀᴠᴇs</a>
         <div style={styles.cart}>
           <FaShoppingCart style={styles.cartIcon} />
