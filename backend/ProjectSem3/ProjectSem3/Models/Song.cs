@@ -5,6 +5,11 @@ namespace ProjectSem3.Models;
 
 public partial class Song
 {
+    public Song()
+    {
+        CreatedAt = DateTime.Now;
+        UpdatedAt = DateTime.Now;
+    }
     public int SongId { get; set; }
 
     public int? AlbumId { get; set; }
