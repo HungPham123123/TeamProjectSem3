@@ -3,33 +3,27 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import axios from "@/utils/axios";
+import Cookies from 'js-cookie';
+import SignUpPage from './signup';
 
-const SignUpPage = () => {
-  const [username, setUsername] = useState('');
+const LoginPages = () => {
+  const [showLoginModal, setShowLoginModal] = useState(true);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showRecoverForm, setShowRecoverForm] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleRegister = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post('/api/Auth/register', {
-        username,
-        email,
-        password,
-      });
-
-      setSuccessMessage("Đăng ký thành công! Bạn có thể đăng nhập.");
-      setErrorMessage('');
-      setUsername('');
-      setEmail('');
-      setPassword('');
+      const response = await axios.post('/api/Auth/login', { email, password });
+      const { token } = response.data;
+      Cookies.set('token', token, { expires: 1 });
+      window.location.href = '/';
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Đăng ký thất bại. Vui lòng thử lại.');
-      setSuccessMessage('');
+      setErrorMessage(error.response?.data?.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
     }
   };
 
@@ -37,35 +31,41 @@ const SignUpPage = () => {
     setShowPassword(!showPassword);
   };
 
+  const closeLoginModal = () => {
+    setShowLoginModal(false);
+  };
+
+  const openSignupModal = () => {
+    setShowLoginModal(false);
+    setShowSignupModal(true);
+  };
+
   return (
-    <div
-    className="modal-root fixed bg-black bg-opacity-70 inset-0 z-50 cursor-pointer p-4 md:p-5"
-    style={{ opacity: 1 }}
-  >
-    <div className="relative w-full h-full mx-auto" style={{ transform: "none" }}>
-      <div className="w-full md:w-auto absolute left-1/2 transform -translate-x-1/2 shadow-xl h-auto max-h-full top-1/2 -translate-y-1/2 rounded-lg">
-        <button
-          aria-label="Close panel"
-          className="fixed z-10 inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full bg-white shadow text-gray-600 transition duration-200 focus:outline-none focus:text-gray-800 focus:shadow-md hover:text-gray-800 hover:shadow-md -top-3 md:-top-4 ltr:-right-3 rtl:-left-3 ltr:md:-right-4 rtl:md:-left-4"
-        >
-          <svg
-            stroke="currentColor"
-            fill="currentColor"
-            strokeWidth={0}
-            viewBox="0 0 512 512"
-            className="text-xl"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" />
-          </svg>
-        </button>
-        <div
-          className="h-full overflow-y-auto rounded-lg"
-          style={{ maxHeight: "calc(-120px + 100vh)" }}
-        >
-          <div className="w-full px-5 py-5 mx-auto overflow-hidden bg-white border border-gray-300 rounded-lg sm:w-96 md:w-450px sm:px-8">
+    <>
+      {showLoginModal && (
+        <div className="modal-root fixed bg-black bg-opacity-70 inset-0 z-50 cursor-pointer p-4 md:p-5">
+          <div className="relative w-full h-full mx-auto" style={{ transform: "none" }}>
+            <div className="w-full md:w-auto absolute left-1/2 transform -translate-x-1/2 shadow-xl h-auto max-h-full top-1/2 -translate-y-1/2 rounded-lg">
+              <button
+                onClick={closeLoginModal}
+                aria-label="Close panel"
+                className="fixed z-10 inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full bg-white shadow text-gray-600 transition duration-200 focus:outline-none focus:text-gray-800 focus:shadow-md hover:text-gray-800 hover:shadow-md -top-3 md:-top-4 ltr:-right-3 rtl:-left-3 ltr:md:-right-4 rtl:md:-left-4"
+              >
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  strokeWidth={0}
+                  viewBox="0 0 512 512"
+                  className="text-xl"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" />
+                </svg>
+              </button>
+              <div className="h-full overflow-y-auto rounded-lg" style={{ maxHeight: "calc(-120px + 100vh)" }}>
+              <div className="w-full px-5 py-5 mx-auto overflow-hidden bg-white border border-gray-300 rounded-lg sm:w-96 md:w-450px sm:px-8">
             <div className="text-center mb-6 pt-2.5">
               <div>
                 <a className="inline-flex focus:outline-none" href="/">
@@ -116,23 +116,7 @@ const SignUpPage = () => {
               <div className="flex flex-col space-y-3.5">
                 <div className="block">
                   <label
-                    className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer"
-                  >
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="name"
-                    placeholder=""
-                    className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
-                    autoComplete="off"
-                    spellCheck="false"
-                    aria-invalid="false"
-                  />
-                </div>
-                <div className="block">
-                  <label
+                    htmlFor="email"
                     className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer"
                   >
                     Email
@@ -180,13 +164,23 @@ const SignUpPage = () => {
                     </button>
                   </div>
                 </div>
+                <div className="flex items-center justify-center">
+                  <div className="flex ltr:ml-auto rtl:mr-auto">
+                    <button
+                      type="button"
+                      className="text-sm underline ltr:text-right rtl:text-left text-heading ltr:pl-3 rtl:pr-3 hover:no-underline focus:outline-none"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                </div>
                 <div className="relative">
                   <button
                     data-variant="flat"
                     className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  bg-black text-white px-5 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white hover:bg-gray-600 hover:shadow-cart h-11 md:h-12 w-full mt-1.5"
                     type="submit"
                   >
-                    Register
+                    Login
                   </button>
                 </div>
               </div>
@@ -234,21 +228,25 @@ const SignUpPage = () => {
               Login With Google
             </button>
             <div className="mt-5 mb-1 text-sm text-center sm:text-base text-body">
-            Already have an account?{" "}
+              Don't have any account?{" "}
               <button
+              onClick={openSignupModal}
                 type="button"
                 className="text-sm font-bold underline sm:text-base text-heading hover:no-underline focus:outline-none"
               >
-                Login
+                Register
               </button>
             </div>
           </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-  
+      )}
+
+      {showSignupModal && <SignUpPage/>}
+    </>
   );
 };
 
-export default SignUpPage;
+export default LoginPages;

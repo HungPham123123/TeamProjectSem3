@@ -1,221 +1,311 @@
 import React from 'react';
 
 function Footer() {
-  const footerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '75vh',
-    backgroundColor: '#1c1c1c',
-    color: 'white',
-    padding: '20px',
-  };
-
-  const buttonStyle = {
-    backgroundColor: 'blue', // Thay đổi thành màu xanh dương
-    color: 'white', // Thay đổi màu chữ thành trắng
-    padding: '10px 25px',
-    borderRadius: '10px',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    marginBottom: '20px',
-    fontSize: '14px',
-  };
   
-
-  const containerStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '80%',
-    maxWidth: '800px',
-    marginBottom: '20px',
-  };
-
-  const boxStyle = {
-    flex: 1,
-    backgroundColor: '#000',
-    borderRadius: '8px',
-    margin: '0 10px',
-    textAlign: 'center',
-  };
-
-  const socialListStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    listStyleType: 'none',
-    padding: 0,
-    marginTop: '10px',
-  };
-
-  const qrCodeContainerStyle = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  };
-
-  const textContainerStyle = {
-    textAlign: 'left',
-    paddingLeft: '20px', // Hoặc marginLeft: '10px' nếu bạn muốn dùng margin
-  };
-  
-
-  const qrCodeStyle = {
-    width: '100px',
-    height: '100px',
-    backgroundColor: 'white',
-    marginLeft: '10px',
-  };
-
-  const navStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    listStyleType: 'none',
-    padding: 0,
-    marginTop: '20px',
-  };
-
-  const navItemStyle = {
-    marginRight: '15px',
-    color: 'white',
-    textDecoration: 'none',
-  };
-
-  const copyrightStyle = {
-    marginTop: '20px',
-    color: '#808080',
-    textAlign: 'center',
-  };
-
   return (
-    <div style={footerStyle}>
-      <button style={buttonStyle}>Sign in for more access</button>
-      <div style={containerStyle}>
-        <div style={boxStyle}>
-        <div style={{ marginTop: '20px' }}>Follow IMDb on social</div>
-          <ul style={socialListStyle}>
-            <li style={{ marginRight: '20px' }}>
-              <a
-                className="ipc-icon-link ipc-icon-link--baseAlt ipc-icon-link--onBase"
-                title="TikTok"
-                aria-label="TikTok"
-                target="_blank"
-                rel="nofollow noopener"
-                href="https://www.tiktok.com/@imdb"
-              >
+    <footer className="border-b-4 border-heading mt-9 md:mt-11 lg:mt-16 3xl:mt-20 pt-2.5 lg:pt-0 2xl:pt-2">
+    <div className="mx-auto max-w-[1920px] px-4 md:px-8 2xl:px-16">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-9 xl:gap-5  pb-9 md:pb-14 lg:pb-16 2xl:pb-20 3xl:pb-24 lg:mb-0.5 2xl:mb-0 3xl:-mb-1 xl:grid-cols-6">
+        <div className="pb-3 md:pb-0 undefined">
+          <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
+            Social
+          </h4>
+          <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
+            <li className="flex items-baseline">
+              <span className="ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base">
                 <svg
-                  width="24"
-                  height="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="ipc-icon ipc-icon--tiktok"
-                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                   fill="currentColor"
-                  role="presentation"
+                  strokeWidth={0}
+                  viewBox="0 0 512 512"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M15.2346 3C15.5316 5.55428 16.9572 7.07713 19.4359 7.23914V10.112C17.9995 10.2524 16.7412 9.78262 15.2778 8.89699V14.2702C15.2778 21.096 7.83633 23.2291 4.84463 18.3365C2.92217 15.1882 4.09941 9.66382 10.2664 9.44241V12.4719C9.7966 12.5475 9.29438 12.6663 8.83536 12.8229C7.46372 13.2873 6.68609 14.1568 6.9021 15.6904C7.31791 18.6281 12.7073 19.4975 12.2591 13.7571V3.0054H15.2346V3Z"></path>
+                  <path d="M349.33 69.33a93.62 93.62 0 0193.34 93.34v186.66a93.62 93.62 0 01-93.34 93.34H162.67a93.62 93.62 0 01-93.34-93.34V162.67a93.62 93.62 0 0193.34-93.34h186.66m0-37.33H162.67C90.8 32 32 90.8 32 162.67v186.66C32 421.2 90.8 480 162.67 480h186.66C421.2 480 480 421.2 480 349.33V162.67C480 90.8 421.2 32 349.33 32z" />
+                  <path d="M377.33 162.67a28 28 0 1128-28 27.94 27.94 0 01-28 28zM256 181.33A74.67 74.67 0 11181.33 256 74.75 74.75 0 01256 181.33m0-37.33a112 112 0 10112 112 112 112 0 00-112-112z" />
                 </svg>
+              </span>
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="https://www.instagram.com/redqinc/"
+              >
+                Instagram
               </a>
             </li>
-            <li style={{ marginRight: '20px' }}>
-              <a
-                className="ipc-icon-link ipc-icon-link--baseAlt ipc-icon-link--onBase"
-                title="Instagram"
-                aria-label="Instagram"
-                target="_blank"
-                rel="nofollow noopener"
-                href="https://instagram.com/imdb"
-              >
+            <li className="flex items-baseline">
+              <span className="ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base">
                 <svg
-                  width="24"
-                  height="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="ipc-icon ipc-icon--instagram"
-                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                   fill="currentColor"
-                  role="presentation"
+                  strokeWidth={0}
+                  viewBox="0 0 512 512"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M11.997 2.04c-2.715 0-3.056.011-4.122.06-1.064.048-1.79.217-2.426.463a4.901 4.901 0 0 0-1.771 1.151 4.89 4.89 0 0 0-1.153 1.767c-.247.635-.416 1.36-.465 2.422C2.011 8.967 2 9.307 2 12.017s.011 3.049.06 4.113c.049 1.062.218 1.787.465 2.422a4.89 4.89 0 0 0 1.153 1.767 4.901 4.901 0 0 0 1.77 1.15c.636.248 1.363.416 2.427.465 1.066.048 1.407.06 4.122.06s3.055-.012 4.122-.06c1.064-.049 1.79-.217 2.426-.464a4.901 4.901 0 0 0 1.77-1.15 4.89 4.89 0 0 0 1.154-1.768c.247-.635.416-1.36.465-2.422.048-1.064.06-1.404.06-4.113 0-2.71-.012-3.05-.06-4.114-.049-1.062-.218-1.787-.465-2.422a4.89 4.89 0 0 0-1.153-1.767 4.901 4.901 0 0 0-1.77-1.15c-.637-.247-1.363-.416-2.427-.464-1.067-.049-1.407-.06-4.122-.06m0 1.797c2.67 0 2.985.01 4.04.058.974.045 1.503.207 1.856.344.466.181.8.397 1.15.746.349.35.566.682.747 1.147.137.352.3.88.344 1.853.048 1.052.058 1.368.058 4.032 0 2.664-.01 2.98-.058 4.031-.044.973-.207 1.501-.344 1.853a3.09 3.09 0 0 1-.748 1.147c-.35.35-.683.565-1.15.746-.352.137-.88.3-1.856.344-1.054.048-1.37.058-4.04.058-2.669 0-2.985-.01-4.039-.058-.974-.044-1.504-.207-1.856-.344a3.098 3.098 0 0 1-1.15-.746 3.09 3.09 0 0 1-.747-1.147c-.137-.352-.3-.88-.344-1.853-.049-1.052-.059-1.367-.059-4.031 0-2.664.01-2.98.059-4.032.044-.973.207-1.501.344-1.853a3.09 3.09 0 0 1 .748-1.147c.35-.349.682-.565 1.149-.746.352-.137.882-.3 1.856-.344 1.054-.048 1.37-.058 4.04-.058"></path>
-                  <path d="M11.997 15.342a3.329 3.329 0 0 1-3.332-3.325 3.329 3.329 0 0 1 3.332-3.326 3.329 3.329 0 0 1 3.325 3.326 3.329 3.329 0 0 1-3.325 3.325m0-1.778a1.546 1.546 0 1 0 0 3.093 1.546 1.546 0 0 0 0-3.093"></path>
-                  <path d="M13.499 8.017a1.013 1.013 0 1 1-1.014-1.013 1.013 1.013 0 0 1 1.014 1.013"></path>
+                  <path d="M496 109.5a201.8 201.8 0 01-56.55 15.3 97.51 97.51 0 0043.33-53.6 197.74 197.74 0 01-62.56 23.5A99.14 99.14 0 00348.31 64c-54.42 0-98.46 43.4-98.46 96.9a93.21 93.21 0 002.54 22.1 280.7 280.7 0 01-203-101.3A95.69 95.69 0 0036 130.4c0 33.6 17.53 63.3 44 80.7A97.5 97.5 0 0135.22 199v1.2c0 47 34 86.1 79 95a100.76 100.76 0 01-25.94 3.4 94.38 94.38 0 01-18.51-1.8c12.51 38.5 48.92 66.5 92.05 67.3A199.59 199.59 0 0139.5 405.6a203 203 0 01-23.5-1.4A278.68 278.68 0 00166.74 448c181.36 0 280.44-147.7 280.44-275.8 0-4.2-.11-8.4-.31-12.5A198.48 198.48 0 00496 109.5z" />
                 </svg>
+              </span>
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="https://twitter.com/redqinc"
+              >
+                Twitter
               </a>
             </li>
-            <li style={{ marginRight: '20px' }}>
-              <a
-                className="ipc-icon-link ipc-icon-link--baseAlt ipc-icon-link--onBase"
-                title="Twitter"
-                aria-label="Twitter"
-                target="_blank"
-                rel="nofollow noopener"
-                href="https://twitter.com/imdb"
-              >
+            <li className="flex items-baseline">
+              <span className="ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base">
                 <svg
-                  width="24"
-                  height="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="ipc-icon ipc-icon--twitter"
-                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                   fill="currentColor"
-                  role="presentation"
+                  strokeWidth={0}
+                  viewBox="0 0 512 512"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M19.633 6.503a7.719 7.719 0 0 1-2.21.605 3.863 3.863 0 0 0 1.68-2.14 7.806 7.806 0 0 1-2.415.921 3.885 3.885 0 0 0-6.632 3.54A11.035 11.035 0 0 1 3.265 5.6a3.83 3.83 0 0 0 1.209 5.161 3.846 3.846 0 0 1-1.759-.486v.05c0 2.059 1.46 3.767 3.404 4.164a3.826 3.826 0 0 1-1.008.134c-.247 0-.486-.024-.72-.069a3.895 3.895 0 0 0 3.634 2.709 7.776 7.776 0 0 1-4.783 1.649c-.309 0-.615-.017-.916-.052a11.003 11.003 0 0 0 5.949 1.748c7.136 0 11.036-5.903 11.036-10.995 0-.17-.004-.338-.011-.504a7.871 7.871 0 0 0 1.926-2.01l.003-.002z"></path>
+                  <path
+                    fillRule="evenodd"
+                    d="M480 257.35c0-123.7-100.3-224-224-224s-224 100.3-224 224c0 111.8 81.9 204.47 189 221.29V322.12h-56.89v-64.77H221V208c0-56.13 33.45-87.16 84.61-87.16 24.51 0 50.15 4.38 50.15 4.38v55.13H327.5c-27.81 0-36.51 17.26-36.51 35v42h62.12l-9.92 64.77H291v156.54c107.1-16.81 189-109.48 189-221.31z"
+                  />
                 </svg>
+              </span>
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="https://www.facebook.com/redqinc/"
+              >
+                Facebook
               </a>
             </li>
-            <li>
-              <a
-                className="ipc-icon-link ipc-icon-link--baseAlt ipc-icon-link--onBase"
-                title="Facebook"
-                aria-label="Facebook"
-                target="_blank"
-                rel="nofollow noopener"
-                href="https://facebook.com/imdb"
-              >
+            <li className="flex items-baseline">
+              <span className="ltr:mr-3 rtl:ml-3 relative top-0.5 lg:top-1 text-sm lg:text-base">
                 <svg
-                  width="24"
-                  height="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="ipc-icon ipc-icon--facebook"
-                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                   fill="currentColor"
-                  role="presentation"
+                  strokeWidth={0}
+                  viewBox="0 0 512 512"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M9.197 21V12.67H6v-3.2h3.197V6.96c0-2.687 1.44-4.16 3.883-4.16 1.127 0 2.306.197 2.306.197v2.53h-1.296c-1.278 0-1.68.798-1.68 1.618v1.926h3.12l-.498 3.2h-2.622V21"></path>
+                  <path d="M508.64 148.79c0-45-33.1-81.2-74-81.2C379.24 65 322.74 64 265 64h-18c-57.6 0-114.2 1-169.6 3.6C36.6 67.6 3.5 104 3.5 149 1 184.59-.06 220.19 0 255.79q-.15 53.4 3.4 106.9c0 45 33.1 81.5 73.9 81.5 58.2 2.7 117.9 3.9 178.6 3.8q91.2.3 178.6-3.8c40.9 0 74-36.5 74-81.5 2.4-35.7 3.5-71.3 3.4-107q.34-53.4-3.26-106.9zM207 353.89v-196.5l145 98.2z" />
                 </svg>
+              </span>
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="https://www.youtube.com/channel/UCjld1tyVHRNy_pe3ROLiLhw"
+              >
+                Youtube
               </a>
             </li>
           </ul>
         </div>
-        <div style={boxStyle}>
-          <div style={qrCodeContainerStyle}>
-            <div style={textContainerStyle}>
-              <div>Get the IMDb app</div>
-              <div>For Android and iOS</div>
-            </div>
-            <div style={qrCodeStyle}>
-              QR Code
-            </div>
-          </div>
+        <div className="pb-3 md:pb-0 undefined">
+          <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
+            Contact
+          </h4>
+          <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/contact-us"
+              >
+                Contact Us
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/"
+              >
+                yourexample@email.com
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/"
+              >
+                example@email.com
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/"
+              >
+                Call us: +1 254 568-5479
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="pb-3 md:pb-0 undefined">
+          <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
+            About
+          </h4>
+          <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/contact-us"
+              >
+                Support Center
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/"
+              >
+                Customer Support
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/contact-us"
+              >
+                About Us
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/"
+              >
+                Copyright
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="pb-3 md:pb-0 undefined">
+          <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
+            Customer Care
+          </h4>
+          <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/faq"
+              >
+                FAQ &amp; Helps
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/"
+              >
+                Shipping &amp; Delivery
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/"
+              >
+                Return &amp; Exchanges
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="pb-3 md:pb-0 undefined">
+          <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
+            Our Information
+          </h4>
+          <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/privacy"
+              >
+                Privacy policy update
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/terms"
+              >
+                Terms &amp; conditions
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/privacy"
+              >
+                Return Policy
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/"
+              >
+                Site Map
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div className="pb-3 md:pb-0 undefined">
+          <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
+            Top Categories
+          </h4>
+          <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/search"
+              >
+                Men's Wear
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/search"
+              >
+                Men's Wear
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/search"
+              >
+                Kid's Wear
+              </a>
+            </li>
+            <li className="flex items-baseline">
+              <a
+                className="transition-colors duration-200 hover:text-black"
+                href="/search"
+              >
+                Sports Wear
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
-      <ul style={navStyle}>
-        <li><a href="#" style={navItemStyle}>Help</a></li>
-        <li><a href="#" style={navItemStyle}>Site Index</a></li>
-        <li><a href="#" style={navItemStyle}>Privacy Policy</a></li>
-        <li><a href="#" style={navItemStyle}>Contact Us</a></li>
-        <li><a href="#" style={navItemStyle}>About Us</a></li>
-        <li><a href="#" style={navItemStyle}>FPT Aptech</a></li>
-        <li><a href="#" style={navItemStyle}>Press Room</a></li>
-        <li><a href="#" style={navItemStyle}>Advertising</a></li>
-        <li><a href="#" style={navItemStyle}>Jobs</a></li>
-        <li><a href="#" style={navItemStyle}>Conditions of Use</a></li>
-        <li><a href="#" style={navItemStyle}>Your Ads Privacy Choices</a></li>
-      </ul>
-      <p style={copyrightStyle}>
-        © 1990-2024 by IMDb.com, Inc.
-      </p>
     </div>
+    <div className="pt-5 pb-16 mb-2 border-t border-gray-300 sm:pb-20 md:pb-5 sm:mb-0">
+      <div className="flex flex-col-reverse md:flex-row text-center md:justify-between mx-auto max-w-[1920px] px-4 md:px-8 2xl:px-16">
+        <p className="text-body text-xs lg:text-sm leading-6">
+          Copyright © 2024&nbsp;
+          <a
+            className="font-semibold text-gray-700 transition-colors duration-200 ease-in-out hover:text-body"
+            href="https://redq.io"
+          >
+            Waves
+          </a>
+          &nbsp; All rights reserved
+        </p>
+      </div>
+    </div>
+  </footer>
+  
   );
 }
 

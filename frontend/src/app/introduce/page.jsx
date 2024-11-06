@@ -1,60 +1,114 @@
-// src/pages/introduce/page.jsx
+"use client"
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import ReactPlayer from 'react-player';
 
-const Introduce = () => {
+function ProductDetail() {
+  const tracks = [
+    {
+      id: 1,
+      name: "Asme - Lila",
+      date: "10 November, 2019",
+      imgUrl: "/img/album1.jpg",
+      videoUrl: "https://www.youtube.com/watch?v=WZlL6-0trIs"
+    },
+    {
+      id: 2,
+      name: "Asme - Vem e du",
+      date: "10 November, 2019",
+      imgUrl: "/img/dvds-1.jpg",
+      videoUrl: "https://www.youtube.com/watch?v=NcslIhA4hlk"
+    }
+  ];
+
   return (
-    <div style={introduceContainerStyle}>
-      <h1 style={titleStyle}>About Waves</h1>
-      <p style={textStyle}>
-        Welcome to *Waves*! We are an online store specializing in high-quality DVDs, offering a wide selection of titles from movies and documentaries to popular television series from around the world.
-      </p>
-      <p style={textStyle}>
-        At *Waves*, we are committed to providing you with an easy, fast, and secure online shopping experience. Not only do we offer quality DVDs, but we also ensure the best customer support services. Our team is always ready to answer any questions to bring you maximum satisfaction.
-      </p>
-      <p style={textStyle}>
-        With a mission to build trust and satisfaction among our customers, *Waves* upholds the highest standards for product quality and service. Discover our extensive DVD collection today to find the ideal entertainment experience for you and your family!
-      </p>
-      <p style={highlightTextStyle}>
-        Trust *Waves* for your memorable entertainment moments!
-      </p>
+    <div className="flex flex-col items-center py-12">
+      <h2 className="text-4xl font-bold mb-8">Latest Tracks</h2>
+      <div className="w-full max-w-4xl space-y-8">
+        {tracks.map((track) => (
+          <TrackPlayer key={track.id} track={track} />
+        ))}
+      </div>
     </div>
   );
-};
+}
 
-const introduceContainerStyle = {
-  maxWidth: '800px',
-  margin: '20px auto',
-  padding: '30px',
-  border: '1px solid #ddd',
-  borderRadius: '8px',
-  backgroundColor: '#f3f7f9',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Adds shadow for a polished look
-};
+function TrackPlayer({ track }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+  const [played, setPlayed] = useState(0);
+  const playerRef = useRef(null);
 
-const titleStyle = {
-  textAlign: 'center',
-  color: '#2c3e50',
-  marginBottom: '25px',
-  fontSize: '30px',
-  fontWeight: 'bold',
-};
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+  };
 
-const textStyle = {
-  lineHeight: '1.8',
-  fontSize: '17px',
-  color: '#555',
-  marginBottom: '15px',
-  textAlign: 'justify', // Justify text for neat alignment
-};
+  const handleVolumeChange = (e) => {
+    setVolume(parseFloat(e.target.value));
+  };
 
-const highlightTextStyle = {
-  ...textStyle,
-  fontWeight: 'bold',
-  fontSize: '18px',
-  color: '#2c3e50',
-  textAlign: 'center',
-  marginTop: '20px',
-};
+  const handleProgress = (progress) => {
+    setPlayed(progress.played);
+  };
 
-export default Introduce;
+  const handleSeekChange = (e) => {
+    const newPlayed = parseFloat(e.target.value);
+    setPlayed(newPlayed);
+    playerRef.current.seekTo(newPlayed);
+  };
+
+  return (
+    <div className="flex items-center p-4 border-b border-gray-200">
+      <img
+        src={track.imgUrl}
+        alt={track.name}
+        className="w-24 h-24 rounded object-cover mr-6"
+      />
+      <div className="flex-1">
+        <h3 className="text-xl font-semibold">{track.name}</h3>
+        <p className="text-gray-500">{track.date}</p>
+        <div className="flex items-center mt-2 space-x-2">
+          {/* Play/Pause Button */}
+          <button onClick={togglePlay} className="text-xl">
+            {isPlaying ? "⏸️" : "▶️"}
+          </button>
+          {/* Progress Bar */}
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step="any"
+            value={played}
+            onChange={handleSeekChange}
+            className="w-full"
+          />
+          {/* Volume Control */}
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step="any"
+            value={volume}
+            onChange={handleVolumeChange}
+            className="w-20"
+          />
+        </div>
+      </div>
+      <button className="ml-4 px-4 py-2 border border-red-500 text-red-500 font-semibold rounded hover:bg-red-500 hover:text-white">
+        Buy Album
+      </button>
+
+      <ReactPlayer
+        ref={playerRef}
+        url={track.videoUrl}
+        playing={isPlaying}
+        volume={volume}
+        height="0px"
+        width="0px"
+        onProgress={handleProgress}
+      />
+    </div>
+  );
+}
+
+export default ProductDetail;
