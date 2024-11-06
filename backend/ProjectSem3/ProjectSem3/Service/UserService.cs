@@ -74,7 +74,7 @@ namespace ProjectSem3.Service
         // Send account verification email
         private async Task SendVerificationEmailAsync(User user)
         {
-            var verificationLink = $"https://localhost:3000/user-verification/{user.VerificationToken}";
+            var verificationLink = $"https://localhost:3000/user-verfication/{user.VerificationToken}";
             var subject = "Account Verification from Waves Dvds";
             var body = $@"
             <div style='font-family: Arial, sans-serif; background-color: #f6f9fc; padding: 20px;'>
