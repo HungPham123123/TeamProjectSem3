@@ -13,7 +13,7 @@ public partial class Song
 
     public string? Title { get; set; }
 
-    public TimeSpan? Duration { get; set; }
+    public string? Image { get; set; }
 
     public DateTime? ReleaseDate { get; set; }
 

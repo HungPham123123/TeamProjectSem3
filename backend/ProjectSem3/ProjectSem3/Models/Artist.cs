@@ -25,7 +25,5 @@ public partial class Artist
 
     public DateTime? UpdatedAt { get; set; }
 
-    public virtual ICollection<Album> Albums { get; set; } = new List<Album>();
-
     public virtual ICollection<Song> Songs { get; set; } = new List<Song>();
 }

@@ -15,9 +15,17 @@ public partial class Product
 
     public decimal? Rating { get; set; }
 
-    public string? StockStatus { get; set; }
+    public string? Status { get; set; }
 
     public DateTime? ReleaseDate { get; set; }
+
+    public string? Image1 { get; set; }
+
+    public string? Image2 { get; set; }
+
+    public string? Image3 { get; set; }
+
+    public string? Image4 { get; set; }
 
     public string? ProductType { get; set; }
 
@@ -44,6 +52,4 @@ public partial class Product
     public virtual ICollection<Promotion> Promotions { get; set; } = new List<Promotion>();
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
-
-    public virtual ICollection<WarehouseStock> WarehouseStocks { get; set; } = new List<WarehouseStock>();
 }

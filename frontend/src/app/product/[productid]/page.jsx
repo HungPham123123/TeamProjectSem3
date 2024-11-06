@@ -376,7 +376,7 @@ function ProductDetail() {
                                         alt="Artist"
                                         className="w-20 h-20 rounded-full object-cover"
                                     />
-                                    <p className="text-black">Kendrick Lamary</p>
+                                    <p className="text-black">Kendrick Lamar</p>
                                 </Link>
                             </div>
 

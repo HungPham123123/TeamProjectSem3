@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
 using ProjectSem3.Models;
-using ProjectSem3.Service;
+using ProjectSem3.Service.Interfaces;
 using System.Threading.Tasks;
 
 namespace ProjectSem3.Controllers

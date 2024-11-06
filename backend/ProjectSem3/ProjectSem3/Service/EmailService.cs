@@ -30,7 +30,6 @@ namespace ProjectSem3.Service
                 message.Subject = subject;
                 message.Body = body;
                 message.IsBodyHtml = true; // Set to true if the body contains HTML
-
                 using (var client = new SmtpClient(_smtpHost, _smtpPort))
                 {
                     client.EnableSsl = true; // Enable SSL

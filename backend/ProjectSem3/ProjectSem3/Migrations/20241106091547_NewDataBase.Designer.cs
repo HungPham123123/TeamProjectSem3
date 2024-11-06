@@ -12,8 +12,8 @@ using ProjectSem3.Data;
 namespace ProjectSem3.Migrations
 {
     [DbContext(typeof(OnlineDvdsContext))]
-    [Migration("20241104165927_NewDatabase")]
-    partial class NewDatabase
+    [Migration("20241106091547_NewDataBase")]
+    partial class NewDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,43 +38,37 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Born")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Children")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Height")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Parents")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Social")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("ActorId")
-                        .HasName("PK__Actors__57B3EA2BAED20B9B");
+                        .HasName("PK__Actors__57B3EA2BD0342B0E");
 
                     b.ToTable("Actors");
                 });
@@ -92,25 +86,22 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("ImageUrl")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Position")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("AdvertisementId")
-                        .HasName("PK__Advertis__C4C7F42DE591CFDD");
+                        .HasName("PK__Advertis__C4C7F42DECFF1ECD");
 
                     b.ToTable("Advertisements");
                 });
@@ -124,9 +115,8 @@ namespace ProjectSem3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlbumId"));
 
-                    b.Property<int?>("ArtistId")
-                        .HasColumnType("int")
-                        .HasColumnName("ArtistID");
+                    b.Property<string>("Biography")
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime");
@@ -139,17 +129,14 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("AlbumId")
-                        .HasName("PK__Albums__97B4BE170EF91A0D");
-
-                    b.HasIndex("ArtistId");
+                        .HasName("PK__Albums__97B4BE1786BCC95C");
 
                     b.HasIndex("ProductId");
 
@@ -169,43 +156,37 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Born")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Children")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Height")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Parents")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Social")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("ArtistId")
-                        .HasName("PK__Artists__25706B70DAE69137");
+                        .HasName("PK__Artists__25706B70739603B0");
 
                     b.ToTable("Artists");
                 });
@@ -230,7 +211,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("CartId")
-                        .HasName("PK__Cart__51BCD797620395E1");
+                        .HasName("PK__Cart__51BCD797CC69578F");
 
                     b.HasIndex("UserId");
 
@@ -267,7 +248,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("CartItemId")
-                        .HasName("PK__CartItem__488B0B2A7A19E0C8");
+                        .HasName("PK__CartItem__488B0B2A665D81A9");
 
                     b.HasIndex("CartId");
 
@@ -286,10 +267,8 @@ namespace ProjectSem3.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime");
@@ -298,7 +277,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("CategoryId")
-                        .HasName("PK__Categori__19093A2BDE0F907C");
+                        .HasName("PK__Categori__19093A2BFD083726");
 
                     b.ToTable("Categories");
                 });
@@ -316,9 +295,8 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
@@ -328,7 +306,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("CollectionId")
-                        .HasName("PK__Collecti__7DE6BC24C40C500C");
+                        .HasName("PK__Collecti__7DE6BC24E535CE4F");
 
                     b.HasIndex("UserId");
 
@@ -353,7 +331,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnName("ProductID");
 
                     b.HasKey("CollectionItemId")
-                        .HasName("PK__Collecti__638E14C91831EBF8");
+                        .HasName("PK__Collecti__638E14C976F182D4");
 
                     b.HasIndex("CollectionId");
 
@@ -378,15 +356,14 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("DeveloperId")
-                        .HasName("PK__Develope__DE084CD1175845B1");
+                        .HasName("PK__Develope__DE084CD1FB825E5A");
 
                     b.ToTable("Developers");
                 });
@@ -407,15 +384,14 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("DirectorId")
-                        .HasName("PK__Director__26C69E2687E98A66");
+                        .HasName("PK__Director__26C69E26EFEC56D7");
 
                     b.ToTable("Directors");
                 });
@@ -443,7 +419,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("FeedbackId")
-                        .HasName("PK__Feedback__6A4BEDF60EA8CC2A");
+                        .HasName("PK__Feedback__6A4BEDF6B93561A7");
 
                     b.HasIndex("UserId");
 
@@ -481,7 +457,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("GameId")
-                        .HasName("PK__Games__2AB897DD52D14E4B");
+                        .HasName("PK__Games__2AB897DD674A4E2D");
 
                     b.HasIndex("DeveloperId");
 
@@ -511,6 +487,10 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("int")
                         .HasColumnName("DirectorID");
 
+                    b.Property<string>("Link")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int?>("ProducerId")
                         .HasColumnType("int")
                         .HasColumnName("ProducerID");
@@ -523,7 +503,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("MovieId")
-                        .HasName("PK__Movies__4BD2943A3CF8EBCF");
+                        .HasName("PK__Movies__4BD2943A791CEFC7");
 
                     b.HasIndex("DirectorId");
 
@@ -552,7 +532,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnName("MovieID");
 
                     b.HasKey("MovieActorId")
-                        .HasName("PK__MovieAct__0F76A583A8760EAA");
+                        .HasName("PK__MovieAct__0F76A5835A5E8D8F");
 
                     b.HasIndex("ActorId");
 
@@ -582,9 +562,8 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("PublishedAt")
                         .HasColumnType("datetime");
@@ -593,14 +572,12 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Tags")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
@@ -609,7 +586,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("NewsId")
-                        .HasName("PK__News__954EBDD365779332");
+                        .HasName("PK__News__954EBDD3E42ED9CE");
 
                     b.HasIndex("AuthorId");
 
@@ -628,56 +605,47 @@ namespace ProjectSem3.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
                     b.Property<string>("Address")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("City")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Country")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("FirstName")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Optional")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("OrderStatus")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int?>("PaymentId")
                         .HasColumnType("int")
                         .HasColumnName("PaymentID");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Status")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<double?>("Tax")
                         .HasColumnType("float");
@@ -693,12 +661,11 @@ namespace ProjectSem3.Migrations
                         .HasColumnName("UserID");
 
                     b.Property<string>("ZipCode")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("OrderId")
-                        .HasName("PK__Orders__C3905BAF0EE19F49");
+                        .HasName("PK__Orders__C3905BAF9AB3A92A");
 
                     b.HasIndex("PaymentId");
 
@@ -731,7 +698,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("OrderItemId")
-                        .HasName("PK__OrderIte__57ED06A1474F8606");
+                        .HasName("PK__OrderIte__57ED06A1F9D9AFCD");
 
                     b.HasIndex("OrderId");
 
@@ -753,20 +720,18 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("PaymentMethod")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("PaymentStatus")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("PaymentId")
-                        .HasName("PK__Payment__9B556A5870834BD2");
+                        .HasName("PK__Payment__9B556A588C0FC8EE");
 
                     b.ToTable("Payment", (string)null);
                 });
@@ -787,15 +752,14 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("ProducerId")
-                        .HasName("PK__Producer__133696B2A94BB128");
+                        .HasName("PK__Producer__133696B21BFFA94E");
 
                     b.ToTable("Producers");
                 });
@@ -816,13 +780,28 @@ namespace ProjectSem3.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime");
 
+                    b.Property<string>("Image1")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Image2")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Image3")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Image4")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(10, 2)");
 
                     b.Property<string>("ProductType")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal?>("Rating")
                         .HasColumnType("decimal(3, 2)");
@@ -830,24 +809,22 @@ namespace ProjectSem3.Migrations
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("date");
 
+                    b.Property<string>("Status")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int?>("StockQuantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("StockStatus")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
                     b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("ProductId")
-                        .HasName("PK__Products__B40CC6ED189C810F");
+                        .HasName("PK__Products__B40CC6ED1003C944");
 
                     b.HasIndex("CategoryId");
 
@@ -883,7 +860,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("PromotionId")
-                        .HasName("PK__Promotio__52C42F2F8BD7FC95");
+                        .HasName("PK__Promotio__52C42F2F1989755D");
 
                     b.HasIndex("ProductId");
 
@@ -906,15 +883,14 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("PublisherId")
-                        .HasName("PK__Publishe__4C657E4BB22CBF87");
+                        .HasName("PK__Publishe__4C657E4B0DED94D5");
 
                     b.ToTable("Publishers");
                 });
@@ -946,7 +922,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("ReviewId")
-                        .HasName("PK__Reviews__74BC79AE1869E4D1");
+                        .HasName("PK__Reviews__74BC79AE0E7046C8");
 
                     b.HasIndex("ProductId");
 
@@ -968,15 +944,14 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("RoleName")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("RoleId")
-                        .HasName("PK__Roles__8AFACE3A80C2F5B6");
+                        .HasName("PK__Roles__8AFACE3A34B848B0");
 
                     b.ToTable("Roles");
                 });
@@ -1001,27 +976,27 @@ namespace ProjectSem3.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<TimeSpan?>("Duration")
-                        .HasColumnType("time");
+                    b.Property<string>("Image")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("image");
 
                     b.Property<string>("Link")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("date");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.HasKey("SongId")
-                        .HasName("PK__Songs__12E3D6F72D890BC4");
+                        .HasName("PK__Songs__12E3D6F7BCBEC98F");
 
                     b.HasIndex("AlbumId");
 
@@ -1043,34 +1018,40 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool?>("Enabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("Password")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("TokenExpiryDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Username")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("VerificationToken")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("UserId")
-                        .HasName("PK__Users__1788CCAC11296F35");
+                        .HasName("PK__Users__1788CCAC8F6D3B48");
+
+                    b.HasIndex(new[] { "Username" }, "UQ__Users__536C85E448F0F00E")
+                        .IsUnique()
+                        .HasFilter("[Username] IS NOT NULL");
+
+                    b.HasIndex(new[] { "Email" }, "UQ__Users__A9D10534122246E1")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -1099,7 +1080,7 @@ namespace ProjectSem3.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("UserRoleId")
-                        .HasName("PK__UserRole__3D978A557A5EF76F");
+                        .HasName("PK__UserRole__3D978A559B0398EC");
 
                     b.HasIndex("RoleId");
 
@@ -1108,49 +1089,12 @@ namespace ProjectSem3.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("ProjectSem3.Models.WarehouseStock", b =>
-                {
-                    b.Property<int>("WarehouseStockId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("WarehouseStockID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WarehouseStockId"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int")
-                        .HasColumnName("ProductID");
-
-                    b.Property<int?>("StockQuantity")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("WarehouseStockId")
-                        .HasName("PK__Warehous__8B0900A3368C84EA");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("WarehouseStock", (string)null);
-                });
-
             modelBuilder.Entity("ProjectSem3.Models.Album", b =>
                 {
-                    b.HasOne("ProjectSem3.Models.Artist", "Artist")
-                        .WithMany("Albums")
-                        .HasForeignKey("ArtistId")
-                        .HasConstraintName("FK__Albums__ArtistID__1D7B6025");
-
                     b.HasOne("ProjectSem3.Models.Product", "Product")
                         .WithMany("Albums")
                         .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__Albums__ProductI__1C873BEC");
-
-                    b.Navigation("Artist");
+                        .HasConstraintName("FK__Albums__ProductI__4B973090");
 
                     b.Navigation("Product");
                 });
@@ -1160,7 +1104,7 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.User", "User")
                         .WithMany("Carts")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK__Cart__UserID__3552E9B6");
+                        .HasConstraintName("FK__Cart__UserID__636EBA21");
 
                     b.Navigation("User");
                 });
@@ -1170,12 +1114,12 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Cart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
-                        .HasConstraintName("FK__CartItems__CartI__36470DEF");
+                        .HasConstraintName("FK__CartItems__CartI__6462DE5A");
 
                     b.HasOne("ProjectSem3.Models.Product", "Product")
                         .WithMany("CartItems")
                         .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__CartItems__Produ__373B3228");
+                        .HasConstraintName("FK__CartItems__Produ__65570293");
 
                     b.Navigation("Cart");
 
@@ -1187,7 +1131,7 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.User", "User")
                         .WithMany("Collections")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK__Collectio__UserI__2F9A1060");
+                        .HasConstraintName("FK__Collectio__UserI__5DB5E0CB");
 
                     b.Navigation("User");
                 });
@@ -1197,12 +1141,12 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Collection", "Collection")
                         .WithMany("CollectionItems")
                         .HasForeignKey("CollectionId")
-                        .HasConstraintName("FK__Collectio__Colle__308E3499");
+                        .HasConstraintName("FK__Collectio__Colle__5EAA0504");
 
                     b.HasOne("ProjectSem3.Models.Product", "Product")
                         .WithMany("CollectionItems")
                         .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__Collectio__Produ__318258D2");
+                        .HasConstraintName("FK__Collectio__Produ__5F9E293D");
 
                     b.Navigation("Collection");
 
@@ -1214,7 +1158,7 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.User", "User")
                         .WithMany("Feedbacks")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK__Feedback__UserID__2DB1C7EE");
+                        .HasConstraintName("FK__Feedback__UserID__5BCD9859");
 
                     b.Navigation("User");
                 });
@@ -1224,17 +1168,17 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Developer", "Developer")
                         .WithMany("Games")
                         .HasForeignKey("DeveloperId")
-                        .HasConstraintName("FK__Games__Developer__2610A626");
+                        .HasConstraintName("FK__Games__Developer__542C7691");
 
                     b.HasOne("ProjectSem3.Models.Product", "Product")
                         .WithMany("Games")
                         .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__Games__ProductID__251C81ED");
+                        .HasConstraintName("FK__Games__ProductID__53385258");
 
                     b.HasOne("ProjectSem3.Models.Publisher", "Publisher")
                         .WithMany("Games")
                         .HasForeignKey("PublisherId")
-                        .HasConstraintName("FK__Games__Publisher__2704CA5F");
+                        .HasConstraintName("FK__Games__Publisher__55209ACA");
 
                     b.Navigation("Developer");
 
@@ -1248,17 +1192,17 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Director", "Director")
                         .WithMany("Movies")
                         .HasForeignKey("DirectorId")
-                        .HasConstraintName("FK__Movies__Director__214BF109");
+                        .HasConstraintName("FK__Movies__Director__4F67C174");
 
                     b.HasOne("ProjectSem3.Models.Producer", "Producer")
                         .WithMany("Movies")
                         .HasForeignKey("ProducerId")
-                        .HasConstraintName("FK__Movies__Producer__22401542");
+                        .HasConstraintName("FK__Movies__Producer__505BE5AD");
 
                     b.HasOne("ProjectSem3.Models.Product", "Product")
                         .WithMany("Movies")
                         .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__Movies__ProductI__2057CCD0");
+                        .HasConstraintName("FK__Movies__ProductI__4E739D3B");
 
                     b.Navigation("Director");
 
@@ -1272,12 +1216,12 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Actor", "Actor")
                         .WithMany("MovieActors")
                         .HasForeignKey("ActorId")
-                        .HasConstraintName("FK__MovieActo__Actor__24285DB4");
+                        .HasConstraintName("FK__MovieActo__Actor__52442E1F");
 
                     b.HasOne("ProjectSem3.Models.Movie", "Movie")
                         .WithMany("MovieActors")
                         .HasForeignKey("MovieId")
-                        .HasConstraintName("FK__MovieActo__Movie__2334397B");
+                        .HasConstraintName("FK__MovieActo__Movie__515009E6");
 
                     b.Navigation("Actor");
 
@@ -1289,12 +1233,12 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.User", "Author")
                         .WithMany("News")
                         .HasForeignKey("AuthorId")
-                        .HasConstraintName("FK__News__AuthorID__382F5661");
+                        .HasConstraintName("FK__News__AuthorID__664B26CC");
 
                     b.HasOne("ProjectSem3.Models.Category", "Category")
                         .WithMany("News")
                         .HasForeignKey("CategoryId")
-                        .HasConstraintName("FK__News__CategoryID__2EA5EC27");
+                        .HasConstraintName("FK__News__CategoryID__5CC1BC92");
 
                     b.Navigation("Author");
 
@@ -1306,12 +1250,12 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Payment", "Payment")
                         .WithMany("Orders")
                         .HasForeignKey("PaymentId")
-                        .HasConstraintName("FK__Orders__PaymentI__2CBDA3B5");
+                        .HasConstraintName("FK__Orders__PaymentI__5AD97420");
 
                     b.HasOne("ProjectSem3.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK__Orders__UserID__29E1370A");
+                        .HasConstraintName("FK__Orders__UserID__57FD0775");
 
                     b.Navigation("Payment");
 
@@ -1323,12 +1267,12 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .HasConstraintName("FK__OrderItem__Order__2AD55B43");
+                        .HasConstraintName("FK__OrderItem__Order__58F12BAE");
 
                     b.HasOne("ProjectSem3.Models.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__OrderItem__Produ__2BC97F7C");
+                        .HasConstraintName("FK__OrderItem__Produ__59E54FE7");
 
                     b.Navigation("Order");
 
@@ -1340,7 +1284,7 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .HasConstraintName("FK__Products__Catego__1B9317B3");
+                        .HasConstraintName("FK__Products__Catego__4AA30C57");
 
                     b.Navigation("Category");
                 });
@@ -1350,7 +1294,7 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Product", "Product")
                         .WithMany("Promotions")
                         .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__Promotion__Produ__32767D0B");
+                        .HasConstraintName("FK__Promotion__Produ__60924D76");
 
                     b.Navigation("Product");
                 });
@@ -1360,12 +1304,12 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__Reviews__Product__28ED12D1");
+                        .HasConstraintName("FK__Reviews__Product__5708E33C");
 
                     b.HasOne("ProjectSem3.Models.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK__Reviews__UserID__27F8EE98");
+                        .HasConstraintName("FK__Reviews__UserID__5614BF03");
 
                     b.Navigation("Product");
 
@@ -1377,12 +1321,12 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Album", "Album")
                         .WithMany("Songs")
                         .HasForeignKey("AlbumId")
-                        .HasConstraintName("FK__Songs__AlbumID__1E6F845E");
+                        .HasConstraintName("FK__Songs__AlbumID__4C8B54C9");
 
                     b.HasOne("ProjectSem3.Models.Artist", "Artist")
                         .WithMany("Songs")
                         .HasForeignKey("ArtistId")
-                        .HasConstraintName("FK__Songs__ArtistID__1F63A897");
+                        .HasConstraintName("FK__Songs__ArtistID__4D7F7902");
 
                     b.Navigation("Album");
 
@@ -1394,26 +1338,16 @@ namespace ProjectSem3.Migrations
                     b.HasOne("ProjectSem3.Models.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
-                        .HasConstraintName("FK__UserRoles__RoleI__345EC57D");
+                        .HasConstraintName("FK__UserRoles__RoleI__627A95E8");
 
                     b.HasOne("ProjectSem3.Models.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK__UserRoles__UserI__336AA144");
+                        .HasConstraintName("FK__UserRoles__UserI__618671AF");
 
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ProjectSem3.Models.WarehouseStock", b =>
-                {
-                    b.HasOne("ProjectSem3.Models.Product", "Product")
-                        .WithMany("WarehouseStocks")
-                        .HasForeignKey("ProductId")
-                        .HasConstraintName("FK__Warehouse__Produ__39237A9A");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ProjectSem3.Models.Actor", b =>
@@ -1428,8 +1362,6 @@ namespace ProjectSem3.Migrations
 
             modelBuilder.Entity("ProjectSem3.Models.Artist", b =>
                 {
-                    b.Navigation("Albums");
-
                     b.Navigation("Songs");
                 });
 
@@ -1497,8 +1429,6 @@ namespace ProjectSem3.Migrations
                     b.Navigation("Promotions");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("WarehouseStocks");
                 });
 
             modelBuilder.Entity("ProjectSem3.Models.Publisher", b =>

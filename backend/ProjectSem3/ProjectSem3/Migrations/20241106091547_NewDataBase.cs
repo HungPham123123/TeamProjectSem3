@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectSem3.Migrations
 {
     /// <inheritdoc />
-    public partial class NewDatabase : Migration
+    public partial class NewDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,19 +17,19 @@ namespace ProjectSem3.Migrations
                 {
                     ActorID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Biography = table.Column<string>(type: "text", nullable: true),
-                    Social = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Height = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Born = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Children = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Parents = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Social = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Height = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Born = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Children = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Parents = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Actors__57B3EA2BAED20B9B", x => x.ActorID);
+                    table.PrimaryKey("PK__Actors__57B3EA2BD0342B0E", x => x.ActorID);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,15 +38,15 @@ namespace ProjectSem3.Migrations
                 {
                     AdvertisementID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    ImageUrl = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Position = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Position = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Advertis__C4C7F42DE591CFDD", x => x.AdvertisementID);
+                    table.PrimaryKey("PK__Advertis__C4C7F42DECFF1ECD", x => x.AdvertisementID);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,19 +55,19 @@ namespace ProjectSem3.Migrations
                 {
                     ArtistID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Biography = table.Column<string>(type: "text", nullable: true),
-                    Social = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Height = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Born = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Children = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Parents = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Social = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Height = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Born = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Children = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Parents = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Artists__25706B70DAE69137", x => x.ArtistID);
+                    table.PrimaryKey("PK__Artists__25706B70739603B0", x => x.ArtistID);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,13 +76,13 @@ namespace ProjectSem3.Migrations
                 {
                     CategoryID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
+                    CategoryName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Categori__19093A2BDE0F907C", x => x.CategoryID);
+                    table.PrimaryKey("PK__Categori__19093A2BFD083726", x => x.CategoryID);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,14 +91,14 @@ namespace ProjectSem3.Migrations
                 {
                     DeveloperID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ContactInfo = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Develope__DE084CD1175845B1", x => x.DeveloperID);
+                    table.PrimaryKey("PK__Develope__DE084CD1FB825E5A", x => x.DeveloperID);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,14 +107,14 @@ namespace ProjectSem3.Migrations
                 {
                     DirectorID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Biography = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Director__26C69E2687E98A66", x => x.DirectorID);
+                    table.PrimaryKey("PK__Director__26C69E26EFEC56D7", x => x.DirectorID);
                 });
 
             migrationBuilder.CreateTable(
@@ -123,14 +123,14 @@ namespace ProjectSem3.Migrations
                 {
                     PaymentID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PaymentMethod = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    PaymentStatus = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    PaymentStatus = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Payment__9B556A5870834BD2", x => x.PaymentID);
+                    table.PrimaryKey("PK__Payment__9B556A588C0FC8EE", x => x.PaymentID);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,14 +139,14 @@ namespace ProjectSem3.Migrations
                 {
                     ProducerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ContactInfo = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Producer__133696B2A94BB128", x => x.ProducerID);
+                    table.PrimaryKey("PK__Producer__133696B21BFFA94E", x => x.ProducerID);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,14 +155,14 @@ namespace ProjectSem3.Migrations
                 {
                     PublisherID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ContactInfo = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Publishe__4C657E4BB22CBF87", x => x.PublisherID);
+                    table.PrimaryKey("PK__Publishe__4C657E4B0DED94D5", x => x.PublisherID);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,13 +171,13 @@ namespace ProjectSem3.Migrations
                 {
                     RoleID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleName = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    RoleName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Roles__8AFACE3A80C2F5B6", x => x.RoleID);
+                    table.PrimaryKey("PK__Roles__8AFACE3A34B848B0", x => x.RoleID);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,18 +186,18 @@ namespace ProjectSem3.Migrations
                 {
                     UserID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Email = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Password = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Enabled = table.Column<bool>(type: "bit", nullable: true),
-                    VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TokenExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    VerificationToken = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    TokenExpiryDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Users__1788CCAC11296F35", x => x.UserID);
+                    table.PrimaryKey("PK__Users__1788CCAC8F6D3B48", x => x.UserID);
                 });
 
             migrationBuilder.CreateTable(
@@ -206,22 +206,26 @@ namespace ProjectSem3.Migrations
                 {
                     ProductID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CategoryID = table.Column<int>(type: "int", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
                     Rating = table.Column<decimal>(type: "decimal(3,2)", nullable: true),
-                    StockStatus = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "date", nullable: true),
-                    ProductType = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Image1 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Image2 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Image3 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Image4 = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ProductType = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     StockQuantity = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Products__B40CC6ED189C810F", x => x.ProductID);
+                    table.PrimaryKey("PK__Products__B40CC6ED1003C944", x => x.ProductID);
                     table.ForeignKey(
-                        name: "FK__Products__Catego__1B9317B3",
+                        name: "FK__Products__Catego__4AA30C57",
                         column: x => x.CategoryID,
                         principalTable: "Categories",
                         principalColumn: "CategoryID");
@@ -239,9 +243,9 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Cart__51BCD797620395E1", x => x.CartID);
+                    table.PrimaryKey("PK__Cart__51BCD797CC69578F", x => x.CartID);
                     table.ForeignKey(
-                        name: "FK__Cart__UserID__3552E9B6",
+                        name: "FK__Cart__UserID__636EBA21",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "UserID");
@@ -254,15 +258,15 @@ namespace ProjectSem3.Migrations
                     CollectionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: true),
-                    Title = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Collecti__7DE6BC24C40C500C", x => x.CollectionID);
+                    table.PrimaryKey("PK__Collecti__7DE6BC24E535CE4F", x => x.CollectionID);
                     table.ForeignKey(
-                        name: "FK__Collectio__UserI__2F9A1060",
+                        name: "FK__Collectio__UserI__5DB5E0CB",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "UserID");
@@ -281,9 +285,9 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Feedback__6A4BEDF60EA8CC2A", x => x.FeedbackID);
+                    table.PrimaryKey("PK__Feedback__6A4BEDF6B93561A7", x => x.FeedbackID);
                     table.ForeignKey(
-                        name: "FK__Feedback__UserID__2DB1C7EE",
+                        name: "FK__Feedback__UserID__5BCD9859",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "UserID");
@@ -295,27 +299,27 @@ namespace ProjectSem3.Migrations
                 {
                     NewsID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Content = table.Column<string>(type: "text", nullable: true),
                     CategoryID = table.Column<int>(type: "int", nullable: true),
                     PublishedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     AuthorID = table.Column<int>(type: "int", nullable: true),
-                    ImageUrl = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Views = table.Column<int>(type: "int", nullable: true),
-                    Tags = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Tags = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Summary = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__News__954EBDD365779332", x => x.NewsID);
+                    table.PrimaryKey("PK__News__954EBDD3E42ED9CE", x => x.NewsID);
                     table.ForeignKey(
-                        name: "FK__News__AuthorID__382F5661",
+                        name: "FK__News__AuthorID__664B26CC",
                         column: x => x.AuthorID,
                         principalTable: "Users",
                         principalColumn: "UserID");
                     table.ForeignKey(
-                        name: "FK__News__CategoryID__2EA5EC27",
+                        name: "FK__News__CategoryID__5CC1BC92",
                         column: x => x.CategoryID,
                         principalTable: "Categories",
                         principalColumn: "CategoryID");
@@ -329,31 +333,31 @@ namespace ProjectSem3.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: true),
                     PaymentID = table.Column<int>(type: "int", nullable: true),
-                    FirstName = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    LastName = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Country = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    City = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Address = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Optional = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    ZipCode = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    Email = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    City = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Optional = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ZipCode = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Tax = table.Column<double>(type: "float", nullable: true),
                     TotalAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
-                    OrderStatus = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Orders__C3905BAF0EE19F49", x => x.OrderID);
+                    table.PrimaryKey("PK__Orders__C3905BAF9AB3A92A", x => x.OrderID);
                     table.ForeignKey(
-                        name: "FK__Orders__PaymentI__2CBDA3B5",
+                        name: "FK__Orders__PaymentI__5AD97420",
                         column: x => x.PaymentID,
                         principalTable: "Payment",
                         principalColumn: "PaymentID");
                     table.ForeignKey(
-                        name: "FK__Orders__UserID__29E1370A",
+                        name: "FK__Orders__UserID__57FD0775",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "UserID");
@@ -372,14 +376,14 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__UserRole__3D978A557A5EF76F", x => x.UserRoleID);
+                    table.PrimaryKey("PK__UserRole__3D978A559B0398EC", x => x.UserRoleID);
                     table.ForeignKey(
-                        name: "FK__UserRoles__RoleI__345EC57D",
+                        name: "FK__UserRoles__RoleI__627A95E8",
                         column: x => x.RoleID,
                         principalTable: "Roles",
                         principalColumn: "RoleID");
                     table.ForeignKey(
-                        name: "FK__UserRoles__UserI__336AA144",
+                        name: "FK__UserRoles__UserI__618671AF",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "UserID");
@@ -392,22 +396,17 @@ namespace ProjectSem3.Migrations
                     AlbumID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductID = table.Column<int>(type: "int", nullable: true),
-                    ArtistID = table.Column<int>(type: "int", nullable: true),
-                    Title = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Biography = table.Column<string>(type: "text", nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "date", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Albums__97B4BE170EF91A0D", x => x.AlbumID);
+                    table.PrimaryKey("PK__Albums__97B4BE1786BCC95C", x => x.AlbumID);
                     table.ForeignKey(
-                        name: "FK__Albums__ArtistID__1D7B6025",
-                        column: x => x.ArtistID,
-                        principalTable: "Artists",
-                        principalColumn: "ArtistID");
-                    table.ForeignKey(
-                        name: "FK__Albums__ProductI__1C873BEC",
+                        name: "FK__Albums__ProductI__4B973090",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID");
@@ -428,19 +427,19 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Games__2AB897DD52D14E4B", x => x.GameID);
+                    table.PrimaryKey("PK__Games__2AB897DD674A4E2D", x => x.GameID);
                     table.ForeignKey(
-                        name: "FK__Games__Developer__2610A626",
+                        name: "FK__Games__Developer__542C7691",
                         column: x => x.DeveloperID,
                         principalTable: "Developers",
                         principalColumn: "DeveloperID");
                     table.ForeignKey(
-                        name: "FK__Games__ProductID__251C81ED",
+                        name: "FK__Games__ProductID__53385258",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID");
                     table.ForeignKey(
-                        name: "FK__Games__Publisher__2704CA5F",
+                        name: "FK__Games__Publisher__55209ACA",
                         column: x => x.PublisherID,
                         principalTable: "Publishers",
                         principalColumn: "PublisherID");
@@ -455,25 +454,26 @@ namespace ProjectSem3.Migrations
                     ProductID = table.Column<int>(type: "int", nullable: true),
                     DirectorID = table.Column<int>(type: "int", nullable: true),
                     ProducerID = table.Column<int>(type: "int", nullable: true),
+                    Link = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Biography = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Movies__4BD2943A3CF8EBCF", x => x.MovieID);
+                    table.PrimaryKey("PK__Movies__4BD2943A791CEFC7", x => x.MovieID);
                     table.ForeignKey(
-                        name: "FK__Movies__Director__214BF109",
+                        name: "FK__Movies__Director__4F67C174",
                         column: x => x.DirectorID,
                         principalTable: "Directors",
                         principalColumn: "DirectorID");
                     table.ForeignKey(
-                        name: "FK__Movies__Producer__22401542",
+                        name: "FK__Movies__Producer__505BE5AD",
                         column: x => x.ProducerID,
                         principalTable: "Producers",
                         principalColumn: "ProducerID");
                     table.ForeignKey(
-                        name: "FK__Movies__ProductI__2057CCD0",
+                        name: "FK__Movies__ProductI__4E739D3B",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID");
@@ -494,9 +494,9 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Promotio__52C42F2F8BD7FC95", x => x.PromotionID);
+                    table.PrimaryKey("PK__Promotio__52C42F2F1989755D", x => x.PromotionID);
                     table.ForeignKey(
-                        name: "FK__Promotion__Produ__32767D0B",
+                        name: "FK__Promotion__Produ__60924D76",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID");
@@ -516,38 +516,17 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Reviews__74BC79AE1869E4D1", x => x.ReviewID);
+                    table.PrimaryKey("PK__Reviews__74BC79AE0E7046C8", x => x.ReviewID);
                     table.ForeignKey(
-                        name: "FK__Reviews__Product__28ED12D1",
+                        name: "FK__Reviews__Product__5708E33C",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID");
                     table.ForeignKey(
-                        name: "FK__Reviews__UserID__27F8EE98",
+                        name: "FK__Reviews__UserID__5614BF03",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WarehouseStock",
-                columns: table => new
-                {
-                    WarehouseStockID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductID = table.Column<int>(type: "int", nullable: true),
-                    StockQuantity = table.Column<int>(type: "int", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Warehous__8B0900A3368C84EA", x => x.WarehouseStockID);
-                    table.ForeignKey(
-                        name: "FK__Warehouse__Produ__39237A9A",
-                        column: x => x.ProductID,
-                        principalTable: "Products",
-                        principalColumn: "ProductID");
                 });
 
             migrationBuilder.CreateTable(
@@ -565,14 +544,14 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__CartItem__488B0B2A7A19E0C8", x => x.CartItemID);
+                    table.PrimaryKey("PK__CartItem__488B0B2A665D81A9", x => x.CartItemID);
                     table.ForeignKey(
-                        name: "FK__CartItems__CartI__36470DEF",
+                        name: "FK__CartItems__CartI__6462DE5A",
                         column: x => x.CartID,
                         principalTable: "Cart",
                         principalColumn: "CartID");
                     table.ForeignKey(
-                        name: "FK__CartItems__Produ__373B3228",
+                        name: "FK__CartItems__Produ__65570293",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID");
@@ -589,14 +568,14 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Collecti__638E14C91831EBF8", x => x.CollectionItemID);
+                    table.PrimaryKey("PK__Collecti__638E14C976F182D4", x => x.CollectionItemID);
                     table.ForeignKey(
-                        name: "FK__Collectio__Colle__308E3499",
+                        name: "FK__Collectio__Colle__5EAA0504",
                         column: x => x.CollectionID,
                         principalTable: "Collections",
                         principalColumn: "CollectionID");
                     table.ForeignKey(
-                        name: "FK__Collectio__Produ__318258D2",
+                        name: "FK__Collectio__Produ__5F9E293D",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID");
@@ -615,14 +594,14 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__OrderIte__57ED06A1474F8606", x => x.OrderItemID);
+                    table.PrimaryKey("PK__OrderIte__57ED06A1F9D9AFCD", x => x.OrderItemID);
                     table.ForeignKey(
-                        name: "FK__OrderItem__Order__2AD55B43",
+                        name: "FK__OrderItem__Order__58F12BAE",
                         column: x => x.OrderID,
                         principalTable: "Orders",
                         principalColumn: "OrderID");
                     table.ForeignKey(
-                        name: "FK__OrderItem__Produ__2BC97F7C",
+                        name: "FK__OrderItem__Produ__59E54FE7",
                         column: x => x.ProductID,
                         principalTable: "Products",
                         principalColumn: "ProductID");
@@ -636,23 +615,23 @@ namespace ProjectSem3.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AlbumID = table.Column<int>(type: "int", nullable: true),
                     ArtistID = table.Column<int>(type: "int", nullable: true),
-                    Title = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    Duration = table.Column<TimeSpan>(type: "time", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    image = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "date", nullable: true),
-                    Link = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    Link = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Songs__12E3D6F72D890BC4", x => x.SongID);
+                    table.PrimaryKey("PK__Songs__12E3D6F7BCBEC98F", x => x.SongID);
                     table.ForeignKey(
-                        name: "FK__Songs__AlbumID__1E6F845E",
+                        name: "FK__Songs__AlbumID__4C8B54C9",
                         column: x => x.AlbumID,
                         principalTable: "Albums",
                         principalColumn: "AlbumID");
                     table.ForeignKey(
-                        name: "FK__Songs__ArtistID__1F63A897",
+                        name: "FK__Songs__ArtistID__4D7F7902",
                         column: x => x.ArtistID,
                         principalTable: "Artists",
                         principalColumn: "ArtistID");
@@ -669,23 +648,18 @@ namespace ProjectSem3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__MovieAct__0F76A583A8760EAA", x => x.MovieActorID);
+                    table.PrimaryKey("PK__MovieAct__0F76A5835A5E8D8F", x => x.MovieActorID);
                     table.ForeignKey(
-                        name: "FK__MovieActo__Actor__24285DB4",
+                        name: "FK__MovieActo__Actor__52442E1F",
                         column: x => x.ActorID,
                         principalTable: "Actors",
                         principalColumn: "ActorID");
                     table.ForeignKey(
-                        name: "FK__MovieActo__Movie__2334397B",
+                        name: "FK__MovieActo__Movie__515009E6",
                         column: x => x.MovieID,
                         principalTable: "Movies",
                         principalColumn: "MovieID");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Albums_ArtistID",
-                table: "Albums",
-                column: "ArtistID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Albums_ProductID",
@@ -838,9 +812,18 @@ namespace ProjectSem3.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WarehouseStock_ProductID",
-                table: "WarehouseStock",
-                column: "ProductID");
+                name: "UQ__Users__536C85E448F0F00E",
+                table: "Users",
+                column: "Username",
+                unique: true,
+                filter: "[Username] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UQ__Users__A9D10534122246E1",
+                table: "Users",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
         }
 
         /// <inheritdoc />
@@ -883,9 +866,6 @@ namespace ProjectSem3.Migrations
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "WarehouseStock");
-
-            migrationBuilder.DropTable(
                 name: "Cart");
 
             migrationBuilder.DropTable(
@@ -910,6 +890,9 @@ namespace ProjectSem3.Migrations
                 name: "Albums");
 
             migrationBuilder.DropTable(
+                name: "Artists");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
@@ -923,9 +906,6 @@ namespace ProjectSem3.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Artists");
 
             migrationBuilder.DropTable(
                 name: "Products");

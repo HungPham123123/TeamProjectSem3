@@ -20,7 +20,8 @@ namespace ProjectSem3.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCategories() {
+        public async Task<IActionResult> GetAllCategories()
+        {
             var categories = await _categoryService.GetAllCategories();
             return Ok(categories);
         }
@@ -72,7 +73,7 @@ namespace ProjectSem3.Controllers
             }
 
             return Ok("Updated");
-               
+
         }
 
         [HttpDelete]

@@ -5,7 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using ProjectSem3.Configurations;
 using ProjectSem3.Data;
 using ProjectSem3.DTOs;
+using ProjectSem3.Entities;
 using ProjectSem3.Models;
+using ProjectSem3.Service.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
@@ -33,6 +35,7 @@ namespace ProjectSem3.Service
             _jwtSettings = jwtSettings.Value;
         }
 
+        // Register a new user
         public async Task SaveAsync(RegisterUserDto registerUserDto)
         {
             var existingUser = await _context.Users
@@ -68,32 +71,30 @@ namespace ProjectSem3.Service
             await SendVerificationEmailAsync(user);
         }
 
-
+        // Send account verification email
         private async Task SendVerificationEmailAsync(User user)
         {
-            var verificationLink = $"https://localhost:3000/user-verfication/{user.VerificationToken}";
+            var verificationLink = $"https://localhost:3000/user-verification/{user.VerificationToken}";
             var subject = "Account Verification from Waves Dvds";
             var body = $@"
-        <div style='font-family: Arial, sans-serif; background-color: #f6f9fc; padding: 20px;'>
-            <div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
-                <div style='text-align: center;'>
-                    <img src='https://res.cloudinary.com/dklnlcse3/image/upload/v1730739115/website_name_l3j1ew.png' alt='Waves Dvds' style='width: 120px; margin-bottom: 20px;'/>
+            <div style='font-family: Arial, sans-serif; background-color: #f6f9fc; padding: 20px;'>
+                <div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
+                    <div style='text-align: center;'>
+                        <img src='https://res.cloudinary.com/dklnlcse3/image/upload/v1730739115/website_name_l3j1ew.png' alt='Waves Dvds' style='width: 120px; margin-bottom: 20px'/>
+                    </div>
+                    <h2 style='color: #32325d;'>Verify Your Email</h2>
+                    <p style='color: #525f7f;'>Thanks for creating an account with Waves Dvds. Please verify your email so you can get up and running quickly.</p>
+                    <div style='text-align: center; margin: 20px 0;'>
+                        <a href='{verificationLink}' style='background-color: #F64F4F; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Verify Account</a>
+                    </div>
+                    <p style='color: #525f7f;'>Once your email is verified, you can start setting up your account. If you have any questions, please <a href='https://yourwebsite.com/support' style='color: #F64F4F; text-decoration: none;'>visit our support site</a>.</p>
+                    <hr style='border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;' />
+                    <p style='font-size: 12px; color: #aab7c4; text-align: center;'>Waves Dvds, 1234 Your Address St, Your City, ST 12345</p>
                 </div>
-                <h2 style='color: #32325d;'>Verify Your Email</h2>
-                <p style='color: #525f7f;'>Thanks for creating an account with Waves Dvds. Please verify your email so you can get up and running quickly.</p>
-                <div style='text-align: center; margin: 20px 0;'>
-                    <a href='{verificationLink}' style='background-color: #F64F4F; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Verify Account</a>
-                </div>
-                <p style='color: #525f7f;'>Once your email is verified, you can start setting up your account. If you have any questions, please <a href='https://yourwebsite.com/support' style='color: #F64F4F; text-decoration: none;'>visit our support site</a>.</p>
-                <hr style='border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;' />
-                <p style='font-size: 12px; color: #aab7c4; text-align: center;'>Waves Dvds, 1234 Your Address St, Your City, ST 12345</p>
-            </div>
-        </div>";
+            </div>";
 
             await _emailService.SendMailAsync(user.Email, subject, body);
         }
-
-
 
         // Verify the user's account
         public async Task VerifyAccountAsync(string verificationToken)
@@ -111,6 +112,7 @@ namespace ProjectSem3.Service
             _logger.LogInformation("User with email {Email} successfully verified.", user.Email);
         }
 
+        // Request password reset
         public async Task RequestPasswordResetAsync(string email)
         {
             var user = await _context.Users
@@ -118,32 +120,32 @@ namespace ProjectSem3.Service
                 ?? throw new Exception("User not found.");
 
             user.VerificationToken = GenerateVerificationToken();
-            user.TokenExpiryDate = DateTime.UtcNow.AddHours(1); // Token valid for 1 hour
+            user.TokenExpiryDate = DateTime.UtcNow.AddHours(1);
             await _context.SaveChangesAsync();
 
             var resetLink = $"https://localhost:3000/reset-password/{user.VerificationToken}";
             var subject = "Password Reset Request";
             var body = $@"
-        <div style='font-family: Arial, sans-serif; background-color: #f6f9fc; padding: 20px;'>
-            <div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
-                <div style='text-align: center;'>
-                    <img src='https://res.cloudinary.com/dklnlcse3/image/upload/v1730739115/website_name_l3j1ew.png' alt='Waves Dvds' style='width: 120px; margin-bottom: 20px;'/>
+            <div style='font-family: Arial, sans-serif; background-color: #f6f9fc; padding: 20px;'>
+                <div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px;'>
+                    <div style='text-align: center;'>
+                        <img src='https://res.cloudinary.com/dklnlcse3/image/upload/v1730739115/website_name_l3j1ew.png' alt='Waves Dvds' style='width: 120px; margin-bottom: 20px'/>
+                    </div>
+                    <h2 style='color: #32325d;'>Reset Your Password</h2>
+                    <p style='color: #525f7f;'>We received a request to reset your password. Click the button below to reset it. If you did not request this, you can safely ignore this email.</p>
+                    <div style='text-align: center; margin: 20px 0;'>
+                        <a href='{resetLink}' style='background-color: #F64F4F; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Reset Password</a>
+                    </div>
+                    <p style='color: #525f7f;'>This link will expire in 1 hour.</p>
+                    <hr style='border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;' />
+                    <p style='font-size: 12px; color: #aab7c4; text-align: center;'>Waves Dvds, 1234 Your Address St, Your City, ST 12345</p>
                 </div>
-                <h2 style='color: #32325d;'>Reset Your Password</h2>
-                <p style='color: #525f7f;'>We received a request to reset your password. Click the button below to reset it. If you did not request this, you can safely ignore this email.</p>
-                <div style='text-align: center; margin: 20px 0;'>
-                    <a href='{resetLink}' style='background-color: #F64F4F; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Reset Password</a>
-                </div>
-                <p style='color: #525f7f;'>This link will expire in 1 hour.</p>
-                <hr style='border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;' />
-                <p style='font-size: 12px; color: #aab7c4; text-align: center;'>Waves Dvds, 1234 Your Address St, Your City, ST 12345</p>
-            </div>
-        </div>";
+            </div>";
 
             await _emailService.SendMailAsync(user.Email, subject, body);
         }
 
-
+        // Reset password
         public async Task ResetPasswordAsync(string verificationToken, string newPassword, string confirmPassword)
         {
             if (newPassword != confirmPassword)
@@ -159,6 +161,7 @@ namespace ProjectSem3.Service
             await _context.SaveChangesAsync();
         }
 
+        // Login the user
         public async Task<string> LoginAsync(LoginDto loginDto)
         {
             if (loginDto == null)
@@ -183,12 +186,6 @@ namespace ProjectSem3.Service
                 .FirstOrDefaultAsync(u => u.Email == loginDto.Email)
                 ?? throw new Exception("User not found.");
 
-            if (user.Password == null)
-            {
-                _logger.LogError("User password is null for email {Email}.", loginDto.Email);
-                throw new Exception("User password is null.");
-            }
-
             if (!VerifyPassword(loginDto.Password, user.Password))
             {
                 _logger.LogWarning("Invalid password attempt for email {Email}.", loginDto.Email);
@@ -202,28 +199,46 @@ namespace ProjectSem3.Service
             }
 
             var token = GenerateJwtToken(user);
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                _logger.LogError("Generated token is null or empty for user {Email}.", user.Email);
-                throw new Exception("Failed to generate token.");
-            }
-
+            _logger.LogInformation("User {Email} logged in successfully.", user.Email);
             return token;
         }
 
-
-
-        private string GenerateVerificationToken()
+        public async Task ResendVerificationEmailAsync(string email)
         {
-            using var rng = RandomNumberGenerator.Create();
-            var tokenData = new byte[32];
-            rng.GetBytes(tokenData);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email)
+                ?? throw new Exception("User not found.");
 
-            string token = Convert.ToBase64String(tokenData);
-            token = token.Replace("+", "-").Replace("/", "_").TrimEnd('=');
+            // Regenerate the verification token
+            user.VerificationToken = GenerateVerificationToken();
+            user.TokenExpiryDate = DateTime.UtcNow.AddHours(24);
 
-            return token;
+            // Save the changes
+            await _context.SaveChangesAsync();
+
+ 
+            await SendVerificationEmailAsync(user);
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                _jwtSettings.Issuer,
+                _jwtSettings.Audience,
+                claims,
+                expires: DateTime.UtcNow.AddMinutes(30),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private string HashPassword(string password)
@@ -231,48 +246,27 @@ namespace ProjectSem3.Service
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        private bool VerifyPassword(string password, string storedHash)
+        private bool VerifyPassword(string password, string hashedPassword)
         {
-            return BCrypt.Net.BCrypt.Verify(password, storedHash);
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
 
-        private string GenerateJwtToken(User user)
+        private string GenerateVerificationToken()
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey)); // Use the injected JwtSettings
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            const string validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var tokenLength = 64;
 
-            var claims = new[]
+            var token = new StringBuilder(tokenLength);
+
+            for (int i = 0; i < tokenLength; i++)
             {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim("UserId", user.UserId.ToString()),
-        new Claim("Username", user.Username)
-    };
+                token.Append(validChars[random.Next(validChars.Length)]);
+            }
 
-            var token = new JwtSecurityToken(
-                issuer: _jwtSettings.Issuer,
-                audience: _jwtSettings.Audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(30),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return token.ToString();
         }
 
-        public async Task ResendVerificationEmailAsync(string email)
-        {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == email && u.Enabled == false);
-            if (user == null) throw new Exception("User not found or account already verified.");
-
-            user.VerificationToken = GenerateVerificationToken();
-            user.TokenExpiryDate = DateTime.UtcNow.AddHours(24);
-
-            await _context.SaveChangesAsync();
-
-            await SendVerificationEmailAsync(user);
-        }
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿using ProjectSem3.DTOs;
 using ProjectSem3.Models;
 
-namespace ProjectSem3.Service
+namespace ProjectSem3.Service.Interfaces
 {
     public interface IUserService
     {

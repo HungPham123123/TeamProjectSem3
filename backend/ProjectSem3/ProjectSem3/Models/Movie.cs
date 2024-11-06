@@ -13,6 +13,8 @@ public partial class Movie
 
     public int? ProducerId { get; set; }
 
+    public string? Link { get; set; }
+
     public string? Biography { get; set; }
 
     public DateTime? CreatedAt { get; set; }

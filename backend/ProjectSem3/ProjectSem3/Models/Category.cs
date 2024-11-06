@@ -7,7 +7,7 @@ public partial class Category
 {
     public int CategoryId { get; set; }
 
-    public string CategoryName { get; set; } = string.Empty;
+    public string? CategoryName { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
