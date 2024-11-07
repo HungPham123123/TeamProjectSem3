@@ -966,10 +966,6 @@ namespace ProjectSem3.Migrations
                         .HasColumnType("int")
                         .HasColumnName("AlbumID");
 
-                    b.Property<int?>("ArtistId")
-                        .HasColumnType("int")
-                        .HasColumnName("ArtistID");
-
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime");
 
@@ -997,9 +993,22 @@ namespace ProjectSem3.Migrations
 
                     b.HasIndex("AlbumId");
 
+                    b.ToTable("Songs");
+                });
+
+            modelBuilder.Entity("ProjectSem3.Models.SongArtist", b =>
+                {
+                    b.Property<int>("SongId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArtistId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SongId", "ArtistId");
+
                     b.HasIndex("ArtistId");
 
-                    b.ToTable("Songs");
+                    b.ToTable("SongArtists");
                 });
 
             modelBuilder.Entity("ProjectSem3.Models.User", b =>
@@ -1320,14 +1329,26 @@ namespace ProjectSem3.Migrations
                         .HasForeignKey("AlbumId")
                         .HasConstraintName("FK__Songs__AlbumID__4C8B54C9");
 
-                    b.HasOne("ProjectSem3.Models.Artist", "Artist")
-                        .WithMany("Songs")
-                        .HasForeignKey("ArtistId")
-                        .HasConstraintName("FK__Songs__ArtistID__4D7F7902");
-
                     b.Navigation("Album");
+                });
+
+            modelBuilder.Entity("ProjectSem3.Models.SongArtist", b =>
+                {
+                    b.HasOne("ProjectSem3.Models.Artist", "Artist")
+                        .WithMany("SongArtists")
+                        .HasForeignKey("ArtistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectSem3.Models.Song", "Song")
+                        .WithMany("SongArtists")
+                        .HasForeignKey("SongId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Artist");
+
+                    b.Navigation("Song");
                 });
 
             modelBuilder.Entity("ProjectSem3.Models.UserRole", b =>
@@ -1359,7 +1380,7 @@ namespace ProjectSem3.Migrations
 
             modelBuilder.Entity("ProjectSem3.Models.Artist", b =>
                 {
-                    b.Navigation("Songs");
+                    b.Navigation("SongArtists");
                 });
 
             modelBuilder.Entity("ProjectSem3.Models.Cart", b =>
@@ -1436,6 +1457,11 @@ namespace ProjectSem3.Migrations
             modelBuilder.Entity("ProjectSem3.Models.Role", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("ProjectSem3.Models.Song", b =>
+                {
+                    b.Navigation("SongArtists");
                 });
 
             modelBuilder.Entity("ProjectSem3.Models.User", b =>

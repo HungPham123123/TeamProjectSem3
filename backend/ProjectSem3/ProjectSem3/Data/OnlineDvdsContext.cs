@@ -71,6 +71,7 @@ public partial class OnlineDvdsContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
+    public virtual DbSet<SongArtist> SongArtists { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -502,29 +503,35 @@ public partial class OnlineDvdsContext : DbContext
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
-        modelBuilder.Entity<Song>(entity =>
+           modelBuilder.Entity<Song>(entity =>
+    {
+        entity.HasKey(e => e.SongId).HasName("PK__Songs__12E3D6F7BCBEC98F");
+
+        entity.Property(e => e.SongId).HasColumnName("SongID");
+        entity.Property(e => e.AlbumId).HasColumnName("AlbumID");
+        entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+        entity.Property(e => e.Image).HasMaxLength(500).HasColumnName("image");
+        entity.Property(e => e.Link).HasMaxLength(500);
+        entity.Property(e => e.ReleaseDate).HasColumnType("date");
+        entity.Property(e => e.Title).HasMaxLength(500);
+        entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+        entity.HasOne(d => d.Album).WithMany(p => p.Songs)
+            .HasForeignKey(d => d.AlbumId)
+            .HasConstraintName("FK__Songs__AlbumID__4C8B54C9");
+    });
+
+        modelBuilder.Entity<SongArtist>(entity =>
         {
-            entity.HasKey(e => e.SongId).HasName("PK__Songs__12E3D6F7BCBEC98F");
+            entity.HasKey(e => new { e.SongId, e.ArtistId });
 
-            entity.Property(e => e.SongId).HasColumnName("SongID");
-            entity.Property(e => e.AlbumId).HasColumnName("AlbumID");
-            entity.Property(e => e.ArtistId).HasColumnName("ArtistID");
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.Image)
-                .HasMaxLength(500)
-                .HasColumnName("image");
-            entity.Property(e => e.Link).HasMaxLength(500);
-            entity.Property(e => e.ReleaseDate).HasColumnType("date");
-            entity.Property(e => e.Title).HasMaxLength(500);
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.HasOne(sa => sa.Song)
+                .WithMany(s => s.SongArtists)
+                .HasForeignKey(sa => sa.SongId);
 
-            entity.HasOne(d => d.Album).WithMany(p => p.Songs)
-                .HasForeignKey(d => d.AlbumId)
-                .HasConstraintName("FK__Songs__AlbumID__4C8B54C9");
-
-            entity.HasOne(d => d.Artist).WithMany(p => p.Songs)
-                .HasForeignKey(d => d.ArtistId)
-                .HasConstraintName("FK__Songs__ArtistID__4D7F7902");
+            entity.HasOne(sa => sa.Artist)
+                .WithMany(a => a.SongArtists)
+                .HasForeignKey(sa => sa.ArtistId);
         });
 
         modelBuilder.Entity<User>(entity =>

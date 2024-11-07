@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectSem3.Migrations
 {
     /// <inheritdoc />
-    public partial class NewDataBase : Migration
+    public partial class UpdateDatabaseAddedSongArtistTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -614,7 +614,6 @@ namespace ProjectSem3.Migrations
                     SongID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AlbumID = table.Column<int>(type: "int", nullable: true),
-                    ArtistID = table.Column<int>(type: "int", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     image = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "date", nullable: true),
@@ -630,11 +629,6 @@ namespace ProjectSem3.Migrations
                         column: x => x.AlbumID,
                         principalTable: "Albums",
                         principalColumn: "AlbumID");
-                    table.ForeignKey(
-                        name: "FK__Songs__ArtistID__4D7F7902",
-                        column: x => x.ArtistID,
-                        principalTable: "Artists",
-                        principalColumn: "ArtistID");
                 });
 
             migrationBuilder.CreateTable(
@@ -659,6 +653,30 @@ namespace ProjectSem3.Migrations
                         column: x => x.MovieID,
                         principalTable: "Movies",
                         principalColumn: "MovieID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SongArtists",
+                columns: table => new
+                {
+                    SongId = table.Column<int>(type: "int", nullable: false),
+                    ArtistId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SongArtists", x => new { x.SongId, x.ArtistId });
+                    table.ForeignKey(
+                        name: "FK_SongArtists_Artists_ArtistId",
+                        column: x => x.ArtistId,
+                        principalTable: "Artists",
+                        principalColumn: "ArtistID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SongArtists_Songs_SongId",
+                        column: x => x.SongId,
+                        principalTable: "Songs",
+                        principalColumn: "SongID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -792,14 +810,14 @@ namespace ProjectSem3.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SongArtists_ArtistId",
+                table: "SongArtists",
+                column: "ArtistId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Songs_AlbumID",
                 table: "Songs",
                 column: "AlbumID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Songs_ArtistID",
-                table: "Songs",
-                column: "ArtistID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleID",
@@ -860,7 +878,7 @@ namespace ProjectSem3.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "Songs");
+                name: "SongArtists");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
@@ -887,10 +905,10 @@ namespace ProjectSem3.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Albums");
+                name: "Artists");
 
             migrationBuilder.DropTable(
-                name: "Artists");
+                name: "Songs");
 
             migrationBuilder.DropTable(
                 name: "Roles");
@@ -906,6 +924,9 @@ namespace ProjectSem3.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Albums");
 
             migrationBuilder.DropTable(
                 name: "Products");
