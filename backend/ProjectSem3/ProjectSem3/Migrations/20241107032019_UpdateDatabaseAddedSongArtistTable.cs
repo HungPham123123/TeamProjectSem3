@@ -18,7 +18,7 @@ namespace ProjectSem3.Migrations
                     ActorID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Biography = table.Column<string>(type: "text", nullable: true),
+                    Biography = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     Social = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Height = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Born = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -56,7 +56,7 @@ namespace ProjectSem3.Migrations
                     ArtistID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Biography = table.Column<string>(type: "text", nullable: true),
+                    Biography = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     Social = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Height = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Born = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -92,7 +92,7 @@ namespace ProjectSem3.Migrations
                     DeveloperID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ContactInfo = table.Column<string>(type: "text", nullable: true),
+                    ContactInfo = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -108,7 +108,7 @@ namespace ProjectSem3.Migrations
                     DirectorID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Biography = table.Column<string>(type: "text", nullable: true),
+                    Biography = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -140,7 +140,7 @@ namespace ProjectSem3.Migrations
                     ProducerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ContactInfo = table.Column<string>(type: "text", nullable: true),
+                    ContactInfo = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -156,7 +156,7 @@ namespace ProjectSem3.Migrations
                     PublisherID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ContactInfo = table.Column<string>(type: "text", nullable: true),
+                    ContactInfo = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -279,8 +279,8 @@ namespace ProjectSem3.Migrations
                     FeedbackID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: true),
-                    FeedbackText = table.Column<string>(type: "text", nullable: true),
-                    AdminReply = table.Column<string>(type: "text", nullable: true),
+                    FeedbackText = table.Column<string>(type: "nvarchar(500)", nullable: true),
+                    AdminReply = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
@@ -300,7 +300,7 @@ namespace ProjectSem3.Migrations
                     NewsID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Content = table.Column<string>(type: "text", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     CategoryID = table.Column<int>(type: "int", nullable: true),
                     PublishedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -308,7 +308,7 @@ namespace ProjectSem3.Migrations
                     ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Views = table.Column<int>(type: "int", nullable: true),
                     Tags = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Summary = table.Column<string>(type: "text", nullable: true)
+                    Summary = table.Column<string>(type: "nvarchar(500)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -397,7 +397,7 @@ namespace ProjectSem3.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductID = table.Column<int>(type: "int", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Biography = table.Column<string>(type: "text", nullable: true),
+                    Biography = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     ReleaseDate = table.Column<DateTime>(type: "date", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
@@ -421,7 +421,7 @@ namespace ProjectSem3.Migrations
                     ProductID = table.Column<int>(type: "int", nullable: true),
                     DeveloperID = table.Column<int>(type: "int", nullable: true),
                     PublisherID = table.Column<int>(type: "int", nullable: true),
-                    Biography = table.Column<string>(type: "text", nullable: true),
+                    Biography = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -455,7 +455,7 @@ namespace ProjectSem3.Migrations
                     DirectorID = table.Column<int>(type: "int", nullable: true),
                     ProducerID = table.Column<int>(type: "int", nullable: true),
                     Link = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Biography = table.Column<string>(type: "text", nullable: true),
+                    Biography = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -511,7 +511,7 @@ namespace ProjectSem3.Migrations
                     UserID = table.Column<int>(type: "int", nullable: true),
                     ProductID = table.Column<int>(type: "int", nullable: true),
                     Rating = table.Column<decimal>(type: "decimal(3,2)", nullable: true),
-                    Comment = table.Column<string>(type: "text", nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>

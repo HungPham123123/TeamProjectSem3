@@ -23,6 +23,12 @@ builder.Services.AddScoped<EmailService>(); // Ensure EmailService is registered
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArtistService, ArtistService>();
 builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<ISGMService<SongDTO>, SongService>();
+builder.Services.AddScoped<ISGMService<GameDTO>, GameService>();
+builder.Services.AddScoped<ISGMService<MovieDTO>, MovieService>();
+
+
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
