@@ -24,6 +24,12 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArtistService, ArtistService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<ISGMService<SongDTO>, SongService>();
+builder.Services.AddScoped<ISGMService<GameDTO>, GameService>();
+builder.Services.AddScoped<ISGMService<MovieDTO>, MovieService>();
+builder.Services.AddScoped<IUserManageService, UserManageService>();
+
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

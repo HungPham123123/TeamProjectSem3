@@ -18,6 +18,12 @@ public class MappingProfile : Profile
         CreateMap<Movie, MovieDTO>().ReverseMap()
                     .ForMember(dest => dest.MovieId, opt => opt.Ignore()); // Bỏ qua ID khi ánh xạ từ DTO về Entity
 
+        CreateMap<User, UserManageDTO>()
+            .ForMember(dest => dest.UserRole,
+                       opt => opt.MapFrom(src => src.UserRoles.FirstOrDefault().Role.RoleName))
+            .ReverseMap();
+
+
 
     }
 
