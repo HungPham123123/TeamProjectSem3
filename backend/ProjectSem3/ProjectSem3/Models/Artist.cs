@@ -13,6 +13,7 @@ public partial class Artist
     public string? Born { get; set; }
     public string? Children { get; set; }
     public string? Parents { get; set; }
+    public string? Image { get; set; }
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 

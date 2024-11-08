@@ -1,21 +1,34 @@
-"use client"; // This directive tells Next.js that this component is a client component
+"use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaShoppingCart, FaUser, FaSearch } from 'react-icons/fa';
-import 'bootstrap-icons/font/bootstrap-icons.css'; // Ensure Bootstrap Icons are imported
+import 'bootstrap-icons/font/bootstrap-icons.css'; 
 import { FaSmile } from 'react-icons/fa';
 import LoginPages from './login';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
 
 
 function Navbar() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [token, setToken] = useState(null);
+  const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
+
+  useEffect(() => {
+    const tokenFromCookie = Cookies.get('token'); 
+    setToken(tokenFromCookie);
+  }, []);
 
   const toggleLoginModal = () => {
     setIsLoginOpen(!isLoginOpen);
   };
+
   const toggleCart = () => setIsCartOpen(!isCartOpen);
+
+  const toggleLanguagePopup = () => {
+    setIsLanguagePopupOpen(!isLanguagePopupOpen); 
+  };
 
   return (
     <>
@@ -76,21 +89,119 @@ function Navbar() {
             </nav>
             <div className="flex-shrink-0 ltr:ml-auto rtl:mr-auto ltr:lg:mr-5 rtl:lg:ml-5 ltr:xl:mr-8 rtl:xl:ml-8 ltr:2xl:mr-10 rtl:2xl:ml-10">
               <div className="relative ltr:ml-2 rtl:mr-2 ltr:lg:ml-0 rtl:lg:mr-0 z-10 w-[130px] sm:w-[130px] lg:w-[130px] xl:w-[130px] mr-3">
-                <button
+              <button
                   className="border border-gray-300 text-heading text-[13px] xl:text-sm font-semibold relative w-full py-2 ltr:pl-3 rtl:pr-3 ltr:pr-7 rtl:pl-7 ltr:text-left rtl:text-right bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 cursor-pointer"
                   id="headlessui-listbox-button-:r1:"
                   type="button"
                   aria-haspopup="listbox"
                   aria-expanded="false"
                   data-headlessui-state=""
+                  onClick={toggleLanguagePopup}
                 >
                   <span className="">
-                    <span className="ltr:mr-1.5 rtl:ml-1.5">
-                    </span>{" "}
-                    English - EN
+                    <span className="ltr:mr-1.5 rtl:ml-1.5"></span>English - EN
                   </span>
-
                 </button>
+                {isLanguagePopupOpen && (
+  <ul
+    className="absolute w-full py-1 mt-1 overflow-auto bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none text-sm z-50"
+    aria-labelledby="headlessui-listbox-button-:r1:"
+    aria-orientation="vertical"
+    id="headlessui-listbox-options-:r3:"
+    role="listbox"
+    tabIndex={0}
+    data-headlessui-state="open"
+  >
+    <li
+      className="text-gray-900 cursor-pointer select-none relative py-2 px-3 hover:bg-gray-100 focus:bg-gray-100"
+      id="headlessui-listbox-option-:r4:"
+      role="option"
+      tabIndex={-1}
+      aria-selected="false"
+      data-headlessui-state=""
+    >
+      <span className="flex items-center">
+        <span className="font-normal block truncate ltr:ml-1.5 rtl:mr-1.5">
+          عربى - AR
+        </span>
+      </span>
+    </li>
+    <li
+      className="text-gray-900 cursor-pointer select-none relative py-2 px-3 hover:bg-gray-100 focus:bg-gray-100"
+      id="headlessui-listbox-option-:r5:"
+      role="option"
+      tabIndex={-1}
+      aria-selected="false"
+      data-headlessui-state=""
+    >
+      <span className="flex items-center">
+        <span className="font-normal block truncate ltr:ml-1.5 rtl:mr-1.5">
+          中国人 - ZH
+        </span>
+      </span>
+    </li>
+    <li
+      className="text-gray-900 cursor-pointer select-none relative py-2 px-3 hover:bg-gray-100 focus:bg-gray-100"
+      id="headlessui-listbox-option-:r6:"
+      role="option"
+      tabIndex={-1}
+      aria-selected="true"
+      data-headlessui-state="selected"
+    >
+      <span className="flex items-center">
+        <span className="font-medium block truncate ltr:ml-1.5 rtl:mr-1.5">
+          English - EN
+        </span>
+        <span
+          className="absolute inset-y-0 ltr:left-0 rtl:right-0 flex items-center ltr:pl-3 rtl:pr-3"
+        >
+        </span>
+      </span>
+    </li>
+    <li
+      className="text-gray-900 cursor-pointer select-none relative py-2 px-3 hover:bg-gray-100 focus:bg-gray-100"
+      id="headlessui-listbox-option-:r7:"
+      role="option"
+      tabIndex={-1}
+      aria-selected="false"
+      data-headlessui-state=""
+    >
+      <span className="flex items-center">
+        <span className="font-normal block truncate ltr:ml-1.5 rtl:mr-1.5">
+          Deutsch - DE
+        </span>
+      </span>
+    </li>
+    <li
+      className="text-gray-900 cursor-pointer select-none relative py-2 px-3 hover:bg-gray-100 focus:bg-gray-100"
+      id="headlessui-listbox-option-:r8:"
+      role="option"
+      tabIndex={-1}
+      aria-selected="false"
+      data-headlessui-state=""
+    >
+      <span className="flex items-center">
+        <span className="font-normal block truncate ltr:ml-1.5 rtl:mr-1.5">
+          עברית - HE
+        </span>
+      </span>
+    </li>
+    <li
+      className="text-gray-900 cursor-pointer select-none relative py-2 px-3 hover:bg-gray-100 focus:bg-gray-100"
+      id="headlessui-listbox-option-:r9:"
+      role="option"
+      tabIndex={-1}
+      aria-selected="false"
+      data-headlessui-state=""
+    >
+      <span className="flex items-center">
+        <span className="font-normal block truncate ltr:ml-1.5 rtl:mr-1.5">
+          Español - ES
+        </span>
+      </span>
+    </li>
+  </ul>
+)}
               </div>
             </div>
             <div className="items-center justify-end flex-shrink-0 hidden lg:flex gap-x-6 lg:gap-x-5 xl:gap-x-8 2xl:gap-x-10 ltr:ml-auto rtl:mr-auto">
@@ -114,9 +225,15 @@ function Navbar() {
                 </svg>
               </button>
               <div className="-mt-0.5 flex-shrink-0">
-                <button className="text-sm font-semibold xl:text-base text-heading" onClick={toggleLoginModal}>
+              {token ? (
+                <Link className="text-sm font-semibold" href="/my-account">
+                  Account
+                </Link>
+              ) : (
+                <button className="text-sm font-semibold" onClick={toggleLoginModal}>
                   Sign In
                 </button>
+              )}
               </div>
               <button
                 className="relative flex items-center justify-center flex-shrink-0 h-auto transform focus:outline-none"
@@ -145,6 +262,7 @@ function Navbar() {
           </div>
         </div>
       </header>
+
 
 
       <>

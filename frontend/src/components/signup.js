@@ -4,16 +4,39 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import axios from "@/utils/axios";
 import LoginPages from './login';
+import { useRouter } from 'next/navigation';
 
 const SignUpPage = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(true);  // Controls visibility of the SignUp modal
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);    // Controls visibility of the Login modal
+    const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(true);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const router = useRouter();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
+    };
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('/api/Auth/register', {
+                username,
+                email,
+                password,
+            });
+            setSuccessMessage("Registration successful!");
+            setErrorMessage("");
+            setIsSignUpModalOpen(false);
+            router.push(`/resend-verification?email=${(email)}`);
+        } catch (error) {
+            setErrorMessage(error.response?.data?.message || "Registration failed. Please try again.");
+            setSuccessMessage("");
+        }
     };
 
     const closeSignUpModal = () => {
@@ -21,8 +44,8 @@ const SignUpPage = () => {
     };
 
     const openLoginModal = () => {
-        setIsSignUpModalOpen(false);  // Close SignUp modal
-        setIsLoginModalOpen(true);    // Open Login modal
+        setIsSignUpModalOpen(false);
+        setIsLoginModalOpen(true);
     };
 
     return (
@@ -97,40 +120,28 @@ const SignUpPage = () => {
                                             Register with your email &amp; password
                                         </p>
                                     </div>
-                                    <form className="flex flex-col justify-center" noValidate="">
+                                    <form className="flex flex-col justify-center" onSubmit={handleRegister} noValidate>
                                         <div className="flex flex-col space-y-3.5">
                                             <div className="block">
-                                                <label
-                                                    className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer"
-                                                >
-                                                    Name
-                                                </label>
+                                                <label className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer">Name</label>
                                                 <input
-                                                    id="name"
-                                                    name="name"
-                                                    type="name"
-                                                    placeholder=""
-                                                    className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
-                                                    autoComplete="off"
-                                                    spellCheck="false"
-                                                    aria-invalid="false"
+                                                    id="username"
+                                                    name="username"
+                                                    type="text"
+                                                    value={username}
+                                                    onChange={(e) => setUsername(e.target.value)}
+                                                    className="py-2 px-4 md:px-5 w-full appearance-none border text-input text-xs lg:text-sm font-body bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
                                                 />
                                             </div>
                                             <div className="block">
-                                                <label
-                                                    className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer"
-                                                >
-                                                    Email
-                                                </label>
+                                                <label className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer">Email</label>
                                                 <input
                                                     id="email"
                                                     name="email"
                                                     type="email"
-                                                    placeholder=""
-                                                    className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
-                                                    autoComplete="off"
-                                                    spellCheck="false"
-                                                    aria-invalid="false"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    className="py-2 px-4 md:px-5 w-full appearance-none border text-input text-xs lg:text-sm font-body bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
                                                 />
                                             </div>
                                             <div className="block">
@@ -140,11 +151,9 @@ const SignUpPage = () => {
                                                         id="password"
                                                         name="password"
                                                         type={showPassword ? "text" : "password"}
-                                                        className="py-2 px-4 md:px-5 w-full appearance-none  border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
-                                                        value=""
+                                                        value={password}
                                                         onChange={(e) => setPassword(e.target.value)}
-                                                        autoComplete="off"
-                                                        spellCheck="false"
+                                                        className="py-2 px-4 md:px-5 w-full appearance-none border text-input text-xs lg:text-sm font-body bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
                                                     />
                                                     <button
                                                         type="button"
@@ -167,13 +176,14 @@ const SignUpPage = () => {
                                             </div>
                                             <div className="relative">
                                                 <button
-                                                    data-variant="flat"
-                                                    className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  bg-black text-white px-5 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white hover:bg-gray-600 hover:shadow-cart h-11 md:h-12 w-full mt-1.5"
                                                     type="submit"
+                                                    className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  bg-black text-white px-5 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white hover:bg-gray-600 hover:shadow-cart h-11 md:h-12 w-full mt-1.5"
                                                 >
                                                     Register
                                                 </button>
                                             </div>
+                                            {successMessage && <p className="text-green-500 text-xs mt-2">{successMessage}</p>}
+                                            {errorMessage && <p className="text-red-500 text-xs mt-2">{errorMessage}</p>}
                                         </div>
                                     </form>
                                     <div className="flex flex-col items-center justify-center relative text-sm text-heading mt-6 mb-3.5">

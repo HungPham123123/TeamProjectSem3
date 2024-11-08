@@ -137,6 +137,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(500);
             entity.Property(e => e.Parents).HasMaxLength(500);
             entity.Property(e => e.Social).HasMaxLength(500);
+            entity.Property(e => e.Image).HasMaxLength(500);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 

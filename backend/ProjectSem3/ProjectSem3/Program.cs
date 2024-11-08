@@ -19,10 +19,11 @@ builder.Services.AddDbContext<OnlineDvdsContext>(options =>
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<EmailService>(); // Ensure EmailService is registered if used
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArtistService, ArtistService>();
 builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<ProductService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -51,6 +52,7 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

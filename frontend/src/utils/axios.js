@@ -29,7 +29,6 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error('Lỗi phản hồi:', error.response);
     return Promise.reject(error);
   }
 );

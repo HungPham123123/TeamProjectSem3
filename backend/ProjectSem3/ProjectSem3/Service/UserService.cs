@@ -71,7 +71,6 @@ namespace ProjectSem3.Service
             await SendVerificationEmailAsync(user);
         }
 
-        // Send account verification email
         private async Task SendVerificationEmailAsync(User user)
         {
             var verificationLink = $"https://localhost:3000/user-verfication/{user.VerificationToken}";
@@ -85,9 +84,9 @@ namespace ProjectSem3.Service
                     <h2 style='color: #32325d;'>Verify Your Email</h2>
                     <p style='color: #525f7f;'>Thanks for creating an account with Waves Dvds. Please verify your email so you can get up and running quickly.</p>
                     <div style='text-align: center; margin: 20px 0;'>
-                        <a href='{verificationLink}' style='background-color: #F64F4F; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Verify Account</a>
+                        <a href='{verificationLink}' style='background-color: #000000; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Verify Account</a>
                     </div>
-                    <p style='color: #525f7f;'>Once your email is verified, you can start setting up your account. If you have any questions, please <a href='https://yourwebsite.com/support' style='color: #F64F4F; text-decoration: none;'>visit our support site</a>.</p>
+                    <p style='color: #525f7f;'>Once your email is verified, you can start setting up your account. If you have any questions, please <a href='https://localhost:3000/support' style='color: #000000; text-decoration: none;'>visit our support site</a>.</p>
                     <hr style='border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;' />
                     <p style='font-size: 12px; color: #aab7c4; text-align: center;'>Waves Dvds, 1234 Your Address St, Your City, ST 12345</p>
                 </div>
@@ -134,7 +133,7 @@ namespace ProjectSem3.Service
                     <h2 style='color: #32325d;'>Reset Your Password</h2>
                     <p style='color: #525f7f;'>We received a request to reset your password. Click the button below to reset it. If you did not request this, you can safely ignore this email.</p>
                     <div style='text-align: center; margin: 20px 0;'>
-                        <a href='{resetLink}' style='background-color: #F64F4F; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Reset Password</a>
+                        <a href='{resetLink}' style='background-color: #000000; color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Reset Password</a>
                     </div>
                     <p style='color: #525f7f;'>This link will expire in 1 hour.</p>
                     <hr style='border: none; border-top: 1px solid #e6ebf1; margin: 20px 0;' />

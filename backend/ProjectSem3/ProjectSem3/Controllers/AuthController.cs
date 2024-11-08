@@ -53,7 +53,7 @@ namespace ProjectSem3.Controllers
             try
             {
                 await _userService.VerifyAccountAsync(verificationToken);
-                return Ok(new { message = "Account successfully verified!" });
+                return Ok(new { message = "Your email has been verified." });
             }
             catch (Exception ex)
             {

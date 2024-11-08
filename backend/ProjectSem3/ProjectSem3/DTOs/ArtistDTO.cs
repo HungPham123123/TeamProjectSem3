@@ -7,5 +7,6 @@
         public string? Biography { get; set; }
         public string? Social { get; set; }
         public string? Born { get; set; }
+        public string? Image {  get; set; }
     }
 }
