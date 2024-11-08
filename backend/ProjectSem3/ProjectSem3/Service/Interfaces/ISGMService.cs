@@ -1,6 +1,6 @@
 ﻿namespace ProjectSem3.Service.Interfaces
 {
-    public interface IGMService<T> where T : class
+    public interface ISGMService<T> where T : class
     {
         Task<List<T>> GetAllAsync();
         Task<T?> GetByIdAsync(int id);

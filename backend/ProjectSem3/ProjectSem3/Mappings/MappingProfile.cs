@@ -7,6 +7,18 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<Artist, ArtistDTO>().ReverseMap()
-            .ForMember(dest => dest.ArtistId, opt => opt.Ignore()); // Bỏ qua ArtistId khi ánh xạ từ ArtistDTO về Artist
+            .ForMember(dest => dest.ArtistId, opt => opt.Ignore()); // Bỏ qua ID khi ánh xạ từ DTO về Entity
+
+        CreateMap<Song, SongDTO>().ReverseMap()
+            .ForMember(dest => dest.SongId, opt => opt.Ignore()); // Bỏ qua ID khi ánh xạ từ DTO về Entity
+
+        CreateMap<Game, GameDTO>().ReverseMap()
+                    .ForMember(dest => dest.GameId, opt => opt.Ignore()); // Bỏ qua ID khi ánh xạ từ DTO về Entity
+
+        CreateMap<Movie, MovieDTO>().ReverseMap()
+                    .ForMember(dest => dest.MovieId, opt => opt.Ignore()); // Bỏ qua ID khi ánh xạ từ DTO về Entity
+
+
     }
+
 }

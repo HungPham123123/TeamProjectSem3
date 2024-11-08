@@ -8,7 +8,7 @@ using ProjectSem3.Service.Interfaces;
 
 namespace ProjectSem3.Service
 {
-    public class SongService : IGMService<SongDTO>
+    public class SongService : ISGMService<SongDTO>
     {
         private readonly OnlineDvdsContext _context;
         private readonly IMapper _mapper;

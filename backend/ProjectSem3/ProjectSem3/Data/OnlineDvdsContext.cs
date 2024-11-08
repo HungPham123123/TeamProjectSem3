@@ -73,9 +73,7 @@ public partial class OnlineDvdsContext : DbContext
     public virtual DbSet<UserRole> UserRoles { get; set; }
     public virtual DbSet<SongArtist> SongArtists { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=MARKUS\\SQLEXPRESS;Initial Catalog=OnlineDvds;Integrated Security=True;Trust Server Certificate=True;");
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -84,7 +82,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.ActorId).HasName("PK__Actors__57B3EA2BD0342B0E");
 
             entity.Property(e => e.ActorId).HasColumnName("ActorID");
-            entity.Property(e => e.Biography).HasColumnType("text");
+            entity.Property(e => e.Biography).HasColumnType("nvarchar(500)");
             entity.Property(e => e.Born).HasMaxLength(500);
             entity.Property(e => e.Children).HasMaxLength(500);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -112,7 +110,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.AlbumId).HasName("PK__Albums__97B4BE1786BCC95C");
 
             entity.Property(e => e.AlbumId).HasColumnName("AlbumID");
-            entity.Property(e => e.Biography).HasColumnType("text");
+            entity.Property(e => e.Biography).HasColumnType("nvarchar(500)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.ReleaseDate).HasColumnType("date");
@@ -129,7 +127,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.ArtistId).HasName("PK__Artists__25706B70739603B0");
 
             entity.Property(e => e.ArtistId).HasColumnName("ArtistID");
-            entity.Property(e => e.Biography).HasColumnType("text");
+            entity.Property(e => e.Biography).HasColumnType("nvarchar(500)");
             entity.Property(e => e.Born).HasMaxLength(500);
             entity.Property(e => e.Children).HasMaxLength(500);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -224,7 +222,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.DeveloperId).HasName("PK__Develope__DE084CD1FB825E5A");
 
             entity.Property(e => e.DeveloperId).HasColumnName("DeveloperID");
-            entity.Property(e => e.ContactInfo).HasColumnType("text");
+            entity.Property(e => e.ContactInfo).HasColumnType("nvarchar(500)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(500);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -235,7 +233,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.DirectorId).HasName("PK__Director__26C69E26EFEC56D7");
 
             entity.Property(e => e.DirectorId).HasColumnName("DirectorID");
-            entity.Property(e => e.Biography).HasColumnType("text");
+            entity.Property(e => e.Biography).HasColumnType("nvarchar(500)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(500);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -248,9 +246,9 @@ public partial class OnlineDvdsContext : DbContext
             entity.ToTable("Feedback");
 
             entity.Property(e => e.FeedbackId).HasColumnName("FeedbackID");
-            entity.Property(e => e.AdminReply).HasColumnType("text");
+            entity.Property(e => e.AdminReply).HasColumnType("nvarchar(500)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.FeedbackText).HasColumnType("text");
+            entity.Property(e => e.FeedbackText).HasColumnType("nvarchar(500)");
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
             entity.HasOne(d => d.User).WithMany(p => p.Feedbacks)
@@ -263,7 +261,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.GameId).HasName("PK__Games__2AB897DD674A4E2D");
 
             entity.Property(e => e.GameId).HasColumnName("GameID");
-            entity.Property(e => e.Biography).HasColumnType("text");
+            entity.Property(e => e.Biography).HasColumnType("nvarchar(500)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeveloperId).HasColumnName("DeveloperID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
@@ -288,7 +286,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.MovieId).HasName("PK__Movies__4BD2943A791CEFC7");
 
             entity.Property(e => e.MovieId).HasColumnName("MovieID");
-            entity.Property(e => e.Biography).HasColumnType("text");
+            entity.Property(e => e.Biography).HasColumnType("nvarchar(500)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DirectorId).HasColumnName("DirectorID");
             entity.Property(e => e.Link).HasMaxLength(500);
@@ -333,10 +331,10 @@ public partial class OnlineDvdsContext : DbContext
             entity.Property(e => e.NewsId).HasColumnName("NewsID");
             entity.Property(e => e.AuthorId).HasColumnName("AuthorID");
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-            entity.Property(e => e.Content).HasColumnType("text");
+            entity.Property(e => e.Content).HasColumnType("nvarchar(500)");
             entity.Property(e => e.ImageUrl).HasMaxLength(500);
             entity.Property(e => e.PublishedAt).HasColumnType("datetime");
-            entity.Property(e => e.Summary).HasColumnType("text");
+            entity.Property(e => e.Summary).HasColumnType("nvarchar(500)");
             entity.Property(e => e.Tags).HasMaxLength(500);
             entity.Property(e => e.Title).HasMaxLength(500);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -416,7 +414,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.ProducerId).HasName("PK__Producer__133696B21BFFA94E");
 
             entity.Property(e => e.ProducerId).HasColumnName("ProducerID");
-            entity.Property(e => e.ContactInfo).HasColumnType("text");
+            entity.Property(e => e.ContactInfo).HasColumnType("nvarchar(500)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(500);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -468,7 +466,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.PublisherId).HasName("PK__Publishe__4C657E4B0DED94D5");
 
             entity.Property(e => e.PublisherId).HasColumnName("PublisherID");
-            entity.Property(e => e.ContactInfo).HasColumnType("text");
+            entity.Property(e => e.ContactInfo).HasColumnType("nvarchar(500)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(500);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -479,7 +477,7 @@ public partial class OnlineDvdsContext : DbContext
             entity.HasKey(e => e.ReviewId).HasName("PK__Reviews__74BC79AE0E7046C8");
 
             entity.Property(e => e.ReviewId).HasColumnName("ReviewID");
-            entity.Property(e => e.Comment).HasColumnType("text");
+            entity.Property(e => e.Comment).HasColumnType("nvarchar(500)");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.Rating).HasColumnType("decimal(3, 2)");

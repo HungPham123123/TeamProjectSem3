@@ -45,7 +45,7 @@ namespace ProjectSem3.Controllers
         public async Task<IActionResult> DeleteArtist(int id)
         {
             var success = await _artistService.DeleteArtistAsync(id);
-            return success ? NoContent() : NotFound();
+            return success ? Ok("deleted") : NotFound();
         }
 
         [HttpGet("search")]
