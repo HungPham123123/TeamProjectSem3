@@ -30,6 +30,9 @@ builder.Services.AddScoped<ISGMService<MovieDTO>, MovieService>();
 builder.Services.AddScoped<IUserManageService, UserManageService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<IProductManageService, ProductManageService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
