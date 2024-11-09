@@ -31,6 +31,7 @@ builder.Services.AddScoped<IUserManageService, UserManageService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<IProductManageService, ProductManageService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<INewsService, NewsService>();
 
 
 

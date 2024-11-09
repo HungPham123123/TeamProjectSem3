@@ -35,6 +35,11 @@ public class MappingProfile : Profile
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username))
                 .ReverseMap();
 
+        CreateMap<News, NewsManageDTO>()
+                .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.Username))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
+                .ReverseMap();
+
     }
 
 }
