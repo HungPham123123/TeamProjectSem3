@@ -27,6 +27,10 @@ public class MappingProfile : Profile
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                 .ReverseMap();
 
+        CreateMap<Product, ProductManageDTO>()
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
+                .ReverseMap();
+
     }
 
 }
