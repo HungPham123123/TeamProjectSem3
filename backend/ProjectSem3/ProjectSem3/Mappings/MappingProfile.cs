@@ -23,7 +23,9 @@ public class MappingProfile : Profile
                        opt => opt.MapFrom(src => src.UserRoles.FirstOrDefault().Role.RoleName))
             .ReverseMap();
 
-
+        CreateMap<Feedback, FeedbackManageDTO>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+                .ReverseMap();
 
     }
 
