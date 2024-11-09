@@ -40,6 +40,11 @@ public class MappingProfile : Profile
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
                 .ReverseMap();
 
+        CreateMap<Review, ReviewManageDTO>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+                .ForMember(dest => dest.ProductTitle, opt => opt.MapFrom(src => src.Product.Title))
+                .ReverseMap();
+
     }
 
 }
