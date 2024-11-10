@@ -33,6 +33,7 @@ builder.Services.AddScoped<IProductManageService, ProductManageService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IPromotionService, PromotionService>();
 
 
 

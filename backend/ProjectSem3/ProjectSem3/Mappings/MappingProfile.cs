@@ -45,6 +45,10 @@ public class MappingProfile : Profile
                 .ForMember(dest => dest.ProductTitle, opt => opt.MapFrom(src => src.Product.Title))
                 .ReverseMap();
 
+        CreateMap<Promotion, PromotionManageDTO>()
+                .ForMember(dest => dest.ProductTitle, opt => opt.MapFrom(src => src.Product.Title))
+                .ReverseMap();
+
     }
 
 }
