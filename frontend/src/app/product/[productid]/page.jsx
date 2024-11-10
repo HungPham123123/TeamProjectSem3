@@ -229,7 +229,7 @@ function TrackPlayer({ track }) {
     };
 
     return (
-        <div className="flex items-center p-4 border-b border-gray-200 w-3/4">
+        <div className="flex items-center p-4 border-b border-gray-200 w-full">
             <img
                 src={track.imgUrl}
                 alt={track.name}
