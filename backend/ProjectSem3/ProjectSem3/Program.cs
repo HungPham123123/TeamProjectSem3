@@ -1,14 +1,21 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using ProjectSem3.Configurations; // Make sure to include the namespace for JwtSettings
+using ProjectSem3.Configurations; // Ensure this namespace is included for JwtSettings
 using ProjectSem3.Data;
 using ProjectSem3.DTOs;
 using ProjectSem3.Models;
 using ProjectSem3.Service;
 using ProjectSem3.Service.Interfaces;
+using Stripe;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+
+// Define aliases for ambiguous services
+using ProjectReviewService = ProjectSem3.Service.ReviewService;
+using StripeReviewService = Stripe.ReviewService;
+using ProjectProductService = ProjectSem3.Service.ProductService;
+using StripeProductService = Stripe.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +30,7 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArtistService, ArtistService>();
 builder.Services.AddScoped<CartService>();
-builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<ProjectProductService>(); // Specify the project ProductService
 builder.Services.AddScoped<ISGMService<SongDTO>, SongService>();
 builder.Services.AddScoped<ISGMService<GameDTO>, GameService>();
 builder.Services.AddScoped<ISGMService<MovieDTO>, MovieService>();
@@ -32,10 +39,9 @@ builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<IProductManageService, ProductManageService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<INewsService, NewsService>();
-builder.Services.AddScoped<IReviewService, ReviewService>();
-builder.Services.AddScoped<IPromotionService, PromotionService  >();
-
-
+builder.Services.AddScoped<IReviewService, ProjectReviewService>(); // Specify the project ReviewService
+builder.Services.AddScoped<IPromotionService, PromotionService>();
+builder.Services.AddScoped<PaymentService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -52,6 +58,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
@@ -62,7 +72,6 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
         });
 });
-
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -78,9 +87,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAllOrigins"); 
+app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
-app.UseAuthentication(); // Ensure authentication is included
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

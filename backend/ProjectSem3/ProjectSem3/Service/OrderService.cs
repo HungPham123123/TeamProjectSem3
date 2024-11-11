@@ -18,6 +18,79 @@ namespace ProjectSem3.Service
             _mapper = mapper;
         }
 
+        public async Task<OrderDto?> UserOrderByIds(int orderId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.User)  // Make sure User is included in the query
+                .Where(o => o.OrderId == orderId)
+                .Select(o => new OrderDto
+                {
+                    OrderId = o.OrderId,
+                    UserId = o.UserId ?? 0, // Handle nullable UserId
+                    FirstName = o.FirstName ?? string.Empty,
+                    LastName = o.LastName ?? string.Empty,
+                    Country = o.Country ?? string.Empty,
+                    City = o.City ?? string.Empty,
+                    Address = o.Address ?? string.Empty,
+                    Optional = o.Optional ?? string.Empty,
+                    ZipCode = o.ZipCode ?? string.Empty,
+                    Email = o.User.Email ?? string.Empty,
+                    PhoneNumber = o.PhoneNumber ?? string.Empty,
+                    Tax = o.Tax ?? 0.0,  // Handle nullable Tax
+                    TotalAmount = o.TotalAmount ?? 0m, // Handle nullable TotalAmount
+                    CreatedAt = o.CreatedAt ?? DateTime.MinValue,
+                    UpdatedAt = o.UpdatedAt ?? DateTime.MinValue,
+                    Status = o.Status ?? string.Empty,
+                    OrderItems = o.OrderItems.Select(oi => new OrderItemDto
+                    {
+                        ProductId = oi.ProductId ?? 0, // Handle nullable ProductId
+                        ProductTitle = oi.Product.Title ?? string.Empty, // Handle null Product Title
+                        Quantity = oi.Quantity ?? 0, // Handle nullable Quantity
+                        Price = oi.Price ?? 0m, // Handle nullable Price
+                        ProductImage = oi.Product.Image1 ?? string.Empty // Handle null Image
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
+
+            return order;
+        }
+
+        public async Task<List<OrderDto>> GetAllOrdersForUser(int userId)
+        {
+            var orders = await _context.Orders
+                .Where(o => o.UserId == userId)
+                .Select(o => new OrderDto
+                {
+                    OrderId = o.OrderId,
+                    UserId = o.UserId ?? 0, // Handle nullable UserId
+                    FirstName = o.FirstName ?? string.Empty,
+                    LastName = o.LastName ?? string.Empty,
+                    Country = o.Country ?? string.Empty,
+                    City = o.City ?? string.Empty,
+                    Address = o.Address ?? string.Empty,
+                    Optional = o.Optional ?? string.Empty,
+                    ZipCode = o.ZipCode ?? string.Empty,
+                    Email = o.User.Email ?? string.Empty,
+                    PhoneNumber = o.PhoneNumber ?? string.Empty,
+                    Tax = o.Tax ?? 0.0,  // Handle nullable Tax
+                    TotalAmount = o.TotalAmount ?? 0m, // Handle nullable TotalAmount
+                    CreatedAt = o.CreatedAt ?? DateTime.MinValue,
+                    UpdatedAt = o.UpdatedAt ?? DateTime.MinValue,
+                    Status = o.Status ?? string.Empty,
+                    OrderItems = o.OrderItems.Select(oi => new OrderItemDto
+                    {
+                        ProductId = oi.ProductId ?? 0, // Handle nullable ProductId
+                        ProductTitle = oi.Product.Title ?? string.Empty, // Handle null Product Title
+                        Quantity = oi.Quantity ?? 0, // Handle nullable Quantity
+                        Price = oi.Price ?? 0m, // Handle nullable Price
+                        ProductImage = oi.Product.Image1 ?? string.Empty // Handle null Image
+                    }).ToList()
+                })
+                .ToListAsync(); // Changed from FirstOrDefaultAsync to ToListAsync to return a list of orders
+
+            return orders;
+        }
+
         public async Task<List<OrderManageDTO>> GetAllOrdersAsync()
         {
             var orders = await _context.Orders.Include(o => o.User).ToListAsync();

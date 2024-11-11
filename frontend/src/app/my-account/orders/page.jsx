@@ -1,101 +1,122 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
+import axios from "@/utils/axios";
 
 function Orders() {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const handleLogout = () => {
-        Cookies.remove('token');
-        window.location.href = '/';
+  useEffect(() => {
+    // Fetch orders when the component mounts
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("/api/Order/user/orders");
+        setOrders(response.data); // Set orders data to state
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    return (
-        <main>
-            <div className="py-16 lg:py-20 px-0 xl:max-w-screen-xl mx-auto flex md:flex-row w-full">
-                <div className="flex flex-col md:flex-row w-full">
-                    <nav className="flex flex-col pb-2 md:w-2/6 2xl:w-4/12 ltr:md:pr-8 rtl:md:pl-8 ltr:lg:pr-12 rtl:lg:pl-12 ltr:xl:pr-16 rtl:xl:pl-16 ltr:2xl:pr-20 rtl:2xl:pl-20 md:pb-0">
-                        <Link
-                            className="flex items-center cursor-pointer text-sm lg:text-base text-black font-normal py-3.5 px-4 lg:px-5 rounded mb-2"
-                            href="/my-account"
-                        >
-                            <svg
-                                stroke="currentColor"
-                                fill="currentColor"
-                                strokeWidth={0}
-                                viewBox="0 0 512 512"
-                                className="w-5 h-5"
-                                height="1em"
-                                width="1em"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={32}
-                                    d="M80 212v236a16 16 0 0016 16h96V328a24 24 0 0124-24h80a24 24 0 0124 24v136h96a16 16 0 0016-16V212"
-                                />
-                                <path
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={32}
-                                    d="M480 256L266.89 52c-5-5.28-16.69-5.34-21.78 0L32 256m368-77V64h-48v69"
-                                />
-                            </svg>
-                            <span className="ltr:pl-2 rtl:pr-2 pl-2 pr-2">Dashboard</span>
-                        </Link>
-                        <Link
-                            className="bg-gray-100 font-semibold flex items-center cursor-pointer text-sm lg:text-base text-black py-3.5 px-4 lg:px-5 rounded mb-2 "
-                            href="/my-account/orders"
-                        >
-                            <svg
-                                stroke="currentColor"
-                                fill="currentColor"
-                                strokeWidth={0}
-                                viewBox="0 0 512 512"
-                                className="w-5 h-5"
-                                height="1em"
-                                width="1em"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <circle
-                                    cx={176}
-                                    cy={416}
-                                    r={16}
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={32}
-                                />
-                                <circle
-                                    cx={400}
-                                    cy={416}
-                                    r={16}
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={32}
-                                />
-                                <path
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={32}
-                                    d="M48 80h64l48 272h256"
-                                />
-                                <path
-                                    fill="none"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={32}
-                                    d="M160 288h249.44a8 8 0 007.85-6.43l28.8-144a8 8 0 00-7.85-9.57H128"
-                                />
-                            </svg>
-                            <span className="ltr:pl-2 rtl:pr-2 pl-2 pr-2">Orders</span>
-                        </Link>
-                        <Link
+    fetchOrders();
+  }, []);
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    window.location.href = "/";
+  };
+
+  return (
+    <main>
+      <div className="py-16 lg:py-20 px-0 xl:max-w-screen-xl mx-auto flex md:flex-row w-full">
+        <div className="flex flex-col md:flex-row w-full">
+          <nav className="flex flex-col pb-2 md:w-2/6 2xl:w-4/12 ltr:md:pr-8 rtl:md:pl-8 ltr:lg:pr-12 rtl:lg:pl-12 ltr:xl:pr-16 rtl:xl:pl-16 ltr:2xl:pr-20 rtl:2xl:pl-20 md:pb-0">
+            {/* Navigation links */}
+            <Link
+              className="flex items-center cursor-pointer text-sm lg:text-base text-black font-normal py-3.5 px-4 lg:px-5 rounded mb-2"
+              href="/my-account"
+            >
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                strokeWidth={0}
+                viewBox="0 0 512 512"
+                className="w-5 h-5"
+                height="1em"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={32}
+                  d="M80 212v236a16 16 0 0016 16h96V328a24 24 0 0124-24h80a24 24 0 0124 24v136h96a16 16 0 0016-16V212"
+                />
+                <path
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={32}
+                  d="M480 256L266.89 52c-5-5.28-16.69-5.34-21.78 0L32 256m368-77V64h-48v69"
+                />
+              </svg>
+              <span className="ltr:pl-2 rtl:pr-2 pl-2 pr-2">Dashboard</span>
+            </Link>
+            <Link
+              className="bg-gray-100 font-semibold flex items-center cursor-pointer text-sm lg:text-base text-black py-3.5 px-4 lg:px-5 rounded mb-2 "
+              href="/my-account/orders"
+            >
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                strokeWidth={0}
+                viewBox="0 0 512 512"
+                className="w-5 h-5"
+                height="1em"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx={176}
+                  cy={416}
+                  r={16}
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={32}
+                />
+                <circle
+                  cx={400}
+                  cy={416}
+                  r={16}
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={32}
+                />
+                <path
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={32}
+                  d="M48 80h64l48 272h256"
+                />
+                <path
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={32}
+                  d="M160 288h249.44a8 8 0 007.85-6.43l28.8-144a8 8 0 00-7.85-9.57H128"
+                />
+              </svg>
+              <span className="ltr:pl-2 rtl:pr-2 pl-2 pr-2">Orders</span>
+            </Link>
+            <Link
                             className="flex items-center cursor-pointer text-sm lg:text-base text-black font-normal py-3.5 px-4 lg:px-5 rounded mb-2"
                             href='/my-account/account-details'
                         >
@@ -173,105 +194,82 @@ function Orders() {
                             </svg>
                             <span className="ltr:pl-2 rtl:pr-2 pl-2 pr-2">Logout</span>
                         </button>
-                    </nav>
-                    <div className="md:w-4/6 2xl:w-8/12 mt-4 md:mt-0">
-                        <h2 className="mb-6 text-lg font-bold md:text-xl xl:text-2xl text-heading xl:mb-8">
-                            Orders
-                        </h2>
-                        <div
-                            className="w-full flex flex-col"
-                            style={{
-                                position: "relative",
-                                top: 0,
-                                opacity: 1,
-                                transform: "none",
-                                transformOrigin: "50% 50% 0px"
-                            }}
-                        >
-                            <table>
-                                <thead className="text-sm lg:text-base">
-                                    <tr>
-                                        <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right ltr:first:rounded-tl-md rtl:first:rounded-tr-md">
-                                            Order
-                                        </th>
-                                        <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right lg:text-center">
-                                            Date
-                                        </th>
-                                        <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right lg:text-center">
-                                            Status
-                                        </th>
-                                        <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right lg:text-center">
-                                            Total
-                                        </th>
-                                        <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right ltr:lg:text-right rtl:lg:text-left ltr:last:rounded-tr-md rtl:last:rounded-tl-md">
-                                            Actions
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="text-sm lg:text-base">
-                                    <tr className="border-b border-gray-300 last:border-b-0">
-                                        <td className="px-4 py-5 ltr:text-left rtl:text-right">
-                                            <a
-                                                className="underline hover:no-underline text-body"
-                                                href="/my-account/orders/3203"
-                                            >
-                                                #3203
-                                            </a>
-                                        </td>
-                                        <td className="px-4 py-5 ltr:text-left rtl:text-right lg:text-center text-black">
-                                            March 18, 2021
-                                        </td>
-                                        <td className="px-4 py-5 ltr:text-left rtl:text-right lg:text-center text-black">
-                                            Completed
-                                        </td>
-                                        <td className="px-4 py-5 ltr:text-left rtl:text-right lg:text-center text-black">
-                                            $16,950.00 for 93 items
-                                        </td>
-                                        <td className="px-4 py-5 ltr:text-right rtl:text-left text-center text-black">
-                                            <a
-                                                className="text-sm leading-4      bg-black text-white px-4 py-2.5 inline-block rounded-md hover:text-white hover:bg-gray-600"
-                                                href="/my-account/orders/3203"
-                                            >
-                                                view
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr className="border-b border-gray-300 last:border-b-0">
-                                        <td className="px-4 py-5 ltr:text-left rtl:text-right">
-                                            <a
-                                                className="underline hover:no-underline text-body"
-                                                href="/my-account/orders/3203"
-                                            >
-                                                #3203
-                                            </a>
-                                        </td>
-                                        <td className="px-4 py-5 ltr:text-left rtl:text-right lg:text-center text-black">
-                                            March 18, 2021
-                                        </td>
-                                        <td className="px-4 py-5 ltr:text-left rtl:text-right lg:text-center text-black">
-                                            Completed
-                                        </td>
-                                        <td className="px-4 py-5 ltr:text-left rtl:text-right lg:text-center text-black">
-                                            $16,950.00 for 93 items
-                                        </td>
-                                        <td className="px-4 py-5 ltr:text-right rtl:text-left text-center text-black">
-                                            <a
-                                                className="text-sm leading-4      bg-black text-white px-4 py-2.5 inline-block rounded-md hover:text-white hover:bg-gray-600"
-                                                href="/my-account/orders/3203"
-                                            >
-                                                view
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+          </nav>
 
-                </div>
-            </div>
+          <div className="md:w-4/6 2xl:w-8/12 lg:pl-8 xl:pl-16 2xl:pl-20 md:pb-0">
+  <h2 className="text-3xl font-semibold">Your Orders</h2>
+  <div
+    className="w-full flex flex-col"
+    style={{
+      position: "relative",
+      top: 0,
+      opacity: 1,
+      transform: "none",
+      transformOrigin: "50% 50% 0px"
+    }}
+  >
+    <table className="min-w-full">
+      <thead className="text-sm lg:text-base">
+        <tr>
+          <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right ltr:first:rounded-tl-md rtl:first:rounded-tr-md">
+            Order
+          </th>
+          <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right lg:text-center">
+            Date
+          </th>
+          <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right lg:text-center">
+            Status
+          </th>
+          <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right lg:text-center">
+            Total
+          </th>
+          <th className="p-4 font-semibold bg-gray-100 text-heading ltr:text-left rtl:text-right ltr:lg:text-right rtl:lg:text-left ltr:last:rounded-tr-md rtl:last:rounded-tl-md">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {loading ? (
+          <tr>
+            <td colSpan="5" className="text-center py-5">Loading...</td>
+          </tr>
+        ) : (
+          orders.map((order) => (
+            <tr key={order.orderId} className="border-b border-gray-300 last:border-b-0">
+              <td className="px-4 py-5 ltr:text-left rtl:text-right">
+                <a className="underline hover:no-underline text-body" href={`/my-account/orders/${order.orderId}`}>
+                  #{order.orderId}
+                </a>
+              </td>
+              <td className="px-4 py-5 ltr:text-left rtl:text-right lg:text-center text-black">
+                {order.createdAt}
+              </td>
+              <td className="px-4 py-5 ltr:text-left rtl:text-right lg:text-center text-black">
+                {order.status}
+              </td>
+              <td className="px-4 py-5 ltr:text-left rtl:text-right lg:text-center text-black">
+                ${order.totalAmount} for {order.orderItems.length} items
+              </td>
+              <td className="px-4 py-5 ltr:text-right rtl:text-left text-center text-black">
+                <a
+                  className="text-sm leading-4 bg-black text-white px-4 py-2.5 inline-block rounded-md hover:text-white hover:bg-gray-600"
+                  href={`/my-account/orders/${order.orderId}`}
+                >
+                  View
+                </a>
+              </td>
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
 
-        </main>
-    );
+        </div>
+      </div>
+    </main>
+  );
 }
+
 export default Orders;

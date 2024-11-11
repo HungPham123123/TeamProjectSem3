@@ -4,12 +4,11 @@ using ProjectSem3.Service;
 using ProjectSem3.DTOs;
 using System.Security.Claims;
 
-
 namespace ProjectSem3.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize] 
     public class CartController : ControllerBase
     {
         private readonly CartService _cartService;
@@ -39,8 +38,6 @@ namespace ProjectSem3.Controllers
             return result is IActionResult actionResult ? actionResult : BadRequest("Failed to add product.");
         }
 
-
-
         [HttpPut("update")]
         public IActionResult UpdateQuantity([FromBody] UpdateQuantityDto updateQuantityDto)
         {
@@ -53,7 +50,6 @@ namespace ProjectSem3.Controllers
             return result ? Ok("Quantity updated.") : BadRequest("Failed to update quantity.");
         }
 
-
         [HttpDelete("delete/{productId}")]
         public IActionResult DeleteProduct(int productId)
         {
@@ -64,14 +60,18 @@ namespace ProjectSem3.Controllers
             return result ? Ok("All instances of the product removed from cart.") : BadRequest("Failed to remove product.");
         }
 
-
         private int? GetUserId()
         {
+            // Extract the UserId from the JWT token.
             if (User.Identity is ClaimsIdentity identity)
             {
                 var userIdClaim = identity.FindFirst("UserId");
 
-                return userIdClaim != null ? int.Parse(userIdClaim.Value) : (int?)null;
+                // If the UserId claim is found, return it as an integer, otherwise return null.
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    return userId;
+                }
             }
             return null;
         }

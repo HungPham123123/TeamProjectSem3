@@ -222,10 +222,11 @@ namespace ProjectSem3.Service
         private string GenerateJwtToken(User user)
         {
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
-            };
+    {
+        new Claim(ClaimTypes.Name, user.Email),
+        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+        new Claim("UserId", user.UserId.ToString())  // Add this claim
+    };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -239,6 +240,7 @@ namespace ProjectSem3.Service
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
 
         private string HashPassword(string password)
         {

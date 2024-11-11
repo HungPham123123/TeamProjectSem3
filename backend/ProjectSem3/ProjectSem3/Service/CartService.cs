@@ -31,6 +31,7 @@ public class CartService
                     ProductTitle = ci.Product != null ? ci.Product.Title : string.Empty,
                     Quantity = ci.Quantity ?? 0,
                     Price = ci.Price ?? 0,
+                    ProductImage = ci.Product.Image1,
                     CreatedAt = ci.CreatedAt,
                     UpdatedAt = ci.UpdatedAt
                 }).ToList()

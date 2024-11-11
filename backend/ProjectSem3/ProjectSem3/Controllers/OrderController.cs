@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
 using ProjectSem3.Service.Interfaces;
+using System.Security.Claims;
 
 namespace ProjectSem3.Controllers
 {
@@ -64,6 +65,53 @@ namespace ProjectSem3.Controllers
         {
             var orders = await _orderService.SearchOrdersAsync(keyword);
             return Ok(orders);
+        }
+
+        // Get all orders for the authenticated user
+        [HttpGet("user/orders")]
+        public async Task<IActionResult> GetAllUserOrders()
+        {
+            var userId = GetUserId();  // Method to fetch the user ID
+            if (userId == null) return Unauthorized("User not authorized.");
+
+            var orders = await _orderService.GetAllOrdersForUser(userId.Value);
+
+            if (orders == null || !orders.Any())
+                return NotFound("No orders found for the user.");
+
+            return Ok(orders);
+        }
+
+        // Get a specific order by its ID for the authenticated user
+        [HttpGet("user/order/{orderId}")]
+        public async Task<IActionResult> GetUserOrderById(int orderId)
+        {
+            var userId = GetUserId();  // Method to fetch the user ID
+            if (userId == null) return Unauthorized("User not authorized.");
+
+            var order = await _orderService.UserOrderByIds(orderId);
+
+            if (order == null)
+                return NotFound("Order not found for the user.");
+
+            return Ok(order);
+        }
+
+
+        private int? GetUserId()
+        {
+            // Extract the UserId from the JWT token.
+            if (User.Identity is ClaimsIdentity identity)
+            {
+                var userIdClaim = identity.FindFirst("UserId");
+
+                // If the UserId claim is found, return it as an integer, otherwise return null.
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    return userId;
+                }
+            }
+            return null;
         }
     }
 }

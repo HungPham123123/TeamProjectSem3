@@ -1,19 +1,20 @@
 import axios from "axios";
+import Cookies from "js-cookie";  // Import js-cookie
 
-// Thiết lập mặc định cho axios
+// Create Axios instance
 const instance = axios.create({
-  baseURL: 'https://localhost:7071', // Thay bằng URL của backend của bạn
+  baseURL: 'https://localhost:7071', // Backend URL
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Thêm interceptor để xử lý các yêu cầu trước khi gửi và các phản hồi
+// Add request interceptor to include token from cookie
 instance.interceptors.request.use(
   (config) => {
-    // Bạn có thể thêm token vào đây nếu cần
-    const token = localStorage.getItem('token');
+    // Get token from cookie
+    const token = Cookies.get('token');  // Assuming 'token' is the cookie name
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -24,6 +25,7 @@ instance.interceptors.request.use(
   }
 );
 
+// Add response interceptor (optional)
 instance.interceptors.response.use(
   (response) => {
     return response;

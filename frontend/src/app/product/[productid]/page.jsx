@@ -9,6 +9,7 @@ import Link from 'next/link';
 function ProductDetail({ params }) {
     const { productid } = use(params);
     const [product, setProduct] = useState(null);
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
         if (productid) {
@@ -18,112 +19,110 @@ function ProductDetail({ params }) {
                     console.log(response.data);
                 })
                 .catch((error) => {
-                    console.error("Error fetching product details:", error);
+                    console.log("Error fetching product details:", error);
                 });
         }
     }, [productid]);
+
+    const handleQuantityChange = (type) => {
+        setQuantity((prevQuantity) => {
+            if (type === 'increment') {
+                return prevQuantity + 1;
+            } else if (type === 'decrement' && prevQuantity > 1) {
+                return prevQuantity - 1;
+            }
+            return prevQuantity;
+        });
+    };
+
+    const addToCart = () => {
+        axios.post('/api/Cart/add', {
+            productId: productid,
+            quantity
+        })
+        .then((response) => {
+            console.log("Added to cart:", response.data);
+            alert("Product added to cart!");
+        })
+        .catch((error) => {
+            console.log(error)
+            alert(error.response?.data || "Failed to add product to cart.");
+        });
+    };
 
     if (!product) {
         return <div>Loading...</div>;
     }
 
 
-    const tracks = [
-        {
-            id: 1,
-            name: "The Weeknd - Starboy ft. Daft Punk",
-            date: "25 November, 2016",
-            imgUrl: "/img/album1.jpg",
-            videoUrl: "https://www.youtube.com/watch?v=Rif-RTvmmss"
-        }
-    ];
-
 
     return (
         <>
-            <div className="block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start px-4 md:px-8 2xl:px-16">
-                <div className="col-span-5 grid grid-cols-2 gap-2.5">
-                    <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-                        {product.image1 && <img src={product.image1} alt={product.title} className="object-cover w-full" />}
+          <div className="block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start px-4 md:px-8 2xl:px-16">
+            <div className="col-span-5 grid grid-cols-2 gap-2.5">
+                {/* Product images */}
+                {[product.image1, product.image2, product.image3, product.image4].map((image, idx) => (
+                    image && <div key={idx} className="col-span-1 transition duration-150 ease-in hover:opacity-90">
+                        <img src={image} alt={product.title} className="object-cover w-full" />
                     </div>
-                    <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-                        {product.image2 && <img src={product.image2} alt={product.title} className="object-cover w-full" />}
+                ))}
+            </div>
+            <div className="col-span-4 pt-8 lg:pt-0">
+                <h2 className="text-heading text-lg md:text-xl lg:text-2xl 2xl:text-3xl font-bold hover:text-black mb-3.5">
+                    {product.title}
+                </h2>
+                <p className="text-body text-sm lg:text-base leading-6 lg:leading-8">
+                    {product.albums[0]?.biography}
+                </p>
+                <div className="flex items-center mt-5">
+                    <div className="text-heading font-bold text-base md:text-xl lg:text-2xl 2xl:text-4xl mr-2">
+                        ${product.price}
                     </div>
-                    <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-                        {product.image3 && <img src={product.image3} alt={product.title} className="object-cover w-full" />}
-                    </div>
-                    <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-                        {product.image4 && <img src={product.image4} alt={product.title} className="object-cover w-full" />}
-                    </div>
-
+                    {product.oldPrice && (
+                        <span className="line-through font-segoe text-gray-400 text-sm md:text-base lg:text-lg xl:text-xl">
+                            ${product.oldPrice}
+                        </span>
+                    )}
                 </div>
-                <div className="col-span-4 pt-8 lg:pt-0">
-                    <div className="pb-7 mb-7 border-b border-gray-300">
-                        <h2 className="text-heading text-lg md:text-xl lg:text-2xl 2xl:text-3xl font-bold hover:text-black mb-3.5">
-                            {product.title}
-                        </h2>
-                        <p className="text-body text-sm lg:text-base leading-6 lg:leading-8">
-                            {product.albums[0]?.biography}
-                        </p>
-                        <div className="flex items-center mt-5">
-                            <div className="text-heading font-bold text-base md:text-xl lg:text-2xl 2xl:text-4xl mr-2">
-                                ${product.price}
-                            </div>
-                            {product.oldPrice && (
-                                <span className="line-through font-segoe text-gray-400 text-sm md:text-base lg:text-lg xl:text-xl">
-                                    ${product.oldPrice}
-                                </span>
-                            )}
-                        </div>
-                    </div>
 
-                    <div className="flex items-center gap-x-4 ltr:md:pr-32 rtl:md:pl-32 ltr:lg:pr-12 rtl:lg:pl-12 ltr:2xl:pr-32 rtl:2xl:pl-32 ltr:3xl:pr-48 rtl:3xl:pl-48 border-b border-gray-300 py-8">
-                        <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 border h-11 md:h-12 border-gray-300">
-                            <button
-                                className="flex items-center justify-center flex-shrink-0 h-full transition ease-in-out duration-300 focus:outline-none w-10 md:w-12 text-heading border-e border-gray-300 hover:text-white hover:bg-heading"
-                                disabled=""
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12px" height="2px" viewBox="0 0 12 1.5"
-                                >
-                                    <rect data-name="Rectangle 970" width="12px" height="2px" fill="currentColor"
-                                    />
-                                </svg>
-                            </button>
-                            <span className="font-semibold flex items-center justify-center h-full  transition-colors duration-250 ease-in-out cursor-default flex-shrink-0 text-base text-heading w-12  md:w-20 xl:w-24">
-                                1
-                            </span>
-                            <button className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-10 md:w-12 text-heading border-s border-gray-300 hover:text-white hover:bg-heading">
-                                <svg data-name="plus (2)" xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" viewBox="0 0 12 12"
-                                > <g data-name="Group 5367">
-                                        <path data-name="Path 17138" d="M6.749,5.251V0h-1.5V5.251H0v1.5H5.251V12h1.5V6.749H12v-1.5Z" fill="currentColor"
-                                        />
-                                    </g>
-                                </svg>
-                            </button>
-                        </div>
+                {/* Quantity Selector */}
+                <div className="flex items-center gap-x-4 py-8">
+                    <div className="group flex items-center border rounded-md overflow-hidden h-11 md:h-12">
                         <button
-                            data-variant="slim"
-                            className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  h-11 md:h-12 px-5 bg-black text-white py-2 transform-none normal-case hover:text-white hover:bg-gray-600 hover:shadow-cart w-1/2 md:w-6/12 xl:w-1-2  hover:bg-gray-400"
-                            disabled=""
+                            onClick={() => handleQuantityChange('decrement')}
+                            className="w-10 md:w-12 flex justify-center items-center border-r"
                         >
-                            <span className="py-2 3xl:px-8">Add to cart</span>
+                            -
+                        </button>
+                        <span className="w-12 md:w-20 flex justify-center items-center text-heading font-semibold">
+                            {quantity}
+                        </span>
+                        <button
+                            onClick={() => handleQuantityChange('increment')}
+                            className="w-10 md:w-12 flex justify-center items-center border-l"
+                        >
+                            +
                         </button>
                     </div>
-                    <div className="py-6">
-                        <ul className="text-sm space-y-5 pb-1">
-                            <li>
-                                <span className="font-semibold text-heading inline-block ltr:pr-2 rtl:pl-2">
-                                    SKU:
-                                </span>
-                                {product.productId}
-                            </li>
-                        </ul>
-                    </div>
 
+                    <button
+                        onClick={addToCart}
+                        className="h-11 md:h-12 px-5 bg-black text-white font-semibold rounded-md"
+                    >
+                        Add to Cart
+                    </button>
+                </div>
 
-
+                {/* Product Details */}
+                <div className="py-6">
+                    <ul className="text-sm space-y-5 pb-1">
+                        <li>
+                            <span className="font-semibold">SKU:</span> {product.productId}
+                        </li>
+                    </ul>
                 </div>
             </div>
+        </div>
 
             <div className="tab-contents w-full min-h-[400px] px-4 md:px-8 2xl:px-16">
                 <div className="container-x mx-auto">
