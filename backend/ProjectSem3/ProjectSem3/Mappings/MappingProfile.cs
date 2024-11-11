@@ -31,9 +31,23 @@ public class MappingProfile : Profile
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
                 .ReverseMap();
 
-        CreateMap<Order, OrderManageDTO>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username))
-                .ReverseMap();
+        // Cấu hình Order -> OrderResponseDTO
+        CreateMap<Order, OrderResponseDTO>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Username))
+            .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => src.Payment.PaymentMethod))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
+            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
+            .ForMember(dest => dest.Tax, opt => opt.MapFrom(src => src.Tax))
+            .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => src.TotalAmount))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+            .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems))
+            .ReverseMap();
+
+        // Cấu hình OrderUpdateDTO -> Order
+        CreateMap<OrderUpdateDTO, Order>()
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
+            .ReverseMap();
 
         CreateMap<News, NewsManageDTO>()
                 .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.Username))
@@ -48,7 +62,8 @@ public class MappingProfile : Profile
         CreateMap<Promotion, PromotionManageDTO>()
                 .ForMember(dest => dest.ProductTitle, opt => opt.MapFrom(src => src.Product.Title))
                 .ReverseMap();
-
+        CreateMap<UpdateUserDTO, User>()
+                .ForMember(dest => dest.Username, opt => opt.Ignore()); // Không ánh xạ Username
     }
 
 }

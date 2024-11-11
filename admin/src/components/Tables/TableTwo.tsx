@@ -3,22 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
-import { Product } from "@/types/product"; // Nếu cần sửa lại định nghĩa
 
 const TableTwo = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Để lưu sản phẩm cần sửa
-  const [newProduct, setNewProduct] = useState<Product>({
-    title: "",
-    price: 0,
-    rating: 0,
-    status: "",
-    releaseDate: "",
-    image1: "",
-    productType: "",
-    stockQuantity: 0,
-    categoryName: "",
-  }); // Để lưu sản phẩm mới
+  const [products, setProducts] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null); // Để lưu sản phẩm cần sửa
+  const [newProduct, setNewProduct] = useState<any>({}); // Để lưu sản phẩm mới
   const [isModalOpen, setIsModalOpen] = useState(false); // Điều khiển hiển thị popup
   const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Điều khiển popup thêm sản phẩm
   const [searchTerm, setSearchTerm] = useState(""); // Tìm kiếm sản phẩm

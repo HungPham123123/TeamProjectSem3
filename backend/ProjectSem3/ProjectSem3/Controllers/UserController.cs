@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
+using ProjectSem3.Service;
 using ProjectSem3.Service.Interfaces;
 
 namespace ProjectSem3.Controllers
@@ -50,24 +51,19 @@ namespace ProjectSem3.Controllers
 
         // Cập nhật người dùng
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserManageDTO userDto)
+        public async Task<IActionResult> UpdateUser(int id, UpdateUserDTO userDto)
         {
-            if (id != userDto.UserId)
-            {
-                return BadRequest("User ID mismatch");
-            }
-
             try
             {
-                await _userManageService.UpdateUserAsync(userDto);
+                await _userManageService.UpdateUserAsync(id, userDto);
+                return Ok(new { Message = "User updated successfully" });
             }
-            catch (KeyNotFoundException)
+            catch (Exception ex)
             {
-                return NotFound("User not found");
+                return BadRequest(new { Message = ex.Message });
             }
-
-            return Ok(userDto);
         }
+
 
         // Xóa người dùng (disable)
         [HttpDelete("{id}")]
