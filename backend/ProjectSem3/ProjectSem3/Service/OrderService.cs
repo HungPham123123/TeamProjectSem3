@@ -18,55 +18,50 @@ namespace ProjectSem3.Service
             _mapper = mapper;
         }
 
-        public async Task<List<OrderManageDTO>> GetAllOrdersAsync()
+        public async Task<List<OrderResponseDTO>> GetAllOrdersAsync()
         {
-            var orders = await _context.Orders.Include(o => o.User).ToListAsync();
-            return _mapper.Map<List<OrderManageDTO>>(orders);
+            var orders = await _context.Orders.Include(o => o.User).Include(o => o.Payment).ToListAsync();
+            return _mapper.Map<List<OrderResponseDTO>>(orders);
         }
 
-        public async Task<OrderManageDTO?> GetOrderByIdAsync(int orderId)
+        public async Task<OrderResponseDTO> GetOrderByIdAsync(int orderId)
         {
-            var order = await _context.Orders.Include(o => o.User)
-                                  .FirstOrDefaultAsync(o => o.OrderId == orderId);
-            return _mapper.Map<OrderManageDTO>(order);
+            var order = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.Payment)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            return order == null ? null : _mapper.Map<OrderResponseDTO>(order);
         }
 
-        public async Task AddOrderAsync(OrderManageDTO orderDto)
+        public async Task<bool> UpdateOrderAsync(int orderId, OrderUpdateDTO orderUpdateDTO)
         {
-            var order = _mapper.Map<Order>(orderDto);
-            order.CreatedAt = DateTime.UtcNow;
-            order.UpdatedAt = DateTime.UtcNow;
-            _context.Orders.Add(order);
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+            if (order == null) return false;
+
+            _mapper.Map(orderUpdateDTO, order);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task UpdateOrderAsync(OrderManageDTO orderDto)
+        public async Task<bool> DeleteOrderAsync(int orderId)
         {
-            var order = await _context.Orders.FindAsync(orderDto.OrderId);
-            if (order == null) throw new KeyNotFoundException("Order không tìm thấy.");
-
-            _mapper.Map(orderDto, order);
-            order.UpdatedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteOrderAsync(int orderId)
-        {
-            var order = await _context.Orders.FindAsync(orderId);
-            if (order == null) throw new KeyNotFoundException("Order không tìm thấy.");
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+            if (order == null) return false;
 
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<List<OrderManageDTO>> SearchOrdersAsync(string keyword)
+        public async Task<List<OrderResponseDTO>> SearchOrdersAsync(string keyword)
         {
             var orders = await _context.Orders
                 .Where(o => o.PhoneNumber.Contains(keyword) || o.OrderId.ToString() == keyword)
                 .Include(o => o.User)
                 .ToListAsync();
 
-            return _mapper.Map<List<OrderManageDTO>>(orders);
+            return _mapper.Map<List<OrderResponseDTO>>(orders);
         }
     }
 }

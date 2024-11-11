@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
+using ProjectSem3.Service;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using ProjectSem3.Service.Interfaces;
 
 namespace ProjectSem3.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/orders")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -15,7 +18,7 @@ namespace ProjectSem3.Controllers
             _orderService = orderService;
         }
 
-        // Lấy danh sách tất cả đơn hàng
+        // Lấy tất cả đơn hàng
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
@@ -23,30 +26,29 @@ namespace ProjectSem3.Controllers
             return Ok(orders);
         }
 
-        // Lấy đơn hàng theo ID
+        // Lấy chi tiết một đơn hàng theo ID
         [HttpGet("{orderId}")]
         public async Task<IActionResult> GetOrderById(int orderId)
         {
-            var order = await _orderService.GetOrderByIdAsync(orderId);
-            if (order == null) return NotFound("Order không tìm thấy.");
+            var orderResponse = await _orderService.GetOrderByIdAsync(orderId);
+            if (orderResponse == null)
+            {
+                return NotFound();
+            }
 
-            return Ok(order);
-        }
-
-        // Thêm mới đơn hàng
-        [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody] OrderManageDTO orderDto)
-        {
-            await _orderService.AddOrderAsync(orderDto);
-            return CreatedAtAction(nameof(GetOrderById), new { orderId = orderDto.OrderId }, orderDto);
+            return Ok(orderResponse);
         }
 
         // Cập nhật đơn hàng
         [HttpPut("{orderId}")]
-        public async Task<IActionResult> UpdateOrder(int orderId, [FromBody] OrderManageDTO orderDto)
+        public async Task<IActionResult> UpdateOrder(int orderId, [FromBody] OrderUpdateDTO orderUpdateDTO)
         {
-            if (orderId != orderDto.OrderId) return BadRequest("ID đơn hàng không khớp.");
-            await _orderService.UpdateOrderAsync(orderDto);
+            var updated = await _orderService.UpdateOrderAsync(orderId, orderUpdateDTO);
+            if (!updated)
+            {
+                return NotFound();
+            }
+
             return NoContent();
         }
 
@@ -54,16 +56,21 @@ namespace ProjectSem3.Controllers
         [HttpDelete("{orderId}")]
         public async Task<IActionResult> DeleteOrder(int orderId)
         {
-            await _orderService.DeleteOrderAsync(orderId);
+            var deleted = await _orderService.DeleteOrderAsync(orderId);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
             return NoContent();
         }
 
-        // Tìm kiếm đơn hàng
+        // Tìm kiếm đơn hàng (sử dụng phương thức SearchOrdersAsync đã có)
         [HttpGet("search")]
         public async Task<IActionResult> SearchOrders([FromQuery] string keyword)
         {
-            var orders = await _orderService.SearchOrdersAsync(keyword);
-            return Ok(orders);
+            var searchResults = await _orderService.SearchOrdersAsync(keyword);
+            return Ok(searchResults);
         }
     }
 }
