@@ -37,11 +37,12 @@ builder.Services.AddScoped<ISGMService<MovieDTO>, MovieService>();
 builder.Services.AddScoped<IUserManageService, UserManageService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<IProductManageService, ProductManageService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+/*builder.Services.AddScoped<IOrderService, OrderService>();*/
 builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IReviewService, ProjectReviewService>(); // Specify the project ReviewService
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 builder.Services.AddScoped<PaymentService>();
+builder.Services.AddScoped<FilterService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

@@ -8,10 +8,12 @@ import axios from "@/utils/axios";
 import LoginPages from './login';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
+import Search from './search';
 
 function Navbar() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [token, setToken] = useState(null);
   const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
   const [cart, setCart] = useState(null);
@@ -83,12 +85,15 @@ function Navbar() {
     setIsLanguagePopupOpen(!isLanguagePopupOpen);
   };
 
+  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
+
   const calculateCartTotal = () => {
     return cart?.cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2);
   };
 
   return (
     <>
+   {isSearchOpen && <Search onClose={toggleSearch} />}
       <header
         id="siteHeader"
         className="relative z-20 w-full h-16 sm:h-20 lg:h-24 is-scrolling"
@@ -263,6 +268,7 @@ function Navbar() {
             </div>
             <div className="items-center justify-end flex-shrink-0 hidden lg:flex gap-x-6 lg:gap-x-5 xl:gap-x-8 2xl:gap-x-10 ltr:ml-auto rtl:mr-auto">
               <button
+                onClick={toggleSearch}
                 className="relative flex items-center justify-center flex-shrink-0 h-auto transform focus:outline-none"
                 aria-label="search-button"
               >
