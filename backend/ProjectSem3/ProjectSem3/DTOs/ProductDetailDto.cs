@@ -16,6 +16,9 @@
         public string? ProductType { get; set; }
         public int? StockQuantity { get; set; }
 
-        public ICollection<AlbumDto> Albums { get; set; }
+        // Relationships
+        public ICollection<AlbumDto> Albums { get; set; } = new List<AlbumDto>();
+        public ICollection<GameDTO> Games { get; set; } = new List<GameDTO>();
+        public ICollection<MovieDTO> Movies { get; set; } = new List<MovieDTO>();
     }
 }
