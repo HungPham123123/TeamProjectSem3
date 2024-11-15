@@ -4,12 +4,12 @@ namespace ProjectSem3.Service.Interfaces
 {
     public interface IOrderService
     {
-        Task<List<OrderManageDTO>> GetAllOrdersAsync();
-        Task<OrderManageDTO?> GetOrderByIdAsync(int orderId);
-        Task AddOrderAsync(OrderManageDTO orderDto);
-        Task UpdateOrderAsync(OrderManageDTO orderDto);
+        Task<List<OrderResponseDTO>> GetAllOrdersAsync();
+        Task<OrderResponseDTO?> GetOrderByIdAsync(int orderId);
+        Task AddOrderAsync(OrderResponseDTO orderDto);
+        Task UpdateOrderAsync(OrderUpdateDTO orderDto);
         Task DeleteOrderAsync(int orderId);
-        Task<List<OrderManageDTO>> SearchOrdersAsync(string keyword);
+        Task<List<OrderResponseDTO>> SearchOrdersAsync(string keyword);
         Task<OrderDto?> UserOrderByIds(int orderId);
         Task<List<OrderDto>> GetAllOrdersForUser(int userId);
     }
