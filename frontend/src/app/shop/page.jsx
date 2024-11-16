@@ -6,25 +6,111 @@ import Link from 'next/link';
 import axios from "@/utils/axios";
 
 const Shop = () => {
-  const [sortOption, setSortOption] = useState('default');
+  const [sortOption, setSortOption] = useState("default");
   const [products, setProducts] = useState([]);
+  const [AlbumProduct, setAlbumProduct] = useState([]);
+  const [MovieProduct, setMovieProduct] = useState([]);
+  const [GameProduct, setGameProduct] = useState([]);
+  const [selectedFilters, setSelectedFilters] = useState({
+    music: false,
+    movie: false,
+    game: false,
+  });
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("/api/Products");
+      setProducts(response.data);
+    } catch (error) {
+      console.log("Error fetching products:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    if (!selectedFilters.music && !selectedFilters.movie && !selectedFilters.game) {
+      fetchProducts();
+    }
+  }, [selectedFilters]);
+
+  const handleFilterChange = (e) => {
+    const { name, checked } = e.target;
+    setSelectedFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: checked,
+    }));
+  };
+
+  useEffect(() => {
+    const fetchFilteredProducts = async () => {
       try {
-        const response = await axios.get('/api/Products');
-        setProducts(response.data);
+        let albumResponse, movieResponse, gameResponse;
+
+        if (selectedFilters.music) {
+          albumResponse = await axios.get("/api/Filter/albums");
+          setAlbumProduct(albumResponse.data);
+        } else {
+          setAlbumProduct([]);
+        }
+
+        if (selectedFilters.movie) {
+          movieResponse = await axios.get("/api/Filter/movies");
+          setMovieProduct(movieResponse.data);
+        } else {
+          setMovieProduct([]);
+        }
+
+        if (selectedFilters.game) {
+          gameResponse = await axios.get("/api/Filter/games");
+          setGameProduct(gameResponse.data);
+        } else {
+          setGameProduct([]);
+        }
       } catch (error) {
-        console.log("Error fetching products:", error);
+        console.log("Error fetching filtered products:", error);
       }
     };
 
-    fetchProducts();
-  }, []);
+    if (selectedFilters.music || selectedFilters.movie || selectedFilters.game) {
+      fetchFilteredProducts();
+    }
+  }, [selectedFilters]);
 
   const handleSortChange = (e) => {
     setSortOption(e.target.value);
   };
+
+  // Combine all filtered products
+  const filteredProducts = [...AlbumProduct, ...MovieProduct, ...GameProduct];
+  const productsToDisplay = selectedFilters.music || selectedFilters.movie || selectedFilters.game ? filteredProducts : products;
+
+  // Function to sort products based on the selected option
+  const sortProducts = (products) => {
+    switch (sortOption) {
+      case "price-asc":
+        return products.sort((a, b) => a.price - b.price);
+      case "price-desc":
+        return products.sort((a, b) => b.price - a.price);
+      case "newest":
+        return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      case "popular":
+        return products.sort((a, b) => b.popularity - a.popularity); // Assuming there's a `popularity` field
+      default:
+        return products; // No sorting, default
+    }
+  };
+
+  const sortedProducts = sortProducts(productsToDisplay);
+
+  // Clear All Filters and Sorting
+  const clearAll = () => {
+    setSelectedFilters({
+      music: false,
+      movie: false,
+      game: false,
+    });
+    setSortOption("default");
+  };
+
 
   return (
     <main
@@ -56,36 +142,51 @@ const Shop = () => {
                 </div>
               </div>
               <div className="pt-1">
-                <div className="block border-b border-gray-300 pb-7 mb-7">
+                <div className="block border-b border-gray-300 pb-7 mb-7 h-48">
                   <div className="flex items-center justify-between mb-2.5">
                     <h2 className="font-semibold text-heading text-xl md:text-2xl">
                       Filters
                     </h2>
                     <button
+                      onClick={() => {
+                        setSelectedFilters({ music: false, movie: false, game: false });
+                        setSortOption("default");
+                      }}
                       className="flex-shrink text-xs mt-0.5 transition duration-150 ease-in focus:outline-none hover:text-heading"
                       aria-label="Clear All"
                     >
                       Clear All
                     </button>
                   </div>
+
                   <div className="flex flex-wrap -m-1.5 pt-2">
-                    <div className="group flex flex-shrink-0 m-1.5 items-center border border-gray-300 bg-borderBottom rounded-lg text-xs px-3.5 py-2.5 capitalize text-heading cursor-pointer transition duration-200 ease-in-out hover:border-heading">
-                      t-shit-shirtrt
-                      <svg
-                        stroke="currentColor"
-                        fill="currentColor"
-                        strokeWidth={0}
-                        viewBox="0 0 512 512"
-                        className="text-sm text-body ltr:ml-2 rtl:mr-2 flex-shrink-0 ltr:-mr-0.5 rtl:-ml-0.5 mt-0.5 transition duration-200 ease-in-out group-hover:text-heading"
-                        height="1em"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" />
-                      </svg>
-                    </div>
+                    {selectedFilters.music && (
+                      <div className="group flex items-center m-1.5 border border-gray-300 bg-borderBottom rounded-lg text-xs px-3.5 py-2.5 capitalize text-heading cursor-pointer transition duration-200 ease-in-out hover:border-heading">
+                        Music
+                      </div>
+                    )}
+                    {selectedFilters.movie && (
+                      <div className="group flex items-center m-1.5 border border-gray-300 bg-borderBottom rounded-lg text-xs px-3.5 py-2.5 capitalize text-heading cursor-pointer transition duration-200 ease-in-out hover:border-heading">
+                        Movie
+                      </div>
+                    )}
+                    {selectedFilters.game && (
+                      <div className="group flex items-center m-1.5 border border-gray-300 bg-borderBottom rounded-lg text-xs px-3.5 py-2.5 capitalize text-heading cursor-pointer transition duration-200 ease-in-out hover:border-heading">
+                        Game
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap -m-1.5 pt-2">
+                    {sortOption !== "default" && (
+                      <div className="group flex items-center m-1.5 border border-gray-300 bg-borderBottom rounded-lg text-xs px-3.5 py-2.5 capitalize text-heading cursor-pointer transition duration-200 ease-in-out hover:border-heading">
+                        Sort by: {sortOption.replace("-", " ")}
+                      </div>
+                    )}
                   </div>
                 </div>
+
+
                 <div className="block border-b border-gray-300 pb-7 mb-7">
                   <h3 className="text-heading text-sm md:text-base font-semibold mb-7">
                     Category
@@ -95,111 +196,38 @@ const Shop = () => {
                       <input
                         type="checkbox"
                         className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="woman"
-                        defaultValue="woman"
+                        name="music"
+                        checked={selectedFilters.music}
+                        onChange={handleFilterChange}
                       />
                       <span className="ms-4 -mt-0.5">Music</span>
                     </label>
+
                     <label className="group flex items-center text-heading text-sm cursor-pointer">
                       <input
                         type="checkbox"
                         className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="man"
-                        defaultValue="man"
+                        name="movie"
+                        checked={selectedFilters.movie}
+                        onChange={handleFilterChange}
                       />
                       <span className="ms-4 -mt-0.5">Movie</span>
                     </label>
+
                     <label className="group flex items-center text-heading text-sm cursor-pointer">
                       <input
                         type="checkbox"
                         className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="watch"
-                        defaultValue="watch"
+                        name="game"
+                        checked={selectedFilters.game}
+                        onChange={handleFilterChange}
                       />
                       <span className="ms-4 -mt-0.5">Game</span>
                     </label>
 
                   </div>
                 </div>
-                <div className="block border-b border-gray-300 pb-7 mb-7">
-                  <h3 className="text-heading text-sm md:text-base font-semibold mb-7">
-                    Price
-                  </h3>
-                  <div className="mt-2 flex flex-col space-y-4">
-                    <label className="group flex items-center text-heading text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="under $50"
-                        defaultValue="0-50"
-                      />
-                      <span className="ms-4 -mt-0.5">Under $50</span>
-                    </label>
-                    <label className="group flex items-center text-heading text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="$50 to $100"
-                        defaultValue="50-100"
-                      />
-                      <span className="ms-4 -mt-0.5">$50 to $100</span>
-                    </label>
-                    <label className="group flex items-center text-heading text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="$100 to $150"
-                        defaultValue="100-150"
-                      />
-                      <span className="ms-4 -mt-0.5">$100 to $150</span>
-                    </label>
-                    <label className="group flex items-center text-heading text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="$150 to $200"
-                        defaultValue="150-200"
-                      />
-                      <span className="ms-4 -mt-0.5">$150 to $200</span>
-                    </label>
-                    <label className="group flex items-center text-heading text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="$200 to $300"
-                        defaultValue="200-300"
-                      />
-                      <span className="ms-4 -mt-0.5">$200 to $300</span>
-                    </label>
-                    <label className="group flex items-center text-heading text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="$300 to $500"
-                        defaultValue="300-500"
-                      />
-                      <span className="ms-4 -mt-0.5">$300 to $500</span>
-                    </label>
-                    <label className="group flex items-center text-heading text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="$500 to $1000"
-                        defaultValue="500-1000"
-                      />
-                      <span className="ms-4 -mt-0.5">$500 to $1000</span>
-                    </label>
-                    <label className="group flex items-center text-heading text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                        name="over $1000"
-                        defaultValue="1000-"
-                      />
-                      <span className="ms-4 -mt-0.5">Over $1000</span>
-                    </label>
-                  </div>
-                </div>
+                    
               </div>
             </div>
           </div>
@@ -209,9 +237,6 @@ const Shop = () => {
                 Casual Wear
               </h1>
               <div className="flex items-center justify-end">
-                <div className="flex-shrink-0 text-body text-xs md:text-sm leading-4 ltr:pr-4 rtl:pl-4 ltr:md:mr-6 rtl:md:ml-6 ltr:pl-2 rtl:pr-2 hidden lg:block">
-                  9,608 items
-                </div>
                 <div className="relative ltr:ml-2 ltr:lg:ml-0 rtl:lg:mr-0 z-10 min-w-[180px]">
                   <select
                     className="border border-gray-300 text-heading text-[13px] md:text-sm font-semibold relative w-full py-2 ltr:pl-3 rtl:pr-3 ltr:pr-10 rtl:pl-10 ltr:text-left rtl:text-right bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm cursor-pointer"
@@ -221,14 +246,12 @@ const Shop = () => {
                     <option value="default">Sorting Options</option>
                     <option value="price-asc">Price: Low to High</option>
                     <option value="price-desc">Price: High to Low</option>
-                    <option value="newest">Newest Arrivals</option>
-                    <option value="popular">Most Popular</option>
                   </select>
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 lg:gap-x-5 xl:gap-x-7 gap-y-3 xl:gap-y-5 2xl:gap-y-8 ">
-              {products.map((product) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 lg:gap-x-5 xl:gap-x-7 gap-y-3 xl:gap-y-5 2xl:gap-y-8">
+              {productsToDisplay.map((product) => (
                 <Link
                   key={product.productId}
                   href={`/product/${product.productId}`}

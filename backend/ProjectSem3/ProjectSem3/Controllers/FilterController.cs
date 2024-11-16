@@ -10,46 +10,45 @@ namespace ProjectSem3.Controllers
     {
         private readonly FilterService _filterService;
 
-        // Inject the FilterService via constructor
         public FilterController(FilterService filterService)
         {
             _filterService = filterService;
         }
 
-        // Endpoint to get all game product details
-        [HttpGet("games")]
-        public ActionResult<List<ProductDetailDto>> GetAllGameProductDetails()
-        {
-            var gameProductDetails = _filterService.GetAllGameProductDetails();
-            if (gameProductDetails == null || gameProductDetails.Count == 0)
-            {
-                return NotFound("No game products found.");
-            }
-            return Ok(gameProductDetails);
-        }
-
-        // Endpoint to get all movie product details
-        [HttpGet("movies")]
-        public ActionResult<List<ProductDetailDto>> GetAllMovieProductDetails()
-        {
-            var movieProductDetails = _filterService.GetAllMovieProductDetails();
-            if (movieProductDetails == null || movieProductDetails.Count == 0)
-            {
-                return NotFound("No movie products found.");
-            }
-            return Ok(movieProductDetails);
-        }
-
-        // Endpoint to get all album product details
+        // Get all albums
         [HttpGet("albums")]
-        public ActionResult<List<ProductDetailDto>> GetAllAlbumProductDetails()
+        public async Task<IActionResult> GetAllAlbums()
         {
-            var albumProductDetails = _filterService.GetAllAlbumProductDetails();
-            if (albumProductDetails == null || albumProductDetails.Count == 0)
+            var albums = await _filterService.GetAllAlbumsAsync();
+            if (albums == null || albums.Count == 0)
             {
-                return NotFound("No album products found.");
+                return NotFound(new { message = "No albums found." });
             }
-            return Ok(albumProductDetails);
+            return Ok(albums);
+        }
+
+        // Get all movies
+        [HttpGet("movies")]
+        public async Task<IActionResult> GetAllMovies()
+        {
+            var movies = await _filterService.GetAllMoviesAsync();
+            if (movies == null || movies.Count == 0)
+            {
+                return NotFound(new { message = "No movies found." });
+            }
+            return Ok(movies);
+        }
+
+        // Get all games
+        [HttpGet("games")]
+        public async Task<IActionResult> GetAllGames()
+        {
+            var games = await _filterService.GetAllGamesAsync();
+            if (games == null || games.Count == 0)
+            {
+                return NotFound(new { message = "No games found." });
+            }
+            return Ok(games);
         }
     }
 }

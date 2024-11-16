@@ -6,6 +6,8 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        CreateMap<Album, AlbumDto>().ReverseMap();
+
         CreateMap<Artist, ArtistDTO>().ReverseMap()
             .ForMember(dest => dest.ArtistId, opt => opt.Ignore()); // Bỏ qua ID khi ánh xạ từ DTO về Entity
 
@@ -30,6 +32,22 @@ public class MappingProfile : Profile
         CreateMap<Product, ProductManageDTO>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
                 .ReverseMap();
+
+        CreateMap<Product, ProductAlbumFilterDto>()
+           .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
+           .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))  // Adjust as needed
+           .ForMember(dest => dest.Albums, opt => opt.MapFrom(src => src.Albums))  // Map Albums collection
+           .ReverseMap();
+
+        CreateMap<Product, ProductMovieFilterDto>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))  // Add other necessary fields
+            .ReverseMap();
+
+        CreateMap<Product, ProductGameFilterDto>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))  // Add other necessary fields
+            .ReverseMap();
 
         // Cấu hình Order -> OrderResponseDTO
         CreateMap<Order, OrderResponseDTO>()
