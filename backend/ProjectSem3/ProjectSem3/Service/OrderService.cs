@@ -91,7 +91,7 @@ namespace ProjectSem3.Service
             return orders;
         }
 
-        public async Task<List<OrderManageDTO>> GetAllOrdersAsync()
+        public async Task<List<OrderResponseDTO>> GetAllOrdersAsync()
         {
             var orders = await _context.Orders.Include(o => o.User).Include(o => o.Payment).ToListAsync();
             return _mapper.Map<List<OrderManageDTO>>(orders);
