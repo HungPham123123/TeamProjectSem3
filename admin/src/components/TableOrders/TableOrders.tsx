@@ -5,17 +5,17 @@ import axios from "axios";
 
 const TableOrders = () => {
   const [orders, setOrders] = useState<any[]>([]); // Danh sách đơn hàng
+  const [allOrders, setAllOrders] = useState<any[]>([]); // Danh sách đơn hàng
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null); // Để lưu đơn hàng cần sửa
-  const [newOrder, setNewOrder] = useState<any>({});
-  const [isModalOpen, setIsModalOpen] = useState(false); // Điều khiển hiển thị popup
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Điều khiển popup thêm đơn hàng
   const [searchTerm, setSearchTerm] = useState(""); // Tìm kiếm đơn hàng
+  const [isModalOpen, setIsModalOpen] = useState(false); // Điều khiển hiển thị popup
 
   // Fetch đơn hàng
   const fetchOrders = async () => {
     try {
       const response = await axios.get("https://localhost:7071/api/orders");
       setOrders(response.data);
+      setAllOrders(response.data);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -45,20 +45,15 @@ const TableOrders = () => {
   };
 
   // Hàm xử lý thay đổi thông tin trong popup
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (selectedOrder) {
       setSelectedOrder({
         ...selectedOrder,
         [e.target.name]: e.target.value,
       });
     }
-    if (isAddModalOpen) {
-      setNewOrder({
-        ...newOrder,
-        [e.target.name]: e.target.value,
-      });
-    }
   };
+  
 
   // Hàm lưu thông tin sửa đơn hàng
   const handleSaveEdit = async () => {
@@ -82,25 +77,44 @@ const TableOrders = () => {
     }
   };
 
-  // Hàm xử lý sự kiện nhập liệu tìm kiếm và nhấn phím Enter
+  // Hàm xử lý tìm kiếm đơn hàng
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    searchOrders();
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      // Lọc đơn hàng theo từ khóa tìm kiếm khi nhấn Enter
       searchOrders();
     }
   };
 
   const searchOrders = () => {
-    // Lọc đơn hàng theo từ khóa tìm kiếm
-    const filteredOrders = orders.filter((order) =>
-      order.orderId.toString().includes(searchTerm) ||
-      order.userId.toString().includes(searchTerm)
+    if (!searchTerm.trim()) {
+      // Nếu không có từ khóa tìm kiếm, hiển thị lại toàn bộ sản phẩm
+      setOrders(allOrders);
+      return;
+    }
+
+    const filteredOrders = allOrders.filter(
+      (order) =>
+        order.userName.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setOrders(filteredOrders);
+  };
+
+  // Hàm cập nhật trạng thái đơn hàng
+  const handleStatusChange = async (orderId: number, status: string) => {
+    try {
+      const order = orders.find((o) => o.orderId === orderId);
+      if (order) {
+        order.status = status;
+        await axios.put(`https://localhost:7071/api/orders/${orderId}`, order);
+        fetchOrders();
+      }
+    } catch (error) {
+      console.error("Error updating order status:", error);
+    }
   };
 
   return (
@@ -114,7 +128,7 @@ const TableOrders = () => {
               className="px-4 py-2 border rounded-lg w-full text-black dark:text-white bg-gray-100 dark:bg-gray-800 focus:outline-none"
               value={searchTerm}
               onChange={handleSearchChange}
-              onKeyDown={handleSearchKeyDown} // Lắng nghe sự kiện nhấn phím
+              onKeyDown={handleSearchKeyDown}
             />
           </h4>
         </div>
@@ -152,20 +166,20 @@ const TableOrders = () => {
 
       {orders.map((order) => (
         <div
-          className="grid grid-cols-11 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-10 md:px-6 2xl:px-7.5"
+          className="grid grid-cols-10 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-10 md:px-6 2xl:px-7.5"
           key={order.orderId}
         >
           <div className="col-span-1 flex items-center">
             <p className="text-sm text-black dark:text-white">{order.orderId}</p>
           </div>
-          <div className="col-span-1 hidden items-center sm:flex">
+          <div className="col-span-1 flex items-center">
             <p className="text-sm text-black dark:text-white">{order.userName}</p>
           </div>
           <div className="col-span-1 flex items-center">
             <p className="text-sm text-black dark:text-white">{order.paymentMethod}</p>
           </div>
           <div className="col-span-1 flex items-center">
-            <p className="text-sm pr-3 text-black dark:text-white">{order.address}</p>
+            <p className="text-sm text-black dark:text-white">{order.address}</p>
           </div>
           <div className="col-span-2 flex items-center">
             <p className="text-sm pl-5 text-black dark:text-white">{order.email}</p>
@@ -177,21 +191,37 @@ const TableOrders = () => {
             <p className="text-sm text-black dark:text-white">${order.totalAmount}</p>
           </div>
           <div className="col-span-1 flex items-center">
-            <p className="text-sm text-black dark:text-white">{order.status}</p>
+            <select
+              value={order.status}
+              onChange={(e) =>
+                handleStatusChange(order.orderId, e.target.value)
+              }
+              className="px-2 py-1 border rounded-md"
+            >
+              <option value="Pending">Pending</option>
+              <option value="Accept">Accept</option>
+              <option value="Reject">Reject</option>
+            </select>
           </div>
           <div className="col-span-1 flex items-center gap-2">
-            <button
-              className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
-              onClick={() => handleEdit(order.orderId)}
-            >
-              EDIT
-            </button>
-            <button
-              className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
-              onClick={() => handleDelete(order.orderId)}
-            >
-              DELETE
-            </button>
+            {order.status.toLowerCase() === "accept" ? ( // So sánh không phân biệt hoa thường
+              <>
+                <button
+                  className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                  onClick={() => handleEdit(order.orderId)}
+                >
+                  EDIT
+                </button>
+                <button
+                  className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+                  onClick={() => handleDelete(order.orderId)}
+                >
+                  DELETE
+                </button>
+              </>
+            ) : order.status.toLowerCase() === "reject" ? ( // So sánh không phân biệt hoa thường
+              <p className="text-red-500 font-medium">Rejected</p>
+            ) : null}
           </div>
         </div>
       ))}
@@ -234,13 +264,19 @@ const TableOrders = () => {
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium">Status</label>
-              <input
-                type="text"
+              <select
                 name="status"
                 value={selectedOrder.status}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-md"
-              />
+              >
+                <option value="Pending">Pending</option>
+                <option value="Accept">Accept</option>
+                <option value="Reject">Reject</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium">Address</label>

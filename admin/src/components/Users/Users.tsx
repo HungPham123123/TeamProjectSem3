@@ -5,6 +5,7 @@ import axios from "axios";
 
 const Users = () => {
   const [users, setUsers] = useState<any[]>([]);  // Đổi thành users
+  const [allUsers, setAllUsers] = useState<any[]>([]);  // Đổi thành users
   const [selectedUser, setSelectedUser] = useState<any | null>(null); // Sửa category
   const [newUser, setNewUser] = useState<any>({}); // Thêm user mới
   const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -17,6 +18,7 @@ const Users = () => {
     try {
       const response = await axios.get("https://localhost:7071/api/User");
       setUsers(response.data);
+      setAllUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -109,6 +111,7 @@ const handleSaveEdit = async () => {
   // Tìm kiếm người dùng
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    searchUsers()
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -118,11 +121,18 @@ const handleSaveEdit = async () => {
   };
 
   const searchUsers = () => {
-    const filteredUsers = users.filter((user) =>
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) 
+    if (!searchTerm.trim()) {
+      // Nếu không có từ khóa tìm kiếm, hiển thị lại toàn bộ sản phẩm
+      setUsers(allUsers);
+      return;
+    }
+  
+    const filteredUsers = allUsers.filter((user) =>
+      user.username && user.username.toLowerCase().includes(searchTerm.toLowerCase()) // Kiểm tra null/undefined trước khi gọi toLowerCase
     );
     setUsers(filteredUsers);
   };
+  
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

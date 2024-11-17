@@ -1,167 +1,100 @@
-﻿using ProjectSem3.DTOs;
+using AutoMapper;
 using ProjectSem3.Models;
+using ProjectSem3.Dtos;
+using Microsoft.EntityFrameworkCore;
+using ProjectSem3.Data;
+using ProjectSem3.DTOs;
 
 namespace ProjectSem3.Service
 {
     public class FilterService
     {
-        private readonly List<Product> _products;
-        private readonly List<Game> _games;
-        private readonly List<Movie> _movies;
-        private readonly List<Album> _albums;
+        private readonly OnlineDvdsContext _context;
+        private readonly IMapper _mapper;
 
-        public FilterService(List<Product> products, List<Game> games, List<Movie> movies, List<Album> albums)
+        public FilterService(OnlineDvdsContext context, IMapper mapper)
         {
-            _products = products;
-            _games = games;
-            _movies = movies;
-            _albums = albums;
+            _context = context;
+            _mapper = mapper;
         }
 
-        public List<ProductDetailDto> GetAllGameProductDetails()
+        // Get all albums with ProductAlbumFilterDto
+        public async Task<List<ProductAlbumFilterDto>> GetAllAlbumsAsync()
         {
-            var gameProductDetails = new List<ProductDetailDto>();
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Albums)
+                    .ThenInclude(a => a.Songs)
+                        .ThenInclude(s => s.SongArtists)
+                            .ThenInclude(sa => sa.Artist)
+                .Where(p => p.Albums.Any()) // Only include products with albums
+                .ToListAsync();
 
-            foreach (var game in _games)
+            var albumDtos = new List<ProductAlbumFilterDto>();
+
+            foreach (var product in products)
             {
-                var product = _products.FirstOrDefault(p => p.ProductId == game.ProductId);
-                if (product != null)
+                var albumDto = _mapper.Map<ProductAlbumFilterDto>(product);
+                foreach (var album in product.Albums)
                 {
-                    var gameProductDetail = new ProductDetailDto
-                    {
-                        ProductId = product.ProductId,
-                        Title = product.Title,
-                        CategoryId = product.CategoryId,
-                        Price = product.Price,
-                        Rating = product.Rating,
-                        Status = product.Status,
-                        ReleaseDate = product.ReleaseDate,
-                        Image1 = product.Image1,
-                        Image2 = product.Image2,
-                        Image3 = product.Image3,
-                        Image4 = product.Image4,
-                        ProductType = product.ProductType,
-                        StockQuantity = product.StockQuantity,
-                        Games = new List<GameDTO> // Use Games instead of GameDetails
-                        {
-                            new GameDTO
-                            {
-                                GameId = game.GameId,
-                                DeveloperId = game.DeveloperId,
-                                PublisherId = game.PublisherId,
-                                Biography = game.Biography
-                            }
-                        }
-                    };
-
-                    gameProductDetails.Add(gameProductDetail);
+                    var albumDetail = _mapper.Map<AlbumDto>(album);
+                    albumDto.Albums.Add(albumDetail);
                 }
+                albumDtos.Add(albumDto);
             }
 
-            return gameProductDetails;
+            return albumDtos;
         }
 
-        public List<ProductDetailDto> GetAllMovieProductDetails()
+        // Get all movies with ProductMovieFilterDto
+        public async Task<List<ProductMovieFilterDto>> GetAllMoviesAsync()
         {
-            var movieProductDetails = new List<ProductDetailDto>();
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Movies)
+                .Where(p => p.Movies.Any()) // Only include products with movies
+                .ToListAsync();
 
-            foreach (var movie in _movies)
+            var movieDtos = new List<ProductMovieFilterDto>();
+
+            foreach (var product in products)
             {
-                var product = _products.FirstOrDefault(p => p.ProductId == movie.ProductId);
-                if (product != null)
+                var movieDto = _mapper.Map<ProductMovieFilterDto>(product);
+                foreach (var movie in product.Movies)
                 {
-                    var movieProductDetail = new ProductDetailDto
-                    {
-                        ProductId = product.ProductId,
-                        Title = product.Title,
-                        CategoryId = product.CategoryId,
-                        Price = product.Price,
-                        Rating = product.Rating,
-                        Status = product.Status,
-                        ReleaseDate = product.ReleaseDate,
-                        Image1 = product.Image1,
-                        Image2 = product.Image2,
-                        Image3 = product.Image3,
-                        Image4 = product.Image4,
-                        ProductType = product.ProductType,
-                        StockQuantity = product.StockQuantity,
-                        Movies = new List<MovieDTO> // Use Movies instead of MovieDetails
-                        {
-                            new MovieDTO
-                            {
-                                MovieId = movie.MovieId,
-                                DirectorId = movie.DirectorId,
-                                ProducerId = movie.ProducerId,
-                                Biography = movie.Biography
-                            }
-                        }
-                    };
-
-                    movieProductDetails.Add(movieProductDetail);
+                    var movieDetail = _mapper.Map<MovieDTO>(movie);
+                    movieDto.Movies.Add(movieDetail);
                 }
+                movieDtos.Add(movieDto);
             }
 
-            return movieProductDetails;
+            return movieDtos;
         }
 
-        public List<ProductDetailDto> GetAllAlbumProductDetails()
+        // Get all games with ProductGameFilterDto
+        public async Task<List<ProductGameFilterDto>> GetAllGamesAsync()
         {
-            var albumProductDetails = new List<ProductDetailDto>();
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Games)
+                .Where(p => p.Games.Any()) // Only include products with games
+                .ToListAsync();
 
-            foreach (var album in _albums)
+            var gameDtos = new List<ProductGameFilterDto>();
+
+            foreach (var product in products)
             {
-                var product = _products.FirstOrDefault(p => p.ProductId == album.ProductId);
-                if (product != null)
+                var gameDto = _mapper.Map<ProductGameFilterDto>(product);
+                foreach (var game in product.Games)
                 {
-                    var albumProductDetail = new ProductDetailDto
-                    {
-                        ProductId = product.ProductId,
-                        Title = product.Title,
-                        CategoryId = product.CategoryId,
-                        Price = product.Price,
-                        Rating = product.Rating,
-                        Status = product.Status,
-                        ReleaseDate = product.ReleaseDate,
-                        Image1 = product.Image1,
-                        Image2 = product.Image2,
-                        Image3 = product.Image3,
-                        Image4 = product.Image4,
-                        ProductType = product.ProductType,
-                        StockQuantity = product.StockQuantity,
-                        Albums = new List<AlbumDto> // Use Albums instead of AlbumDetails
-                        {
-                            new AlbumDto
-                            {
-                                AlbumId = album.AlbumId,
-                                Title = album.Title,
-                                Biography = album.Biography,
-                                ReleaseDate = album.ReleaseDate,
-                                Songs = album.Songs.Select(song => new SongDTO
-                                {
-                                    SongId = song.SongId,
-                                    Title = song.Title,
-                                    Image = song.Image,
-                                    ReleaseDate = song.ReleaseDate,
-                                    Link = song.Link,
-                                    Artists = song.SongArtists.Select(songArtist => new ArtistDTO
-                                    {
-                                        ArtistId = songArtist.ArtistId,
-                                        Name = songArtist.Artist.Name,
-                                        Biography = songArtist.Artist.Biography,
-                                        Social = songArtist.Artist.Social,
-                                        Born = songArtist.Artist.Born,
-                                        Image = songArtist.Artist.Image
-                                    }).ToList()
-                                }).ToList()
-                            }
-                        }
-                    };
-
-                    albumProductDetails.Add(albumProductDetail);
+                    var gameDetail = _mapper.Map<GameDTO>(game);
+                    gameDto.Games.Add(gameDetail);
                 }
+                gameDtos.Add(gameDto);
             }
 
-            return albumProductDetails;
+            return gameDtos;
         }
     }
 }
+*/

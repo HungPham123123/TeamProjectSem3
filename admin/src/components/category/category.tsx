@@ -6,6 +6,7 @@ import axios from "axios";
 
 const Categories = () => {
   const [categories, setCategories] = useState<any[]>([]);  // Đổi thành categories
+  const [allCategories, setAllCategories] = useState<any[]>([]);  // Đổi thành categories
   const [selectedCategory, setSelectedCategory] = useState<any | null>(null); // Sửa category
   const [newCategory, setNewCategory] = useState<any>({ }); // Thêm category mới
   const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -17,6 +18,7 @@ const Categories = () => {
     try {
       const response = await axios.get("https://localhost:7071/api/Categories");
       setCategories(response.data);
+      setAllCategories(response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -100,6 +102,7 @@ const Categories = () => {
   // Tìm kiếm danh mục
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    searchCategories();
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -109,7 +112,13 @@ const Categories = () => {
   };
 
   const searchCategories = () => {
-    const filteredCategories = categories.filter((category) =>
+    if (!searchTerm.trim()) {
+      // Nếu không có từ khóa tìm kiếm, hiển thị lại toàn bộ sản phẩm
+      setCategories(allCategories);
+      return;
+    }
+
+    const filteredCategories = allCategories.filter((category) =>
       category.categoryName.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setCategories(filteredCategories);
