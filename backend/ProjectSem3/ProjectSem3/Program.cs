@@ -42,7 +42,7 @@ builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IReviewService, ProjectReviewService>(); // Specify the project ReviewService
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 builder.Services.AddScoped<PaymentService>();
-//builder.Services.AddScoped<FilterService>();
+builder.Services.AddScoped<FilterService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
