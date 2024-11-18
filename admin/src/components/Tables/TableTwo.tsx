@@ -6,6 +6,7 @@ import axios from "axios";
 
 const TableTwo = () => {
   const [products, setProducts] = useState<any[]>([]);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null); // Để lưu sản phẩm cần sửa
   const [newProduct, setNewProduct] = useState<any>({}); // Để lưu sản phẩm mới
   const [isModalOpen, setIsModalOpen] = useState(false); // Điều khiển hiển thị popup
@@ -17,6 +18,7 @@ const TableTwo = () => {
     try {
       const response = await axios.get("https://localhost:7071/api/Product");
       setProducts(response.data);
+      setAllProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -113,6 +115,7 @@ const TableTwo = () => {
   // Hàm xử lý sự kiện nhập liệu tìm kiếm và nhấn phím Enter
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    searchProducts();
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -122,9 +125,16 @@ const TableTwo = () => {
     }
   };
 
+  // Hàm tìm kiếm sản phẩm
   const searchProducts = () => {
+    if (!searchTerm.trim()) {
+      // Nếu không có từ khóa tìm kiếm, hiển thị lại toàn bộ sản phẩm
+      setProducts(allProducts);
+      return;
+    }
+
     // Lọc sản phẩm theo từ khóa tìm kiếm
-    const filteredProducts = products.filter((product) =>
+    const filteredProducts = allProducts.filter((product) =>
       product.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setProducts(filteredProducts);

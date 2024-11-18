@@ -1,4 +1,4 @@
-﻿/*using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjectSem3.Data;
 using ProjectSem3.DTOs;
@@ -94,7 +94,7 @@ namespace ProjectSem3.Service
         public async Task<List<OrderResponseDTO>> GetAllOrdersAsync()
         {
             var orders = await _context.Orders.Include(o => o.User).Include(o => o.Payment).ToListAsync();
-            return _mapper.Map<List<OrderManageDTO>>(orders);
+            return _mapper.Map<List<OrderResponseDTO>>(orders);
         }
 
 
@@ -137,6 +137,7 @@ namespace ProjectSem3.Service
 
             return _mapper.Map<List<OrderResponseDTO>>(orders);
         }
+
+       
     }
 }
-*/

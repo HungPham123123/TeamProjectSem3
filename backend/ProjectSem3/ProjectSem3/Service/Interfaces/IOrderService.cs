@@ -6,9 +6,8 @@ namespace ProjectSem3.Service.Interfaces
     {
         Task<List<OrderResponseDTO>> GetAllOrdersAsync();
         Task<OrderResponseDTO?> GetOrderByIdAsync(int orderId);
-        Task AddOrderAsync(OrderResponseDTO orderDto);
-        Task UpdateOrderAsync(OrderUpdateDTO orderDto);
-        Task DeleteOrderAsync(int orderId);
+        Task<bool> UpdateOrderAsync(int orderId, OrderUpdateDTO orderUpdateDTO);
+        Task<bool> DeleteOrderAsync(int orderId);
         Task<List<OrderResponseDTO>> SearchOrdersAsync(string keyword);
         Task<OrderDto?> UserOrderByIds(int orderId);
         Task<List<OrderDto>> GetAllOrdersForUser(int userId);
