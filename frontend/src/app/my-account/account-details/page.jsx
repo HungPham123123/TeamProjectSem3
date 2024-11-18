@@ -1,14 +1,72 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import axios from "@/utils/axios";
 import Cookies from 'js-cookie';
 import Link from "next/link";
 
 function AccountDetails() {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('/api/Auth/info', {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('token')}`
+                    }
+                });
+                setUser(response.data);
+            } catch (error) {
+                setError("Failed to fetch user data");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+    // Handle logout
     const handleLogout = () => {
         Cookies.remove('token');
         window.location.href = '/';
     };
+
+ // Handle updating user info
+const handleUpdateUser = async (e) => {
+    e.preventDefault();
+
+    const updatedUser = {
+        username: user.username,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+    };
+
+    try {
+        const response = await axios.put('/api/Auth/info', updatedUser, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`
+            }
+        });
+
+        alert("User info updated successfully!");
+    } catch (error) {
+        alert(`${error.response ? error.response.data.message : error.message}`);
+    }
+};
+
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
 
     return (
         <main>
@@ -183,8 +241,9 @@ function AccountDetails() {
                                 Account Details
                             </h2>
                             <form
-                                className="w-full mx-auto flex flex-col justify-center "
+                                className="w-full mx-auto flex flex-col justify-center"
                                 noValidate=""
+                                onSubmit={handleUpdateUser}
                             >
                                 <div className="flex flex-col space-y-4 sm:space-y-5">
                                     <div className="flex flex-col sm:flex-row sm:gap-x-3 space-y-4 sm:space-y-0">
@@ -199,7 +258,8 @@ function AccountDetails() {
                                                 id="firstName"
                                                 name="firstName"
                                                 type="text"
-                                                placeholder=""
+                                                value={user.firstName}
+                                                onChange={(e) => setUser({ ...user, firstName: e.target.value })}
                                                 className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
                                                 autoComplete="off"
                                                 spellCheck="false"
@@ -217,7 +277,8 @@ function AccountDetails() {
                                                 id="lastName"
                                                 name="lastName"
                                                 type="text"
-                                                placeholder=""
+                                                value={user.lastName}
+                                                onChange={(e) => setUser({ ...user, lastName: e.target.value })}
                                                 className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
                                                 autoComplete="off"
                                                 spellCheck="false"
@@ -236,7 +297,8 @@ function AccountDetails() {
                                             id="displayName"
                                             name="displayName"
                                             type="text"
-                                            placeholder=""
+                                            value={user.username}
+                                            onChange={(e) => setUser({ ...user, username: e.target.value })}
                                             className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
                                             autoComplete="off"
                                             spellCheck="false"
@@ -255,7 +317,8 @@ function AccountDetails() {
                                                 id="phoneNumber"
                                                 name="phoneNumber"
                                                 type="tel"
-                                                placeholder=""
+                                                value={user.phone}
+                                                onChange={(e) => setUser({ ...user, phone: e.target.value })}
                                                 className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
                                                 autoComplete="off"
                                                 spellCheck="false"
@@ -273,7 +336,8 @@ function AccountDetails() {
                                                 id="email"
                                                 name="email"
                                                 type="email"
-                                                placeholder=""
+                                                value={user.email}
+                                                onChange={(e) => setUser({ ...user, email: e.target.value })}
                                                 className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
                                                 autoComplete="off"
                                                 spellCheck="false"
@@ -281,31 +345,7 @@ function AccountDetails() {
                                             />
                                         </div>
                                     </div>
-                                    <div className="relative flex flex-col">
-                                        <span className="mt-2 text-sm text-heading font-semibold block pb-1">
-                                            Gender
-                                        </span>
-                                        <div className="mt-2 flex items-center gap-x-6">
-                                            <label className="group flex items-center text-heading text-sm cursor-pointer">
-                                                <input
-                                                    type="radio"
-                                                    className="form-radio w-5 h-5 border border-gray-300 text-heading rounded-full cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading"
-                                                    name="gender"
-                                                    defaultValue="male"
-                                                />
-                                                <span className="ms-2 text-sm text-heading relative">Male</span>
-                                            </label>
-                                            <label className="group flex items-center text-heading text-sm cursor-pointer">
-                                                <input
-                                                    type="radio"
-                                                    className="form-radio w-5 h-5 border border-gray-300 text-heading rounded-full cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading"
-                                                    name="gender"
-                                                    defaultValue="female"
-                                                />
-                                                <span className="ms-2 text-sm text-heading relative">Female</span>
-                                            </label>
-                                        </div>
-                                    </div>
+
                                     <div className="relative">
                                         <button
                                             data-variant="flat"

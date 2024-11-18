@@ -35,6 +35,27 @@ namespace ProjectSem3.Controllers
 
             return Ok(product);
         }
+
+        [HttpGet("on-selling")]
+        public async Task<ActionResult<List<ProductDto>>> GetOnSellingProducts()
+        {
+            var products = await _productService.GetOnSellingProductsAsync();
+            return Ok(products);
+        }
+
+        [HttpGet("new-arrivals")]
+        public async Task<ActionResult<List<ProductDto>>> GetNewArrivals()
+        {
+            var products = await _productService.GetNewArrivalsAsync();
+            return Ok(products);
+        }
+
+        [HttpGet("best-budget-dvds")]
+        public async Task<ActionResult<List<ProductDto>>> GetBestBudgetDvs()
+        {
+            var products = await _productService.GetBestBudgetDvsAsync();
+            return Ok(products);
+        }
     }
 
 

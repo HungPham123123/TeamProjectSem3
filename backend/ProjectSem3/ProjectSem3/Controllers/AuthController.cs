@@ -46,7 +46,6 @@ namespace ProjectSem3.Controllers
             }
         }
 
-
         [HttpGet("verify")]
         public async Task<IActionResult> VerifyAccount(string verificationToken)
         {
@@ -74,7 +73,6 @@ namespace ProjectSem3.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
@@ -109,5 +107,53 @@ namespace ProjectSem3.Controllers
             }
         }
 
+        // Get user information by ID (based on the logged-in user's token)
+        [HttpGet("info")]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            try
+            {
+                var userId = GetCurrentUserId(); // Method to extract user ID from JWT
+                var userInfo = await _userService.GetUserInfoAsync(userId);
+                if (userInfo == null)
+                {
+                    return NotFound("User not found");
+                }
+                return Ok(userInfo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // Update user information (based on the logged-in user's token)
+        [HttpPut("info")]
+        public async Task<IActionResult> UpdateUserInfo([FromBody] UserDto updateUserDto)
+        {
+            try
+            {
+                var userId = GetCurrentUserId(); // Method to extract user ID from JWT
+                await _userService.UpdateUserInfoAsync(userId, updateUserDto);
+                return Ok(new { message = "User information updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // Helper method to extract the current user's ID from the token (or session)
+        private int GetCurrentUserId()
+        {
+            // Assuming that the user ID is stored in the token (JWT or session)
+            // You can implement this according to how you store user information.
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            if (userIdClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            return int.Parse(userIdClaim);
+        }
     }
 }

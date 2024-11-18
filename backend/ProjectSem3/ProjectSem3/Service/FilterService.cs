@@ -95,5 +95,107 @@ namespace ProjectSem3.Service
 
             return gameDtos;
         }
+
+        // Search albums based on title or searchTerm
+        public async Task<List<ProductAlbumFilterDto>> SearchAlbumsAsync(string? searchTerm)
+        {
+            var query = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Albums)
+                .Where(p => p.Albums.Any()); // Filter only products with albums
+
+            // If a search term is provided, filter by Product.Title
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Title.Contains(searchTerm));
+            }
+
+            var products = await query.ToListAsync();
+
+            var albumDtos = products.Select(product =>
+            {
+                var albumDto = _mapper.Map<ProductAlbumFilterDto>(product);
+                albumDto.Albums = product.Albums
+                    .Select(album => _mapper.Map<AlbumDto>(album))
+                    .ToList();
+                return albumDto;
+            }).ToList();
+
+            return albumDtos;
+        }
+
+        // Search movies based on title or searchTerm
+        public async Task<List<ProductMovieFilterDto>> SearchMoviesAsync(string? searchTerm)
+        {
+            var query = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Movies)
+                .Where(p => p.Movies.Any()); // Filter only products with movies
+
+            // If a search term is provided, filter by Product.Title
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Title.Contains(searchTerm));
+            }
+
+            var products = await query.ToListAsync();
+
+            var movieDtos = products.Select(product =>
+            {
+                var movieDto = _mapper.Map<ProductMovieFilterDto>(product);
+                movieDto.Movies = product.Movies
+                    .Select(movie => _mapper.Map<MovieDTO>(movie))
+                    .ToList();
+                return movieDto;
+            }).ToList();
+
+            return movieDtos;
+        }
+
+        // Search games based on title or searchTerm
+        public async Task<List<ProductGameFilterDto>> SearchGamesAsync(string? searchTerm)
+        {
+            var query = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Games)
+                .Where(p => p.Games.Any()); // Filter only products with games
+
+            // If a search term is provided, filter by Product.Title
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Title.Contains(searchTerm));
+            }
+
+            var products = await query.ToListAsync();
+
+            var gameDtos = products.Select(product =>
+            {
+                var gameDto = _mapper.Map<ProductGameFilterDto>(product);
+                gameDto.Games = product.Games
+                    .Select(game => _mapper.Map<GameDTO>(game))
+                    .ToList();
+                return gameDto;
+            }).ToList();
+
+            return gameDtos;
+        }
+
+        // Search all products, filtering by searchTerm (all categories)
+        public async Task<List<ProductDto>> SearchAllProductsAsync(string? searchTerm = null)
+        {
+            var query = _context.Products.AsQueryable();
+
+            // Only filter if a search term is provided
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Title.Contains(searchTerm)); // Filter by title
+            }
+
+            var products = await query.Include(p => p.Category)
+                                       .ToListAsync();
+
+            var productDtos = _mapper.Map<List<ProductDto>>(products);
+            return productDtos;
+        }
     }
 }

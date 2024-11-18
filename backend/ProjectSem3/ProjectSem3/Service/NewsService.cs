@@ -28,6 +28,12 @@ namespace ProjectSem3.Service
         {
             var news = await _context.News.Include(n => n.Author).Include(n => n.Category)
                               .FirstOrDefaultAsync(n => n.NewsId == newsId);
+
+            if (news != null)
+            {
+                await IncrementViewsAsync(newsId);
+            }
+
             return _mapper.Map<NewsManageDTO>(news);
         }
 
@@ -69,5 +75,18 @@ namespace ProjectSem3.Service
 
             return _mapper.Map<List<NewsManageDTO>>(newsList);
         }
+
+        public async Task IncrementViewsAsync(int newsId)
+        {
+            var news = await _context.News.FindAsync(newsId);
+            if (news == null) throw new KeyNotFoundException("News không tìm thấy.");
+
+            // Increment views count if it's not null
+            news.Views = (news.Views ?? 0) + 1;
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

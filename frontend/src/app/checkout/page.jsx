@@ -26,6 +26,26 @@ function Checkout() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get("/api/Auth/info");
+        const user = response.data;
+        setFormData((prev) => ({
+          ...prev,
+          firstName: user.firstName || "",
+          lastName: user.lastName || "",
+          email: user.email || "",
+          phone: user.phone || "",
+        }));
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  useEffect(() => {
     const fetchCart = async () => {
       try {
         const response = await axios.get('/api/Cart');
@@ -191,9 +211,7 @@ function Checkout() {
                   >
                     First Name *
                   </label>
-                  <input
-                    id="firstName"
-                    name="firstName"
+                  <input id="firstName"name="firstName"
                     type="text"
                     placeholder=""
                     value={formData.firstName}

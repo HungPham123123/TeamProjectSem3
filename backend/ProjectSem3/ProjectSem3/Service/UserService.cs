@@ -35,6 +35,85 @@ namespace ProjectSem3.Service
             _jwtSettings = jwtSettings.Value;
         }
 
+        public async Task<UserDto> GetUserInfoAsync(int userId)
+        {
+            // Assuming your User model has UserId as Guid, but you want to pass an int
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserId == userId);  // Make sure UserId in the DB is int
+
+            if (user == null)
+                throw new Exception("User not found.");
+
+            // Return user info in DTO format
+            var userDto = new UserDto
+            {
+                UserId = user.UserId,  // this should match in both DTO and DB
+                Username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phone = user.Phone,
+                Email = user.Email,
+                CreatedAt = user.CreatedAt,
+                Enabled = user.Enabled
+            };
+
+            return userDto;
+        }
+
+
+        public async Task<UserDto> UpdateUserInfoAsync(int userId, UserDto updateUserDto)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserId == userId);
+
+            if (user == null)
+                throw new Exception("User not found.");
+
+            // Check if the username is already taken
+            if (await _context.Users
+                .AnyAsync(u => u.Username == updateUserDto.Username && u.UserId != userId))
+            {
+                throw new Exception("The username is already taken.");
+            }
+
+            // Compare and update user fields only if they have changed
+            if (user.Username == updateUserDto.Username &&
+                user.FirstName == updateUserDto.FirstName &&
+                user.LastName == updateUserDto.LastName &&
+                user.Phone == updateUserDto.Phone &&
+                user.Email == updateUserDto.Email)
+            {
+                throw new Exception("Your information is already up to date.");
+            }
+
+            // Update user details
+            user.Username = updateUserDto.Username ?? user.Username;
+            user.FirstName = updateUserDto.FirstName ?? user.FirstName;
+            user.LastName = updateUserDto.LastName ?? user.LastName;
+            user.Phone = updateUserDto.Phone ?? user.Phone;
+            user.Email = updateUserDto.Email ?? user.Email;
+            user.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            // Return updated user information
+            var updatedUserDto = new UserDto
+            {
+                UserId = user.UserId,
+                Username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phone = user.Phone,
+                Email = user.Email,
+                CreatedAt = user.CreatedAt,
+                Enabled = user.Enabled
+            };
+
+            return updatedUserDto;
+        }
+
+
+
         // Register a new user
         public async Task SaveAsync(RegisterUserDto registerUserDto)
         {

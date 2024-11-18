@@ -11,5 +11,7 @@ namespace ProjectSem3.Service.Interfaces
         Task RequestPasswordResetAsync(string email);
         Task ResetPasswordAsync(string verificationToken, string newPassword, string confirmPassword);
         Task ResendVerificationEmailAsync(string email);
+        Task<UserDto> GetUserInfoAsync(int userId);
+        Task<UserDto> UpdateUserInfoAsync(int userId, UserDto updateUserDto);
     }
 }

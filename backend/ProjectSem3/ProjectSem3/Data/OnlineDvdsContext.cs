@@ -549,6 +549,9 @@ public partial class OnlineDvdsContext : DbContext
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
             entity.Property(e => e.Username).HasMaxLength(500);
             entity.Property(e => e.VerificationToken).HasMaxLength(500);
+            entity.Property(e => e.FirstName).HasMaxLength(500).IsRequired(false);
+            entity.Property(e => e.LastName).HasMaxLength(500).IsRequired(false); 
+            entity.Property(e => e.Phone).HasMaxLength(500).IsRequired(false);
         });
 
         modelBuilder.Entity<UserRole>(entity =>

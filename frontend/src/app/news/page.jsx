@@ -1,141 +1,80 @@
 "use client";
 
-import React from 'react';
-import Link from 'next/link'; // Đảm bảo bạn đã thêm dòng này
+import React, { useEffect, useState } from 'react';
+import axios from "@/utils/axios";  // Adjust the import if necessary
+import Link from 'next/link';
 
 const NewsPage = () => {
-  const styles = {
-    wrapper: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      minHeight: '100vh',
-      fontFamily: 'Arial, sans-serif',
-      padding: '20px',
-      backgroundColor: '#f4f4f9',
-    },
-    title: {
-      fontSize: '36px',
-      color: '#333',
-      fontWeight: 'bold',
-      marginBottom: '30px',
-      textAlign: 'center',
-    },
-    newsGrid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-      gap: '20px',
-      width: '100%',
-      maxWidth: '1200px',
-    },
-    newsCard: {
-      backgroundColor: '#fff',
-      borderRadius: '8px',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-      overflow: 'hidden',
-      transition: 'transform 0.2s',
-    },
-    newsImage: {
-      width: '100%',
-      height: '200px',
-      objectFit: 'cover',
-    },
-    newsContent: {
-      padding: '15px',
-    },
-    newsTitle: {
-      fontSize: '20px',
-      fontWeight: 'bold',
-      color: '#333',
-      marginBottom: '8px',
-      cursor: 'pointer',
-      textDecoration: 'none', // Thêm thuộc tính này để không có gạch chân
-    },
-    newsDate: {
-      fontSize: '14px',
-      color: '#777',
-      marginBottom: '10px',
-    },
-    newsSummary: {
-      fontSize: '16px',
-      color: '#555',
-      lineHeight: '1.5',
-    },
-    button: {
-      backgroundColor: '#007bff',
-      color: '#fff',
-      padding: '10px 20px',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      marginTop: '30px',
-      textAlign: 'center',
-      transition: 'background-color 0.3s',
-    },
-    buttonHover: {
-      backgroundColor: '#0056b3',
-    },
-  };
+  const [news, setNews] = useState([]);
+  
+  // Fetch news data from the API
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await axios.get("/api/News");  // Replace with your actual API endpoint
+        setNews(response.data);
+        console.log(response.data)
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    };
 
-  const newsArticles = [
-    {
-      title: 'Tin tức 1: Sự kiện nổi bật',
-      date: '02/11/2024',
-      summary: 'Một sự kiện quan trọng vừa diễn ra, thu hút nhiều sự quan tâm của công chúng...',
-      image: 'https://i1-vnexpress.vnecdn.net/2017/06/12/IsuzumuX201621106c-1497249425-5691-1497249460.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=uqC3jmymZuWM5CPPxB6Dig',
-      url: 'https://vnexpress.net/tag/dvd-10507', 
-    },
-    {
-      title: 'Tin tức 2: Cập nhật thị trường',
-      date: '01/11/2024',
-      summary: 'Thị trường đang có nhiều biến động, với nhiều xu hướng mới xuất hiện...',
-      image: 'https://i1-giaitri.vnecdn.net/2014/04/15/3-8959-1397526486.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=-5Jk-XbVDpaZ18dLvlpVuw',
-      url: 'https://vnexpress.net/tag/dvd-10507',
-    },
-    {
-      title: 'Tin tức 3: Khám phá công nghệ',
-      date: '30/10/2024',
-      summary: 'Công nghệ mới đã ra đời, hứa hẹn mang lại nhiều thay đổi cho cuộc sống...',
-      image: 'https://cdn.tgdd.vn/Files/2023/04/19/1526461/netflixseguinhungchiecdvdcuoicungvaongay2992023-190423-090800-800-resize.jpg',
-      url: 'https://www.thegioididong.com/tin-tuc/cuoi-cung-thi-netflix-cung-da-khai-tu-dich-vu-thue-phim-dvd-1526461', 
-    },
-  ];
+    fetchNews();
+  }, []);
 
   return (
-    <main style={styles.wrapper}>
-      <div style={styles.title}>TIN TỨC</div>
-
-      <div style={styles.newsGrid}>
-        {newsArticles.map((article, index) => (
-          <div
-            key={index}
-            style={styles.newsCard}
-            onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
-            onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-          >
-            <img src={article.image} alt={article.title} style={styles.newsImage} />
-            <div style={styles.newsContent}>
-              <Link href={article.url} style={styles.newsTitle}>
-                {article.title}
-              </Link>
-              <div style={styles.newsDate}>{article.date}</div>
-              <div style={styles.newsSummary}>{article.summary}</div>
-            </div>
-          </div>
-        ))}
+    <div className="max-w-[1480px] mx-auto px-5 sm:px-8">
+      <div className="mb-24 text-center max-w-screen-sm mx-auto">
+        <h2 className="text-3xl sm:text-5xl capitalize">All Posts</h2>
+        <p className="mt-4 text-lg">
+          Commodo ea nisi enim aute veniam reprehenderit cillum laborum aliquip sit eiusmod occaecat laborum fugiat mollit.
+        </p>
       </div>
-
-      <button
-        style={styles.button}
-        onMouseOver={(e) => (e.target.style.backgroundColor = styles.buttonHover.backgroundColor)}
-        onMouseOut={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
-      >
-        Xem thêm tin tức
-      </button>
-    </main>
+      <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {news.length === 0 ? (
+          <p>Loading news...</p>  // Show a loading message while news is being fetched
+        ) : (
+          news.map((item) => (
+            <div key={item.newsId}>
+              <Link className="block" href={`/news/${item.newsId}`}>
+                <div className="block relative pt-[75%] bg-black/5 dark:bg-white/5">
+                  <img
+                    alt="Post thumbnail"
+                    src={item.imageUrl}
+                    style={{
+                      position: "absolute",
+                      height: "100%",
+                      width: "100%",
+                      inset: 0,
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              </Link>
+              <div className="flex flex-wrap gap-3 items-center mt-6">
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    className="text-xs font-medium uppercase rounded-full py-1.5 px-2.5 border border-black text-black hover:bg-black hover:text-white tracking-wide whitespace-nowrap"
+                    href={`/category/${item.categoryName.toLowerCase()}`}
+                  >
+                    {item.tags}
+                  </a>
+                </div>
+                <div className="text-sm data-color flex items-center">
+                  <span className="whitespace-nowrap"> {new Date(item.publishedAt).toLocaleDateString()}</span>
+                  <span className="px-2.5">⋅</span>
+                  <span className="whitespace-nowrap">{item.views} views</span>
+                </div>
+              </div>
+              <h2 className="text-2xl font-bold mt-4 leading-snug">
+                <Link href={`/news/${item.newsId}`}>{item.title}</Link>
+              </h2>
+              <p className="mt-4">{item.summary}</p>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
   );
 };
 

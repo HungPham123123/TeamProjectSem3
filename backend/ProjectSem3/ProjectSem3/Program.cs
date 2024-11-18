@@ -43,6 +43,9 @@ builder.Services.AddScoped<IReviewService, ProjectReviewService>(); // Specify t
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<FilterService>();
+builder.Services.AddScoped<UserOrderService>();
+builder.Services.AddScoped<UserReviewService>();
+builder.Services.AddScoped<CollectionService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -73,7 +76,7 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
         });
 });
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();

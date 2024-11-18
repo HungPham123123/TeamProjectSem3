@@ -13,7 +13,7 @@ function Orders() {
     // Fetch orders when the component mounts
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("/api/Order/user/orders");
+        const response = await axios.get("/api/UserOrder/user/orders");
         setOrders(response.data); // Set orders data to state
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -251,12 +251,12 @@ function Orders() {
                 ${order.totalAmount} for {order.orderItems.length} items
               </td>
               <td className="px-4 py-5 ltr:text-right rtl:text-left text-center text-black">
-                <a
+                <Link
                   className="text-sm leading-4 bg-black text-white px-4 py-2.5 inline-block rounded-md hover:text-white hover:bg-gray-600"
                   href={`/my-account/orders/${order.orderId}`}
                 >
                   View
-                </a>
+                </Link>
               </td>
             </tr>
           ))

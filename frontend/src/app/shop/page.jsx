@@ -21,6 +21,7 @@ const Shop = () => {
     try {
       const response = await axios.get("/api/Products");
       setProducts(response.data);
+      console.log(response.data)
     } catch (error) {
       console.log("Error fetching products:", error);
     }
@@ -48,6 +49,7 @@ const Shop = () => {
         if (selectedFilters.music) {
           albumResponse = await axios.get("/api/Filter/albums");
           setAlbumProduct(albumResponse.data);
+          console.log(albumResponse.data)
         } else {
           setAlbumProduct([]);
         }
@@ -55,6 +57,7 @@ const Shop = () => {
         if (selectedFilters.movie) {
           movieResponse = await axios.get("/api/Filter/movies");
           setMovieProduct(movieResponse.data);
+          console.log(movieResponse.data)
         } else {
           setMovieProduct([]);
         }
@@ -62,6 +65,7 @@ const Shop = () => {
         if (selectedFilters.game) {
           gameResponse = await axios.get("/api/Filter/games");
           setGameProduct(gameResponse.data);
+          console.log(gameResponse.data)
         } else {
           setGameProduct([]);
         }
@@ -251,38 +255,123 @@ const Shop = () => {
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 lg:gap-x-5 xl:gap-x-7 gap-y-3 xl:gap-y-5 2xl:gap-y-8">
-              {productsToDisplay.map((product) => (
-                <Link
-                  key={product.productId}
-                  href={`/product/${product.productId}`}
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product bg-white"
-                  role="button"
-                  title={product.title}
-                >
-                  <div className="flex mb-3 md:mb-3.5">
-                    <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
-                      <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
-                        <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
-                      </span>
-                      <img alt={product.title} src={product.image1} className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
-                    </span>
-                  </div>
-                  <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                    <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                      {product.title}
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      {product.biography}
-                    </p>
-                    <div className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5 text-heading">
-                      <span className="inline-block">${product.price.toFixed(2)}</span>
-                      <del className="sm:text-base font-normal text-gray-800">
-                        {product.oldPrice ? `$${product.oldPrice.toFixed(2)}` : ''}
-                      </del>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+            {productsToDisplay.map((product) => {
+  // Determine the dynamic link based on the product type
+  const productLink =
+    product.type === "game"
+      ? `/games/${product.productId}`
+      : product.type === "movie"
+      ? `/movies/${product.productId}`
+      : product.type === "album"
+      ? `/albums/${product.productId}`
+      : `/product/${product.productId}`; // Default fallback
+
+  // Determine if the product is out of stock
+  const isOutOfStock = product.stockQuantity === 0;
+
+  return (
+    <Link
+      key={product.productId}
+      href={productLink}
+      className={`group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product bg-white ${isOutOfStock ? "opacity-50 pointer-events-none" : ""}`}
+      role="button"
+      title={product.title}
+    >
+      <div className="flex mb-3 md:mb-3.5 relative">
+        <span
+          style={{
+            boxSizing: "border-box",
+            display: "inline-block",
+            overflow: "hidden",
+            width: "initial",
+            height: "initial",
+            background: "none",
+            opacity: 1,
+            border: 0,
+            margin: 0,
+            padding: 0,
+            position: "relative",
+            maxWidth: "100%",
+          }}
+        >
+          <span
+            style={{
+              boxSizing: "border-box",
+              display: "block",
+              width: "initial",
+              height: "initial",
+              background: "none",
+              opacity: 1,
+              border: 0,
+              margin: 0,
+              padding: 0,
+              maxWidth: "100%",
+            }}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
+              style={{
+                display: "block",
+                maxWidth: "100%",
+                width: "initial",
+                height: "initial",
+                background: "none",
+                opacity: 1,
+                border: 0,
+                margin: 0,
+                padding: 0,
+              }}
+            />
+          </span>
+          <img
+            alt={product.title}
+            src={product.image1}
+            className={`bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none ${isOutOfStock ? "opacity-50" : ""}`}
+            style={{
+              position: "absolute",
+              inset: 0,
+              boxSizing: "border-box",
+              padding: 0,
+              border: "none",
+              margin: "auto",
+              display: "block",
+              width: 0,
+              height: 0,
+              minWidth: "100%",
+              maxWidth: "100%",
+              minHeight: "100%",
+              maxHeight: "100%",
+            }}
+          />
+        </span>
+        {isOutOfStock && (
+          <div className="absolute inset-0 bg-gray-700 opacity-50 flex items-center justify-center text-white font-bold text-lg">
+            Out of Stock
+          </div>
+        )}
+      </div>
+      <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
+        <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
+          {product.title}
+        </h2>
+        <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
+          {product.biography}
+        </p>
+        <div className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5 text-heading">
+          <span className="inline-block">${product.price.toFixed(2)}</span>
+          {product.oldPrice && (
+            <del className="sm:text-base font-normal text-gray-800">
+              ${product.oldPrice.toFixed(2)}
+            </del>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+})}
+
             </div>
             <div className="text-center pt-8 xl:pt-14">
               <button

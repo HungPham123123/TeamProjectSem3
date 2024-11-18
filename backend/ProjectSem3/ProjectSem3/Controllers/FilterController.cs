@@ -27,6 +27,18 @@ namespace ProjectSem3.Controllers
             return Ok(albums);
         }
 
+        // Search albums
+        [HttpGet("albums/search")]
+        public async Task<IActionResult> SearchAlbums([FromQuery] string? searchTerm)
+        {
+            var albums = await _filterService.SearchAlbumsAsync(searchTerm);
+            if (albums == null || albums.Count == 0)
+            {
+                return NotFound(new { message = "No albums found for the given search term." });
+            }
+            return Ok(albums);
+        }
+
         // Get all movies
         [HttpGet("movies")]
         public async Task<IActionResult> GetAllMovies()
@@ -35,6 +47,18 @@ namespace ProjectSem3.Controllers
             if (movies == null || movies.Count == 0)
             {
                 return NotFound(new { message = "No movies found." });
+            }
+            return Ok(movies);
+        }
+
+        // Search movies
+        [HttpGet("movies/search")]
+        public async Task<IActionResult> SearchMovies([FromQuery] string? searchTerm)
+        {
+            var movies = await _filterService.SearchMoviesAsync(searchTerm);
+            if (movies == null || movies.Count == 0)
+            {
+                return NotFound(new { message = "No movies found for the given search term." });
             }
             return Ok(movies);
         }
@@ -50,5 +74,25 @@ namespace ProjectSem3.Controllers
             }
             return Ok(games);
         }
-    }
+
+        // Search games
+        [HttpGet("games/search")]
+        public async Task<IActionResult> SearchGames([FromQuery] string? searchTerm)
+        {
+            var games = await _filterService.SearchGamesAsync(searchTerm);
+            if (games == null || games.Count == 0)
+            {
+                return NotFound(new { message = "No games found for the given search term." });
+            }
+            return Ok(games);
+        }
+
+        [HttpGet("products/search")]
+        public async Task<IActionResult> GetAllProducts([FromQuery] string? searchterm)
+        {
+            var products = await _filterService.SearchAllProductsAsync(searchterm);
+            return Ok(products);
+        }
+
+    }   
 }

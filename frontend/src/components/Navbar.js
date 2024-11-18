@@ -148,6 +148,14 @@ function Navbar() {
                   Shops
                 </Link>
               </div>
+              <div className="menuItem group cursor-pointer py-7 ">
+                <Link
+                  className="relative inline-flex items-center px-3 py-2 text-sm font-normal xl:text-base text-heading xl:px-4 group-hover:text-black"
+                  href="/news"
+                >
+                  News
+                </Link>
+              </div>
             </nav>
             <div className="flex-shrink-0 ltr:ml-auto rtl:mr-auto ltr:lg:mr-5 rtl:lg:ml-5 ltr:xl:mr-8 rtl:xl:ml-8 ltr:2xl:mr-10 rtl:2xl:ml-10">
               <div className="relative ltr:ml-2 rtl:mr-2 ltr:lg:ml-0 rtl:lg:mr-0 z-10 w-[130px] sm:w-[130px] lg:w-[130px] xl:w-[130px] mr-3">
@@ -267,61 +275,82 @@ function Navbar() {
               </div>
             </div>
             <div className="items-center justify-end flex-shrink-0 hidden lg:flex gap-x-6 lg:gap-x-5 xl:gap-x-8 2xl:gap-x-10 ltr:ml-auto rtl:mr-auto">
-              <button
-                onClick={toggleSearch}
-                className="relative flex items-center justify-center flex-shrink-0 h-auto transform focus:outline-none"
-                aria-label="search-button"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="17px"
-                  height="18px"
-                  viewBox="0 0 18.942 20"
-                  className="md:w-4 xl:w-5 md:h-4 xl:h-5"
-                >
-                  <path
-                    d="M381.768,385.4l3.583,3.576c.186.186.378.366.552.562a.993.993,0,1,1-1.429,1.375c-1.208-1.186-2.422-2.368-3.585-3.6a1.026,1.026,0,0,0-1.473-.246,8.343,8.343,0,1,1-3.671-15.785,8.369,8.369,0,0,1,6.663,13.262C382.229,384.815,382.025,385.063,381.768,385.4Zm-6.152.579a6.342,6.342,0,1,0-6.306-6.355A6.305,6.305,0,0,0,375.615,385.983Z"
-                    transform="translate(-367.297 -371.285)"
-                    fill="currentColor"
-                    fillRule="evenodd"
-                  />
-                </svg>
-              </button>
-              <div className="-mt-0.5 flex-shrink-0">
-                {token ? (
-                  <Link className="text-sm font-semibold" href="/my-account">
-                    Account
-                  </Link>
-                ) : (
-                  <button className="text-sm font-semibold" onClick={toggleLoginModal}>
-                    Sign In
-                  </button>
-                )}
-              </div>
-              <button
-                className="relative flex items-center justify-center flex-shrink-0 h-auto transform focus:outline-none"
-                aria-label="cart-button"
-                onClick={toggleCart}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18px"
-                  height="18px"
-                  viewBox="0 0 20 20"
-                  className="md:w-4 xl:w-5 md:h-4 xl:h-5"
-                >
-                  <path
-                    d="M5,4H19a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4ZM2,5A3,3,0,0,1,5,2H19a3,3,0,0,1,3,3V19a3,3,0,0,1-3,3H5a3,3,0,0,1-3-3Zm10,7C9.239,12,7,9.314,7,6H9c0,2.566,1.669,4,3,4s3-1.434,3-4h2C17,9.314,14.761,12,12,12Z"
-                    transform="translate(-2 -2)"
-                    fill="currentColor"
-                    fillRule="evenodd"
-                  />
-                </svg>
-                <span className="cart-counter-badge flex items-center justify-center bg-heading text-white absolute -top-2.5 xl:-top-3 rounded-full ltr:-right-2.5 ltr:xl:-right-3 rtl:-left-2.5 rtl:xl:-left-3 font-bold">
-                  1
-                </span>
-              </button>
-            </div>
+  <button
+    onClick={toggleSearch}
+    className="relative flex items-center justify-center flex-shrink-0 h-auto transform focus:outline-none"
+    aria-label="search-button"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="17px"
+      height="18px"
+      viewBox="0 0 18.942 20"
+      className="md:w-4 xl:w-5 md:h-4 xl:h-5"
+    >
+      <path
+        d="M381.768,385.4l3.583,3.576c.186.186.378.366.552.562a.993.993,0,1,1-1.429,1.375c-1.208-1.186-2.422-2.368-3.585-3.6a1.026,1.026,0,0,0-1.473-.246,8.343,8.343,0,1,1-3.671-15.785,8.369,8.369,0,0,1,6.663,13.262C382.229,384.815,382.025,385.063,381.768,385.4Zm-6.152.579a6.342,6.342,0,1,0-6.306-6.355A6.305,6.305,0,0,0,375.615,385.983Z"
+        transform="translate(-367.297 -371.285)"
+        fill="currentColor"
+        fillRule="evenodd"
+      />
+    </svg>
+  </button>
+  <Link
+    href="/favorites"
+    className="relative flex items-center justify-center flex-shrink-0 h-auto transform focus:outline-none"
+    aria-label="favorites-button"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18px"
+      height="18px"
+      viewBox="0 0 24 24"
+      className="md:w-4 xl:w-5 md:h-4 xl:h-5"
+    >
+      <path
+        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+        fill="currentColor"
+      />
+    </svg>
+  </Link>
+  <div className="-mt-0.5 flex-shrink-0">
+    {token ? (
+      <Link className="text-sm font-semibold" href="/my-account">
+        Account
+      </Link>
+    ) : (
+      <button className="text-sm font-semibold" onClick={toggleLoginModal}>
+        Sign In
+      </button>
+    )}
+  </div>
+  <button
+    className="relative flex items-center justify-center flex-shrink-0 h-auto transform focus:outline-none"
+    aria-label="cart-button"
+    onClick={toggleCart}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18px"
+      height="18px"
+      viewBox="0 0 20 20"
+      className="md:w-4 xl:w-5 md:h-4 xl:h-5"
+    >
+      <path
+        d="M5,4H19a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4ZM2,5A3,3,0,0,1,5,2H19a3,3,0,0,1,3,3V19a3,3,0,0,1-3,3H5a3,3,0,0,1-3-3Zm10,7C9.239,12,7,9.314,7,6H9c0,2.566,1.669,4,3,4s3-1.434,3-4h2C17,9.314,14.761,12,12,12Z"
+        transform="translate(-2 -2)"
+        fill="currentColor"
+        fillRule="evenodd"
+      />
+    </svg>
+    <span className="cart-counter-badge flex items-center justify-center bg-heading text-white absolute -top-2.5 xl:-top-3 rounded-full ltr:-right-2.5 ltr:xl:-right-3 rtl:-left-2.5 rtl:xl:-left-3 font-bold">
+      1
+    </span>
+  </button>
+
+
+</div>
+
           </div>
         </div>
       </header>

@@ -1,14 +1,49 @@
-"use client"
-import Image from "next/image";
-import { useState } from "react";
+"use client";
+import { useState, useEffect } from "react";
+import axios from "@/utils/axios"; // Make sure this is the correct path to axios instance.
+import Link from "next/link";
 
 export default function Home() {
-  // State to toggle cart visibility
+  // State to toggle cart visibility and store products
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [bestBudgetProducts, setBestBudgetProducts] = useState([]);
+  const [onSellingProducts, setOnSellingProducts] = useState([]);
+  const [newArrivals, setNewArrivals] = useState([]);
 
   // Function to toggle cart visibility
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
+  // Fetch the best budget DVDs
+  useEffect(() => {
+    axios.get("/api/Products/best-budget-dvds")
+      .then((response) => {
+        setBestBudgetProducts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching best budget DVDs:", error);
+      });
+  }, []);
+
+  // Fetch the on-selling products
+  useEffect(() => {
+    axios.get("/api/Products/on-selling")
+      .then((response) => {
+        setOnSellingProducts(response.data); // Store on-selling products data in state
+      })
+      .catch((error) => {
+        console.error("Error fetching on-selling products:", error);
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get("/api/Products/new-arrivals")
+      .then((response) => {
+        setNewArrivals(response.data); // Store new arrivals products data in state
+      })
+      .catch((error) => {
+        console.error("Error fetching new arrivals:", error);
+      });
+  }, []);
   return (
     <>
       <main
@@ -22,14 +57,16 @@ export default function Home() {
               href="/collections/mens-collection"
             >
               <span
-                style={{boxSizing: "border-box",display: "inline-block",overflow: "hidden",width: "initial",height: "initial", background: "none",opacity: 1,border: 0,margin: 0,padding: 0,position: "relative",maxWidth: "100%"
+                style={{
+                  boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%"
                 }}
               >
                 <span
-                  style={{boxSizing: "border-box",display: "block",width: "initial",height: "initial",background: "none",opacity: 1,border: 0,margin: 0,padding: 0,maxWidth: "100%"
+                  style={{
+                    boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%"
                   }}
                 >
-<img alt="" aria-hidden="true" src="/img/main-image-1.jpg" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
+                  <img alt="" aria-hidden="true" src="/img/main-image-1.jpg" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
                 </span>
                 <img alt="Men's Collection" src="/img/main-image-1.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
               </span>
@@ -37,64 +74,64 @@ export default function Home() {
             </a>
           </div>
           <div className="mx-auto col-span-1 sm:col-span-2">
-  <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/new-sports">
-    <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
-      <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
-        <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27425%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
-      </span>
-      <img alt="New Sports" src="/img/homepage-main-2.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
-    </span>
-    <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
-  </a>
-</div>
+            <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/new-sports">
+              <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
+                <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
+                  <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27425%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
+                </span>
+                <img alt="New Sports" src="/img/homepage-main-2.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
+              </span>
+              <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
+            </a>
+          </div>
 
-<div className="mx-auto col-span-1 sm:col-span-2">
-  <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/dress-women">
-    <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
-      <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
-        <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27425%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
-      </span>
-      <img alt="Dress Women"src="/img/main-image-3.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
-    </span>
-    <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
-  </a>
-</div>
+          <div className="mx-auto col-span-1 sm:col-span-2">
+            <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/dress-women">
+              <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
+                <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
+                  <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27425%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
+                </span>
+                <img alt="Dress Women" src="/img/main-image-3.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
+              </span>
+              <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
+            </a>
+          </div>
 
-<div className="mx-auto col-span-1 sm:col-span-2">
-  <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/exclusive-sunglasses">
-    <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
-      <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
-        <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27425%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
-      </span>
-      <img alt="Exclusive Sunglasses"src="/img/main-image-4.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
-    </span>
-    <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
-  </a>
-</div>
+          <div className="mx-auto col-span-1 sm:col-span-2">
+            <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/exclusive-sunglasses">
+              <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
+                <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
+                  <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27425%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
+                </span>
+                <img alt="Exclusive Sunglasses" src="/img/main-image-4.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
+              </span>
+              <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
+            </a>
+          </div>
 
-<div className="mx-auto col-span-1 sm:col-span-2">
-  <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/product-coupons">
-    <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
-      <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
-        <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27425%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
-      </span>
-      <img alt="Product Coupons"src="/img/main-image-2.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
-    </span>
-    <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
-  </a>
-</div>
+          <div className="mx-auto col-span-1 sm:col-span-2">
+            <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/product-coupons">
+              <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
+                <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
+                  <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27425%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
+                </span>
+                <img alt="Product Coupons" src="/img/main-image-2.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
+              </span>
+              <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
+            </a>
+          </div>
 
-<div className="mx-auto col-span-full sm:col-span-5">
-  <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/new-backpack">
-    <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
-      <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
-        <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%271078%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
-      </span>
-      <img alt="New Backpack" src="/img/game-homepage.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
-    </span>
-    <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
-  </a>
-</div>
+          <div className="mx-auto col-span-full sm:col-span-5">
+            <a className="h-full group flex justify-center relative overflow-hidden" href="/collections/new-backpack">
+              <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
+                <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
+                  <img alt="" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%271078%27%20height=%27425%27/%3e" style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }} />
+                </span>
+                <img alt="New Backpack" src="/img/game-homepage.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover w-full" style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }} />
+              </span>
+              <div className="absolute top-0 ltr:-left-[100%] rtl:-right-[100%] h-full w-1/2 z-5 block transform ltr:-skew-x-12 rtl:skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 ltr:group-hover:animate-shine rtl:group-hover:animate-shineRTL" />
+            </a>
+          </div>
 
         </div>
         <div className="mx-auto max-w-[1920px] px-4 md:px-8 2xl:px-16">
@@ -102,921 +139,48 @@ export default function Home() {
             <div className="flex justify-between items-center flex-wrap mb-5 md:mb-6">
               <div className="flex items-center justify-between -mt-2 mb-0">
                 <h3 className="text-lg md:text-xl lg:text-2xl 2xl:text-3xl xl:leading-10 font-bold text-heading">
-                  Flash Sale
+                  Best Budget Dvds
                 </h3>
               </div>
               <span>Time Over!</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-3 md:gap-x-5 xl:gap-x-7 gap-y-4 lg:gap-y-5 xl:gap-y-6 2xl:gap-y-8">
-            <div
-  className="group box-border overflow-hidden flex rounded-md cursor-pointer bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-  role="button"
-  title="Adidas Shoes Black"
->
-  <div className="flex mb-3 md:mb-3.5 pb-0">
-    <span style={{ boxSizing: "border-box", display: "inline-block", overflow: "hidden", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, position: "relative", maxWidth: "100%" }}>
-      <span style={{ boxSizing: "border-box", display: "block", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: "100%" }}>
-        <img
-          alt=""
-          aria-hidden="true"
-          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-          style={{ display: "block", maxWidth: "100%", width: "initial", height: "initial", background: "none", opacity: 1, border: 0, margin: 0, padding: 0 }}
-        />
-      </span>
-      <img
-        alt="Adidas Shoes Black"
-        src="/img/dvds-1.jpg"
-        decoding="async"
-        data-nimg="intrinsic"
-        className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
-        style={{ position: "absolute", inset: 0, boxSizing: "border-box", padding: 0, border: "none", margin: "auto", display: "block", width: 0, height: 0, minWidth: "100%", maxWidth: "100%", minHeight: "100%", maxHeight: "100%" }}
-      />
-    </span>
-    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-  </div>
-  <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-    <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-      Adidas Shoes Black
-    </h2>
-    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-      Men Black top sleeveless gown
-    </p>
-    <div className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3 text-heading">
-      <span className="inline-block false">$45.00</span>
-      <del className="sm:text-base font-normal text-gray-800">$99.99</del>
-    </div>
-  </div>
-</div>
 
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer  bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-                role="button"
-                title="Armani Wide-Leg Trousers"
-              >
-                <div className="flex mb-3 md:mb-3.5 pb-0">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
+              {bestBudgetProducts.length > 0 ? (
+                bestBudgetProducts.map((product) => (
+                  <Link href={`/product/${product.productId}`}>
+                    <div
+                      key={product.productId}
+                      className="group box-border overflow-hidden flex rounded-md cursor-pointer bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
+                      role="button"
+                      title={product.title}
                     >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img alt="Armani Wide-Leg Trousers" src="/img/dvds-1.jpg" decoding="async" data-nimg="intrinsic" className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105" style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-                  <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-                    Armani Wide-Leg Trousers
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Monochrome elegance. Made with a relaxed wide-leg, these trousers
-                    are made from a sustainable soft organic cotton with a mechanical
-                    stretch making the garment easily recycled.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                  >
-                    <span className="inline-block false">$12.00</span>
-                    <del className="sm:text-base font-normal text-gray-800">
-                      $16.00
-                    </del>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer  bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-                role="button"
-                title="Zara Shoes Green"
-              >
-                <div className="flex mb-3 md:mb-3.5 pb-0">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Zara Shoes Green"
-                      src="/img/dvds-1.jpg"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-                  <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-                    Zara Shoes Green
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Footwear refers to garments worn on the feet, which originally
-                    serves to purpose of protection against adversities of the
-                    environment, usually regarding ground textures and temperature.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                  >
-                    <span className="inline-block false">$50.00</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer  bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-                role="button"
-                title="Wayfarer Sunglasses"
-              >
-                <div className="flex mb-3 md:mb-3.5 pb-0">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Wayfarer Sunglasses"
-                      src="/img/dvds-1.jpg"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-                  <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-                    Wayfarer Sunglasses
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Our optical engineers developed these sunglasses for hiking. Ideal
-                    for occasional use in the mountains.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                  >
-                    <span className="inline-block false">$15.00</span>
-                    <del className="sm:text-base font-normal text-gray-800">
-                      $18.00
-                    </del>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer  bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-                role="button"
-                title="Tissot Classic"
-              >
-                <div className="flex mb-3 md:mb-3.5 pb-0">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Tissot Classic"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-30-md.png&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-30-md.png&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-30-md.png&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-                  <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-                    Tissot Classic
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    The new-model Submariner now features Rolex’s powerhouse calibre
-                    3235 Perpetual movement. An upgrade from the calibre 3135
-                    movement,
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                  >
-                    <span className="inline-block false">$600.00</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer  bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-                role="button"
-                title="Hermes Carlton London"
-              >
-                <div className="flex mb-3 md:mb-3.5 pb-0">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Hermes Carlton London"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-14-md.png&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-14-md.png&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-14-md.png&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-                  <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-                    Hermes Carlton London
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Off-White self-striped knitted midi A-line dress, has a scoop
-                    neck, sleeveless, straight hem
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                  >
-                    <span className="inline-block false">$15.00</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer  bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-                role="button"
-                title="Polarised Wayfarer Sunglasses"
-              >
-                <div className="flex mb-3 md:mb-3.5 pb-0">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Polarised Wayfarer Sunglasses"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-27-md.png&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-27-md.png&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-27-md.png&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-                  <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-                    Polarised Wayfarer Sunglasses
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    This item is only exchangeable for the same or a different size,
-                    if available, and cannot be returned
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                  >
-                    <span className="inline-block false">$20.00</span>
-                    <del className="sm:text-base font-normal text-gray-800">
-                      $35.00
-                    </del>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer  bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-                role="button"
-                title="Gucci Carlton UK"
-              >
-                <div className="flex mb-3 md:mb-3.5 pb-0">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Gucci Carlton UK"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-8-md.png&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-8-md.png&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-8-md.png&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-                  <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-                    Gucci Carlton UK
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Knitted midi A-line dress, has a scoop neck, sleeveless, straight
-                    hem
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                  >
-                    <span className="inline-block false">$14.99</span>
-                    <del className="sm:text-base font-normal text-gray-800">
-                      $19.99
-                    </del>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer  bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-                role="button"
-                title="NIKE Shoes"
-              >
-                <div className="flex mb-3 md:mb-3.5 pb-0">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="NIKE Shoes"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-24-md.png&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-24-md.png&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-24-md.png&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-                  <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-                    NIKE Shoes
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    NIKE 2020 Black White is a clean and monochromatic colourway of
-                    the label’s latest high-technology silhouette. The model first
-                    launched late last year and is currently Jordan Brand’s flagship
-                    performance pair.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                  >
-                    <span className="inline-block false">$50.00</span>
-                    <del className="sm:text-base font-normal text-gray-800">
-                      $80.00
-                    </del>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer  bg-white ltr:pr-0 rtl:pl-0 md:pb-1 flex-col items-start"
-                role="button"
-                title="Wayfarer Sunglasses"
-              >
-                <div className="flex mb-3 md:mb-3.5 pb-0">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27324%27%20height=%27324%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Wayfarer Sunglasses"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-12-md.png&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-12-md.png&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-12-md.png&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 ltr:pl-0 rtl:pr-0">
-                  <h2 className="truncate mb-1 font-semibold md:mb-1.5 text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
-                    Wayfarer Sunglasses
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Our optical engineers developed these sunglasses for hiking. Ideal
-                    for occasional use in the mountains.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                  >
-                    <span className="inline-block false">$20.00</span>
-                    <del className="sm:text-base font-normal text-gray-800">
-                      $25.00
-                    </del>
-                  </div>
-                </div>
-              </div>
+                      <div className="flex mb-3 md:mb-3.5 pb-0">
+                        <img
+                          alt={product.title}
+                          src={product.image1}
+                          className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                          }}
+                        />
+                      </div>
+                      <div className="w-full overflow-hidden p-2">
+                        <h3 className="truncate mb-1 font-semibold text-sm sm:text-base md:text-sm lg:text-base xl:text-lg text-heading">
+                          {product.title}
+                        </h3>
+
+                        <div className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl">
+                          <span className="inline-block">${product.price}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <p>No products available for best budget DVDs.</p>
+              )}
             </div>
           </div>
         </div>
@@ -1063,529 +227,6 @@ export default function Home() {
         </div>
         <div className="mx-auto max-w-[1920px] px-4 md:px-8 2xl:px-16">
 
-          <div className="mb-12 md:mb-14 xl:mb-16">
-            <div className="flex items-center justify-between -mt-2 pb-0.5 mb-4 md:mb-5 lg:mb-6 2xl:mb-7 3xl:mb-8">
-              <h3 className="text-lg md:text-xl lg:text-2xl 2xl:text-3xl xl:leading-10 font-bold text-heading">
-                Featured Products
-              </h3>
-            </div>
-            <div className="grid grid-cols-4 grid-rows-2 gap-3 md:gap-5 xl:gap-7">
-              <div className="row-span-full lg:row-span-2 col-span-full lg:col-span-2 cursor-pointer group flex flex-col bg-gray-200 rounded-md relative items-center justify-between overflow-hidden">
-                <div
-                  className="flex justify-center items-center p-4 h-full 3xl:min-h-[330px]"
-                  title="Nike Bag"
-                >
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27620%27%20height=%27620%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Nike Bag"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F1.png&w=640&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F1.png&w=1920&q=75 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F1.png&w=1920&q=75"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="transition duration-500 ease-in-out transform group-hover:scale-110"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%",
-                        objectFit: "contain"
-                      }}
-                    />
-                  </span>
-                </div>
-                <span className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 bg-heading text-white text-10px md:text-sm leading-5 rounded-md inline-block px-2 xl:px-3 pt-0.5 pb-1">
-                  20%{" "}
-                </span>
-                <div
-                  className="flex flex-col w-full px-4 pb-4 md:flex-row lg:flex-col 2xl:flex-row md:justify-between md:items-center lg:items-start 2xl:items-center md:px-5 3xl:px-7 md:pb-5 3xl:pb-7"
-                  title="Nike Bag"
-                >
-                  <div className="overflow-hidden ltr:md:pr-2 rtl:md:pl-2 ltr:lg:pr-0 rtl:lg:pl-0 ltr:2xl:pr-2 rtl:2xl:pl-2">
-                    <h2 className="mb-1 text-sm font-semibold truncate text-heading md:text-base xl:text-lg">
-                      Nike Bag
-                    </h2>
-                    <p className="text-body text-xs xl:text-sm leading-normal xl:leading-relaxed truncate max-w-[250px]">
-                      Rolex’s powerhouse calibre 3235 Perpetual movement. An upgrade
-                      from the calibre 3135 movement
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 flex flex-row-reverse md:flex-col lg:flex-row-reverse 2xl:flex-col items-center md:items-end lg:items-start 2xl:items-end justify-end ltr:md:text-right rtl:md:text-left lg:ltr:text-left rtl:text-right ltr:xl:text-right rtl:xl:text-left mt-2 md:-mt-0.5 lg:mt-2 2xl:-mt-0.5">
-                    <del className="text-sm md:text-base lg:text-sm xl:text-base 3xl:text-lg">
-                      $20.38
-                    </del>
-                    <div className="text-heading font-segoe font-semibold text-base md:text-xl lg:text-base xl:text-xl 3xl:text-2xl 3xl:mt-0.5 ltr:pr-2 rtl:pl-2 ltr:md:pr-0 rtl:md:pl-0 ltr:lg:pr-2 rtl:lg:pl-2 ltr:2xl:pr-0 rtl:2xl:pl-0">
-                      $16.38
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-span-2 lg:col-span-1 cursor-pointer group flex flex-col bg-gray-200 rounded-md relative items-center justify-between overflow-hidden">
-                <div
-                  className="flex justify-center items-center p-4 h-full 3xl:min-h-[330px]"
-                  title="Adidas Woolen Cap"
-                >
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27260%27%20height=%27260%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Adidas Woolen Cap"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F2.png&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F2.png&w=640&q=75 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F2.png&w=640&q=75"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="transition duration-500 ease-in-out transform group-hover:scale-110"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%",
-                        objectFit: "contain"
-                      }}
-                    />
-                  </span>
-                </div>
-                <span className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 bg-heading text-white text-10px md:text-sm leading-5 rounded-md inline-block px-2 xl:px-3 pt-0.5 pb-1">
-                  20%{" "}
-                </span>
-                <div
-                  className="flex flex-col w-full px-4 pb-4 md:flex-row lg:flex-col 2xl:flex-row md:justify-between md:items-center lg:items-start 2xl:items-center md:px-5 3xl:px-7 md:pb-5 3xl:pb-7"
-                  title="Adidas Woolen Cap"
-                >
-                  <div className="overflow-hidden ltr:md:pr-2 rtl:md:pl-2 ltr:lg:pr-0 rtl:lg:pl-0 ltr:2xl:pr-2 rtl:2xl:pl-2">
-                    <h2 className="mb-1 text-sm font-semibold truncate text-heading md:text-base xl:text-lg">
-                      Adidas Woolen Cap
-                    </h2>
-                    <p className="text-body text-xs xl:text-sm leading-normal xl:leading-relaxed truncate max-w-[250px]">
-                      Casual wear (casual attire or clothing) may be a Western code
-                      that’s relaxed, occasional, spontaneous and fitted to everyday
-                      use. Casual wear became popular within the Western world
-                      following the counterculture of the 1960s.
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 flex flex-row-reverse md:flex-col lg:flex-row-reverse 2xl:flex-col items-center md:items-end lg:items-start 2xl:items-end justify-end ltr:md:text-right rtl:md:text-left lg:ltr:text-left rtl:text-right ltr:xl:text-right rtl:xl:text-left mt-2 md:-mt-0.5 lg:mt-2 2xl:-mt-0.5">
-                    <del className="text-sm md:text-base lg:text-sm xl:text-base 3xl:text-lg">
-                      $20.00
-                    </del>
-                    <div className="text-heading font-segoe font-semibold text-base md:text-xl lg:text-base xl:text-xl 3xl:text-2xl 3xl:mt-0.5 ltr:pr-2 rtl:pl-2 ltr:md:pr-0 rtl:md:pl-0 ltr:lg:pr-2 rtl:lg:pl-2 ltr:2xl:pr-0 rtl:2xl:pl-0">
-                      $16.00
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-span-2 lg:col-span-1 cursor-pointer group flex flex-col bg-gray-200 rounded-md relative items-center justify-between overflow-hidden">
-                <div
-                  className="flex justify-center items-center p-4 h-full 3xl:min-h-[330px]"
-                  title="Nike Leader VT"
-                >
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27260%27%20height=%27260%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Nike Leader VT"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F3.png&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F3.png&w=640&q=75 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F3.png&w=640&q=75"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="transition duration-500 ease-in-out transform group-hover:scale-110"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%",
-                        objectFit: "contain"
-                      }}
-                    />
-                  </span>
-                </div>
-                <div
-                  className="flex flex-col w-full px-4 pb-4 md:flex-row lg:flex-col 2xl:flex-row md:justify-between md:items-center lg:items-start 2xl:items-center md:px-5 3xl:px-7 md:pb-5 3xl:pb-7"
-                  title="Nike Leader VT"
-                >
-                  <div className="overflow-hidden ltr:md:pr-2 rtl:md:pl-2 ltr:lg:pr-0 rtl:lg:pl-0 ltr:2xl:pr-2 rtl:2xl:pl-2">
-                    <h2 className="mb-1 text-sm font-semibold truncate text-heading md:text-base xl:text-lg">
-                      Nike Leader VT
-                    </h2>
-                    <p className="text-body text-xs xl:text-sm leading-normal xl:leading-relaxed truncate max-w-[250px]">
-                      Footwear refers to garments worn on the feet, which originally
-                      serves to purpose of protection against adversities of the
-                      environment, usually regarding ground textures and temperature.
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 flex flex-row-reverse md:flex-col lg:flex-row-reverse 2xl:flex-col items-center md:items-end lg:items-start 2xl:items-end justify-end ltr:md:text-right rtl:md:text-left lg:ltr:text-left rtl:text-right ltr:xl:text-right rtl:xl:text-left mt-2 md:-mt-0.5 lg:mt-2 2xl:-mt-0.5">
-                    <div className="text-heading font-segoe font-semibold text-base md:text-xl lg:text-base xl:text-xl 3xl:text-2xl 3xl:mt-0.5 ltr:pr-2 rtl:pl-2 ltr:md:pr-0 rtl:md:pl-0 ltr:lg:pr-2 rtl:lg:pl-2 ltr:2xl:pr-0 rtl:2xl:pl-0">
-                      $16.38
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-span-2 lg:col-span-1 cursor-pointer group flex flex-col bg-gray-200 rounded-md relative items-center justify-between overflow-hidden">
-                <div
-                  className="flex justify-center items-center p-4 h-full 3xl:min-h-[330px]"
-                  title="Ray ban Aviator"
-                >
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27260%27%20height=%27260%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Ray ban Aviator"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F4.png&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F4.png&w=640&q=75 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F4.png&w=640&q=75"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="transition duration-500 ease-in-out transform group-hover:scale-110"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%",
-                        objectFit: "contain"
-                      }}
-                    />
-                  </span>
-                </div>
-                <span className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 bg-heading text-white text-10px md:text-sm leading-5 rounded-md inline-block px-2 xl:px-3 pt-0.5 pb-1">
-                  15%{" "}
-                </span>
-                <div
-                  className="flex flex-col w-full px-4 pb-4 md:flex-row lg:flex-col 2xl:flex-row md:justify-between md:items-center lg:items-start 2xl:items-center md:px-5 3xl:px-7 md:pb-5 3xl:pb-7"
-                  title="Ray ban Aviator"
-                >
-                  <div className="overflow-hidden ltr:md:pr-2 rtl:md:pl-2 ltr:lg:pr-0 rtl:lg:pl-0 ltr:2xl:pr-2 rtl:2xl:pl-2">
-                    <h2 className="mb-1 text-sm font-semibold truncate text-heading md:text-base xl:text-lg">
-                      Ray ban Aviator
-                    </h2>
-                    <p className="text-body text-xs xl:text-sm leading-normal xl:leading-relaxed truncate max-w-[250px]">
-                      Polarized sunglasses reduce glare reflected off of roads, bodies
-                      of water, snow and other horizontal surfaces.Restore true
-                      color.Vision lenses are 400UV rated, meaning it can block UVA
-                      and UVB radiation.
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 flex flex-row-reverse md:flex-col lg:flex-row-reverse 2xl:flex-col items-center md:items-end lg:items-start 2xl:items-end justify-end ltr:md:text-right rtl:md:text-left lg:ltr:text-left rtl:text-right ltr:xl:text-right rtl:xl:text-left mt-2 md:-mt-0.5 lg:mt-2 2xl:-mt-0.5">
-                    <del className="text-sm md:text-base lg:text-sm xl:text-base 3xl:text-lg">
-                      $850.00
-                    </del>
-                    <div className="text-heading font-segoe font-semibold text-base md:text-xl lg:text-base xl:text-xl 3xl:text-2xl 3xl:mt-0.5 ltr:pr-2 rtl:pl-2 ltr:md:pr-0 rtl:md:pl-0 ltr:lg:pr-2 rtl:lg:pl-2 ltr:2xl:pr-0 rtl:2xl:pl-0">
-                      $720.00
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-span-2 lg:col-span-1 cursor-pointer group flex flex-col bg-gray-200 rounded-md relative items-center justify-between overflow-hidden">
-                <div
-                  className="flex justify-center items-center p-4 h-full 3xl:min-h-[330px]"
-                  title="Tissot Classic"
-                >
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27260%27%20height=%27260%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Tissot Classic"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F5.png&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F5.png&w=640&q=75 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Ffeatured%2F5.png&w=640&q=75"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="transition duration-500 ease-in-out transform group-hover:scale-110"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%",
-                        objectFit: "contain"
-                      }}
-                    />
-                  </span>
-                </div>
-                <div
-                  className="flex flex-col w-full px-4 pb-4 md:flex-row lg:flex-col 2xl:flex-row md:justify-between md:items-center lg:items-start 2xl:items-center md:px-5 3xl:px-7 md:pb-5 3xl:pb-7"
-                  title="Tissot Classic"
-                >
-                  <div className="overflow-hidden ltr:md:pr-2 rtl:md:pl-2 ltr:lg:pr-0 rtl:lg:pl-0 ltr:2xl:pr-2 rtl:2xl:pl-2">
-                    <h2 className="mb-1 text-sm font-semibold truncate text-heading md:text-base xl:text-lg">
-                      Tissot Classic
-                    </h2>
-                    <p className="text-body text-xs xl:text-sm leading-normal xl:leading-relaxed truncate max-w-[250px]">
-                      The new-model Submariner now features Rolex’s powerhouse calibre
-                      3235 Perpetual movement. An upgrade from the calibre 3135
-                      movement,
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 flex flex-row-reverse md:flex-col lg:flex-row-reverse 2xl:flex-col items-center md:items-end lg:items-start 2xl:items-end justify-end ltr:md:text-right rtl:md:text-left lg:ltr:text-left rtl:text-right ltr:xl:text-right rtl:xl:text-left mt-2 md:-mt-0.5 lg:mt-2 2xl:-mt-0.5">
-                    <div className="text-heading font-segoe font-semibold text-base md:text-xl lg:text-base xl:text-xl 3xl:text-2xl 3xl:mt-0.5 ltr:pr-2 rtl:pl-2 ltr:md:pr-0 rtl:md:pl-0 ltr:lg:pr-2 rtl:lg:pl-2 ltr:2xl:pr-0 rtl:2xl:pl-0">
-                      $600.00
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div className="mb-12 md:mb-14 xl:mb-16">
             <div className="flex items-center justify-between -mt-2 pb-0.5 mb-4 md:mb-5 lg:mb-6 2xl:mb-7 3xl:mb-8">
               <h3 className="text-lg md:text-xl lg:text-2xl 2xl:text-3xl xl:leading-10 font-bold text-heading">
@@ -1679,886 +320,114 @@ export default function Home() {
                 </a>
               </div>
               <div className="col-span-full 3xl:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-5 xl:gap-7 ">
-                <div
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
-                  role="button"
-                  title="Armani Veni Vidi Vici"
-                >
-                  <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        overflow: "hidden",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        position: "relative",
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <span
-                        style={{
-                          boxSizing: "border-box",
-                          display: "block",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0,
-                          maxWidth: "100%"
-                        }}
+
+
+
+
+
+
+
+
+                {onSellingProducts.length > 0 ? (
+                  onSellingProducts.map((product) => (
+                    <Link href={`/product/${product.productId}`}>
+                      <div
+                        className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
+                        role="button"
+                        title="REDQ Steel Watch"
                       >
-                        <img
-                          alt=""
-                          aria-hidden="true"
-                          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
-                          style={{
-                            display: "block",
-                            maxWidth: "100%",
-                            width: "initial",
-                            height: "initial",
-                            background: "none",
-                            opacity: 1,
-                            border: 0,
-                            margin: 0,
-                            padding: 0
-                          }}
-                        />
-                      </span>
-                      <img
-                        alt="Armani Veni Vidi Vici"
-                        srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-11-xs.png&w=256&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-11-xs.png&w=384&q=100 2x"
-                        src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-11-xs.png&w=384&q=100"
-                        decoding="async"
-                        data-nimg="intrinsic"
-                        className="bg-gray-300 object-cover rounded-s-md"
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          boxSizing: "border-box",
-                          padding: 0,
-                          border: "none",
-                          margin: "auto",
-                          display: "block",
-                          width: 0,
-                          height: 0,
-                          minWidth: "100%",
-                          maxWidth: "100%",
-                          minHeight: "100%",
-                          maxHeight: "100%"
-                        }}
-                      />
-                    </span>
-                    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                  </div>
-                  <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
-                    <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
-                      Armani Veni Vidi Vici
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      Fendi began life in 1925 as a fur and leather speciality store
-                      in Rome.
-                    </p>
-                    <div
-                      className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                    >
-                      <span className="inline-block false">$17.99</span>
-                      <del className="sm:text-base font-normal text-gray-800">
-                        $20.00
-                      </del>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
-                  role="button"
-                  title="Adidas Shoes Black"
-                >
-                  <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        overflow: "hidden",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        position: "relative",
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <span
-                        style={{
-                          boxSizing: "border-box",
-                          display: "block",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0,
-                          maxWidth: "100%"
-                        }}
-                      >
-                        <img
-                          alt=""
-                          aria-hidden="true"
-                          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
-                          style={{
-                            display: "block",
-                            maxWidth: "100%",
-                            width: "initial",
-                            height: "initial",
-                            background: "none",
-                            opacity: 1,
-                            border: 0,
-                            margin: 0,
-                            padding: 0
-                          }}
-                        />
-                      </span>
-                      <img
-                        alt="Adidas Shoes Black"
-                        srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-26-xs.png&w=256&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-26-xs.png&w=384&q=100 2x"
-                        src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-26-xs.png&w=384&q=100"
-                        decoding="async"
-                        data-nimg="intrinsic"
-                        className="bg-gray-300 object-cover rounded-s-md"
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          boxSizing: "border-box",
-                          padding: 0,
-                          border: "none",
-                          margin: "auto",
-                          display: "block",
-                          width: 0,
-                          height: 0,
-                          minWidth: "100%",
-                          maxWidth: "100%",
-                          minHeight: "100%",
-                          maxHeight: "100%"
-                        }}
-                      />
-                    </span>
-                    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                  </div>
-                  <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
-                    <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
-                      Adidas Shoes Black
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      Men Black top shoes gown
-                    </p>
-                    <div
-                      className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                    >
-                      <span className="inline-block false">$45.00</span>
-                      <del className="sm:text-base font-normal text-gray-800">
-                        $99.99
-                      </del>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
-                  role="button"
-                  title="Gucci Carlton UK"
-                >
-                  <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        overflow: "hidden",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        position: "relative",
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <span
-                        style={{
-                          boxSizing: "border-box",
-                          display: "block",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0,
-                          maxWidth: "100%"
-                        }}
-                      >
-                        <img
-                          alt=""
-                          aria-hidden="true"
-                          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
-                          style={{
-                            display: "block",
-                            maxWidth: "100%",
-                            width: "initial",
-                            height: "initial",
-                            background: "none",
-                            opacity: 1,
-                            border: 0,
-                            margin: 0,
-                            padding: 0
-                          }}
-                        />
-                      </span>
-                      <img
-                        alt="Gucci Carlton UK"
-                        srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-8-xs.png&w=256&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-8-xs.png&w=384&q=100 2x"
-                        src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-8-xs.png&w=384&q=100"
-                        decoding="async"
-                        data-nimg="intrinsic"
-                        className="bg-gray-300 object-cover rounded-s-md"
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          boxSizing: "border-box",
-                          padding: 0,
-                          border: "none",
-                          margin: "auto",
-                          display: "block",
-                          width: 0,
-                          height: 0,
-                          minWidth: "100%",
-                          maxWidth: "100%",
-                          minHeight: "100%",
-                          maxHeight: "100%"
-                        }}
-                      />
-                    </span>
-                    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                  </div>
-                  <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
-                    <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
-                      Gucci Carlton UK
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      Knitted midi A-line dress, has a scoop neck, sleeveless,
-                      straight hem
-                    </p>
-                    <div
-                      className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                    >
-                      <span className="inline-block false">$14.99</span>
-                      <del className="sm:text-base font-normal text-gray-800">
-                        $19.99
-                      </del>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
-                  role="button"
-                  title="Scuba Stand Collar Topper Jacket"
-                >
-                  <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        overflow: "hidden",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        position: "relative",
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <span
-                        style={{
-                          boxSizing: "border-box",
-                          display: "block",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0,
-                          maxWidth: "100%"
-                        }}
-                      >
-                        <img
-                          alt=""
-                          aria-hidden="true"
-                          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
-                          style={{
-                            display: "block",
-                            maxWidth: "100%",
-                            width: "initial",
-                            height: "initial",
-                            background: "none",
-                            opacity: 1,
-                            border: 0,
-                            margin: 0,
-                            padding: 0
-                          }}
-                        />
-                      </span>
-                      <img
-                        alt="Scuba Stand Collar Topper Jacket"
-                        srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-15-xs.png&w=256&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-15-xs.png&w=384&q=100 2x"
-                        src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-15-xs.png&w=384&q=100"
-                        decoding="async"
-                        data-nimg="intrinsic"
-                        className="bg-gray-300 object-cover rounded-s-md"
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          boxSizing: "border-box",
-                          padding: 0,
-                          border: "none",
-                          margin: "auto",
-                          display: "block",
-                          width: 0,
-                          height: 0,
-                          minWidth: "100%",
-                          maxWidth: "100%",
-                          minHeight: "100%",
-                          maxHeight: "100%"
-                        }}
-                      />
-                    </span>
-                    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                  </div>
-                  <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
-                    <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
-                      Scuba Stand Collar Topper Jacket
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      Zara provides only the highest-quality selection of dresses,
-                      womens suits, and suited separates.
-                    </p>
-                    <div
-                      className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                    >
-                      <span className="inline-block false">$12.00</span>
-                      <del className="sm:text-base font-normal text-gray-800">
-                        $16.00
-                      </del>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
-                  role="button"
-                  title="Regular Fit Crew-neck T-shirt"
-                >
-                  <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        overflow: "hidden",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        position: "relative",
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <span
-                        style={{
-                          boxSizing: "border-box",
-                          display: "block",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0,
-                          maxWidth: "100%"
-                        }}
-                      >
-                        <img
-                          alt=""
-                          aria-hidden="true"
-                          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
-                          style={{
-                            display: "block",
-                            maxWidth: "100%",
-                            width: "initial",
-                            height: "initial",
-                            background: "none",
-                            opacity: 1,
-                            border: 0,
-                            margin: 0,
-                            padding: 0
-                          }}
-                        />
-                      </span>
-                      <img
-                        alt="Regular Fit Crew-neck T-shirt"
-                        srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-7-xs.png&w=256&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-7-xs.png&w=384&q=100 2x"
-                        src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-7-xs.png&w=384&q=100"
-                        decoding="async"
-                        data-nimg="intrinsic"
-                        className="bg-gray-300 object-cover rounded-s-md"
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          boxSizing: "border-box",
-                          padding: 0,
-                          border: "none",
-                          margin: "auto",
-                          display: "block",
-                          width: 0,
-                          height: 0,
-                          minWidth: "100%",
-                          maxWidth: "100%",
-                          minHeight: "100%",
-                          maxHeight: "100%"
-                        }}
-                      />
-                    </span>
-                    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                  </div>
-                  <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
-                    <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
-                      Regular Fit Crew-neck T-shirt
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      Self-striped knitted midi A-line dress, has a scoop neck,
-                      T-shirt, straight hem
-                    </p>
-                    <div
-                      className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                    >
-                      <span className="inline-block false">$12.30</span>
-                      <del className="sm:text-base font-normal text-gray-800">
-                        $16.38
-                      </del>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
-                  role="button"
-                  title="Hermes  Carlton London"
-                >
-                  <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        overflow: "hidden",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        position: "relative",
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <span
-                        style={{
-                          boxSizing: "border-box",
-                          display: "block",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0,
-                          maxWidth: "100%"
-                        }}
-                      >
-                        <img
-                          alt=""
-                          aria-hidden="true"
-                          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
-                          style={{
-                            display: "block",
-                            maxWidth: "100%",
-                            width: "initial",
-                            height: "initial",
-                            background: "none",
-                            opacity: 1,
-                            border: 0,
-                            margin: 0,
-                            padding: 0
-                          }}
-                        />
-                      </span>
-                      <img
-                        alt="Hermes  Carlton London"
-                        srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-14-xs.png&w=256&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-14-xs.png&w=384&q=100 2x"
-                        src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-14-xs.png&w=384&q=100"
-                        decoding="async"
-                        data-nimg="intrinsic"
-                        className="bg-gray-300 object-cover rounded-s-md"
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          boxSizing: "border-box",
-                          padding: 0,
-                          border: "none",
-                          margin: "auto",
-                          display: "block",
-                          width: 0,
-                          height: 0,
-                          minWidth: "100%",
-                          maxWidth: "100%",
-                          minHeight: "100%",
-                          maxHeight: "100%"
-                        }}
-                      />
-                    </span>
-                    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                  </div>
-                  <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
-                    <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
-                      Hermes Carlton London
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      Off-White self-striped knitted midi A-line dress, has a scoop
-                      neck, sleeveless, straight hem
-                    </p>
-                    <div
-                      className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                    >
-                      <span className="inline-block false">$15.00</span>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
-                  role="button"
-                  title="Wayfarer Sunglasses"
-                >
-                  <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        overflow: "hidden",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        position: "relative",
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <span
-                        style={{
-                          boxSizing: "border-box",
-                          display: "block",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0,
-                          maxWidth: "100%"
-                        }}
-                      >
-                        <img
-                          alt=""
-                          aria-hidden="true"
-                          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
-                          style={{
-                            display: "block",
-                            maxWidth: "100%",
-                            width: "initial",
-                            height: "initial",
-                            background: "none",
-                            opacity: 1,
-                            border: 0,
-                            margin: 0,
-                            padding: 0
-                          }}
-                        />
-                      </span>
-                      <img
-                        alt="Wayfarer Sunglasses"
-                        srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-27-xs.png&w=256&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-27-xs.png&w=384&q=100 2x"
-                        src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-27-xs.png&w=384&q=100"
-                        decoding="async"
-                        data-nimg="intrinsic"
-                        className="bg-gray-300 object-cover rounded-s-md"
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          boxSizing: "border-box",
-                          padding: 0,
-                          border: "none",
-                          margin: "auto",
-                          display: "block",
-                          width: 0,
-                          height: 0,
-                          minWidth: "100%",
-                          maxWidth: "100%",
-                          minHeight: "100%",
-                          maxHeight: "100%"
-                        }}
-                      />
-                    </span>
-                    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                  </div>
-                  <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
-                    <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
-                      Wayfarer Sunglasses
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      Our optical engineers developed these sunglasses for hiking.
-                      Ideal for occasional use in the mountains.
-                    </p>
-                    <div
-                      className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                    >
-                      <span className="inline-block false">$20.00</span>
-                      <del className="sm:text-base font-normal text-gray-800">
-                        $25.00
-                      </del>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
-                  role="button"
-                  title="Armani Wide-Leg Trousers"
-                >
-                  <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        overflow: "hidden",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        position: "relative",
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <span
-                        style={{
-                          boxSizing: "border-box",
-                          display: "block",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0,
-                          maxWidth: "100%"
-                        }}
-                      >
-                        <img
-                          alt=""
-                          aria-hidden="true"
-                          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
-                          style={{
-                            display: "block",
-                            maxWidth: "100%",
-                            width: "initial",
-                            height: "initial",
-                            background: "none",
-                            opacity: 1,
-                            border: 0,
-                            margin: 0,
-                            padding: 0
-                          }}
-                        />
-                      </span>
-                      <img
-                        alt="Armani Wide-Leg Trousers"
-                        srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-16-xs.png&w=256&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-16-xs.png&w=384&q=100 2x"
-                        src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-16-xs.png&w=384&q=100"
-                        decoding="async"
-                        data-nimg="intrinsic"
-                        className="bg-gray-300 object-cover rounded-s-md"
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          boxSizing: "border-box",
-                          padding: 0,
-                          border: "none",
-                          margin: "auto",
-                          display: "block",
-                          width: 0,
-                          height: 0,
-                          minWidth: "100%",
-                          maxWidth: "100%",
-                          minHeight: "100%",
-                          maxHeight: "100%"
-                        }}
-                      />
-                    </span>
-                    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                  </div>
-                  <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
-                    <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
-                      Armani Wide-Leg Trousers
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      Monochrome elegance. Made with a relaxed wide-leg, these
-                      trousers are made from a sustainable soft organic cotton with a
-                      mechanical stretch making the garment easily recycled.
-                    </p>
-                    <div
-                      className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                    >
-                      <span className="inline-block false">$60.00</span>
-                      <del className="sm:text-base font-normal text-gray-800">
-                        $80.00
-                      </del>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="group box-border overflow-hidden flex rounded-md cursor-pointer items-center border border-gray-100 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-listProduct"
-                  role="button"
-                  title="REDQ Steel Watch"
-                >
-                  <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "inline-block",
-                        overflow: "hidden",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        position: "relative",
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <span
-                        style={{
-                          boxSizing: "border-box",
-                          display: "block",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0,
-                          maxWidth: "100%"
-                        }}
-                      >
-                        <img
-                          alt=""
-                          aria-hidden="true"
-                          src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
-                          style={{
-                            display: "block",
-                            maxWidth: "100%",
-                            width: "initial",
-                            height: "initial",
-                            background: "none",
-                            opacity: 1,
-                            border: 0,
-                            margin: 0,
-                            padding: 0
-                          }}
-                        />
-                      </span>
-                      <img
-                        alt="REDQ Steel Watch"
-                        srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-28-xs.png&w=256&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-28-xs.png&w=384&q=100 2x"
-                        src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fp-28-xs.png&w=384&q=100"
-                        decoding="async"
-                        data-nimg="intrinsic"
-                        className="bg-gray-300 object-cover rounded-s-md"
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          boxSizing: "border-box",
-                          padding: 0,
-                          border: "none",
-                          margin: "auto",
-                          display: "block",
-                          width: 0,
-                          height: 0,
-                          minWidth: "100%",
-                          maxWidth: "100%",
-                          minHeight: "100%",
-                          maxHeight: "100%"
-                        }}
-                      />
-                    </span>
-                    <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                  </div>
-                  <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
-                    <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
-                      REDQ Steel Watch
-                    </h2>
-                    <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                      The Black Bay celebrates 60 years of diving watches with
-                      extraordinary heritage. The iconic model inherits the general
-                      lines.
-                    </p>
-                    <div
-                      className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
-     text-heading"
-                    >
-                      <span className="inline-block false">$80.00</span>
-                      <del className="sm:text-base font-normal text-gray-800">
-                        $120.00
-                      </del>
-                    </div>
-                  </div>
-                </div>
+                        <div className="flex flex-shrink-0 w-32 sm:w-44 md:w-36 lg:w-44">
+                          <span
+                            style={{
+                              boxSizing: "border-box",
+                              display: "inline-block",
+                              overflow: "hidden",
+                              width: "initial",
+                              height: "initial",
+                              background: "none",
+                              opacity: 1,
+                              border: 0,
+                              margin: 0,
+                              padding: 0,
+                              position: "relative",
+                              maxWidth: "100%"
+                            }}
+                          >
+                            <span
+                              style={{
+                                boxSizing: "border-box",
+                                display: "block",
+                                width: "initial",
+                                height: "initial",
+                                background: "none",
+                                opacity: 1,
+                                border: 0,
+                                margin: 0,
+                                padding: 0,
+                                maxWidth: "100%"
+                              }}
+                            >
+                              <img
+                                alt=""
+                                aria-hidden="true"
+                                src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27176%27%20height=%27176%27/%3e"
+                                style={{
+                                  display: "block",
+                                  maxWidth: "100%",
+                                  width: "initial",
+                                  height: "initial",
+                                  background: "none",
+                                  opacity: 1,
+                                  border: 0,
+                                  margin: 0,
+                                  padding: 0
+                                }}
+                              />
+                            </span>
+                            <img
+                              alt="REDQ Steel Watch"
+                              src={product.image1}
+                              decoding="async"
+                              data-nimg="intrinsic"
+                              className="bg-gray-300 object-cover rounded-s-md"
+                              style={{
+                                position: "absolute",
+                                inset: 0,
+                                boxSizing: "border-box",
+                                padding: 0,
+                                border: "none",
+                                margin: "auto",
+                                display: "block",
+                                width: 0,
+                                height: 0,
+                                minWidth: "100%",
+                                maxWidth: "100%",
+                                minHeight: "100%",
+                                maxHeight: "100%"
+                              }}
+                            />
+                          </span>
+                          <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
+                        </div>
+                        <div className="w-full overflow-hidden p-2 px-4 lg:px-5 2xl:px-4">
+                          <h2 className="truncate mb-1 font-semibold text-sm sm:text-base md:mb-1.5 pb-0 text-heading">
+                            {product.title}
+                          </h2>
+
+                          <div
+                            className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3
+text-heading"
+                          >
+                            <span className="inline-block false">${product.price}</span>
+
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <p>No on-selling products available.</p>
+                )}
               </div>
             </div>
           </div>
@@ -2569,1072 +438,104 @@ export default function Home() {
               </h3>
             </div>
             <div className="grid gap-x-3 md:gap-x-5 xl:gap-x-7 gap-y-3 xl:gap-y-5 2xl:gap-y-8 bg-white grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
+              {newArrivals.map((product) => (
+                <Link href={`/product/${product.productId}`}>
+                  <div
+                    className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
+                    role="button"
+                    title="Roadster Women Round Neck"
                   >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
+                    <div className="flex mb-3 md:mb-3.5">
+                      <span
                         style={{
-                          display: "block",
-                          maxWidth: "100%",
+                          boxSizing: "border-box",
+                          display: "inline-block",
+                          overflow: "hidden",
                           width: "initial",
                           height: "initial",
                           background: "none",
                           opacity: 1,
                           border: 0,
                           margin: 0,
-                          padding: 0
+                          padding: 0,
+                          position: "relative",
+                          maxWidth: "100%"
                         }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F1.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F1.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F1.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
+                      >
+                        <span
+                          style={{
+                            boxSizing: "border-box",
+                            display: "block",
+                            width: "initial",
+                            height: "initial",
+                            background: "none",
+                            opacity: 1,
+                            border: 0,
+                            margin: 0,
+                            padding: 0,
+                            maxWidth: "100%"
+                          }}
+                        >
+                          <img
+                            alt=""
+                            aria-hidden="true"
+                            src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
+                            style={{
+                              display: "block",
+                              maxWidth: "100%",
+                              width: "initial",
+                              height: "initial",
+                              background: "none",
+                              opacity: 1,
+                              border: 0,
+                              margin: 0,
+                              padding: 0
+                            }}
+                          />
+                        </span>
+                        <img
+                          alt="Roadster Women Round Neck"
+                          src={product.image1}
+                          decoding="async"
+                          data-nimg="intrinsic"
+                          className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
+                          style={{
+                            position: "absolute",
+                            inset: 0,
+                            boxSizing: "border-box",
+                            padding: 0,
+                            border: "none",
+                            margin: "auto",
+                            display: "block",
+                            width: 0,
+                            height: 0,
+                            minWidth: "100%",
+                            maxWidth: "100%",
+                            minHeight: "100%",
+                            maxHeight: "100%"
+                          }}
+                        />
+                      </span>
+                      <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
+                    </div>
+                    <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
+                      <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
+                        {product.title}
+                      </h2>
+                      <div
+                        className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
+text-heading"
+                      >
+                        <span className="inline-block false">${product.price}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F2.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F2.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F2.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F3.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F3.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F3.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F4.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F4.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F4.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F5.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F5.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F5.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F6.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F6.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F6.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F7.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F7.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F7.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F8.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F8.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F8.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F9.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F9.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F9.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="group box-border overflow-hidden flex rounded-md cursor-pointer ltr:pr-0 rtl:pl-0 pb-2 lg:pb-3 flex-col items-start transition duration-200 ease-in-out transform hover:-translate-y-1 md:hover:-translate-y-1.5 hover:shadow-product  bg-white"
-                role="button"
-                title="Roadster Women Round Neck"
-              >
-                <div className="flex mb-3 md:mb-3.5">
-                  <span
-                    style={{
-                      boxSizing: "border-box",
-                      display: "inline-block",
-                      overflow: "hidden",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0,
-                      position: "relative",
-                      maxWidth: "100%"
-                    }}
-                  >
-                    <span
-                      style={{
-                        boxSizing: "border-box",
-                        display: "block",
-                        width: "initial",
-                        height: "initial",
-                        background: "none",
-                        opacity: 1,
-                        border: 0,
-                        margin: 0,
-                        padding: 0,
-                        maxWidth: "100%"
-                      }}
-                    >
-                      <img
-                        alt=""
-                        aria-hidden="true"
-                        src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27340%27%20height=%27440%27/%3e"
-                        style={{
-                          display: "block",
-                          maxWidth: "100%",
-                          width: "initial",
-                          height: "initial",
-                          background: "none",
-                          opacity: 1,
-                          border: 0,
-                          margin: 0,
-                          padding: 0
-                        }}
-                      />
-                    </span>
-                    <img
-                      alt="Roadster Women Round Neck"
-                      srcSet="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F10.jpg&w=384&q=100 1x, /_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F10.jpg&w=750&q=100 2x"
-                      src="/_next/image?url=%2Fassets%2Fimages%2Fproducts%2Fancient%2F10.jpg&w=750&q=100"
-                      decoding="async"
-                      data-nimg="intrinsic"
-                      className="bg-gray-300 object-cover rounded-s-md w-full transition duration-200 ease-in rounded-md group-hover:rounded-b-none"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        boxSizing: "border-box",
-                        padding: 0,
-                        border: "none",
-                        margin: "auto",
-                        display: "block",
-                        width: 0,
-                        height: 0,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                        minHeight: "100%",
-                        maxHeight: "100%"
-                      }}
-                    />
-                  </span>
-                  <div className="absolute top-3.5 md:top-5 3xl:top-7 ltr:left-3.5 rtl:right-3.5 ltr:md:left-5 rtl:md:right-5 ltr:3xl:left-7 rtl:3xl:right-7 flex flex-col gap-y-1 items-start" />
-                </div>
-                <div className="w-full overflow-hidden p-2 md:px-2.5 xl:px-4">
-                  <h2 className="truncate mb-1 text-sm md:text-base font-semibold text-heading">
-                    Roadster Women Round Neck
-                  </h2>
-                  <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-                    Fendi began life in 1925 as a fur and leather speciality store in
-                    Rome.
-                  </p>
-                  <div
-                    className="font-semibold text-sm sm:text-base mt-1.5 flex flex-wrap gap-x-2 lg:text-lg lg:mt-2.5
-     text-heading"
-                  >
-                    <span className="inline-block false">$18.59</span>
-                  </div>
-                </div>
-              </div>
+                </Link>
+              ))}
+
             </div>
           </div>
-          <div className="flex justify-between items-end rounded-lg bg-gray-200 pt-5 md:pt-8 lg:pt-10 xl:pt-14 px-6 md:px-12 lg:px-20 2xl:px-24 3xl:px-36">
-            <div className="flex-shrink-0 w-full pb-5 sm:w-60 md:w-96 lg:w-auto lg:max-w-lg xl:max-w-xl lg:flex lg:items-center md:pb-8 lg:pb-12 xl:pb-16">
-              <div className="py-4 text-center md:py-6 xl:py-8 ltr:sm:text-left rtl:sm:text-right">
-                <h3 className="text-lg md:text-xl lg:text-2xl 2xl:text-3xl xl:leading-10 font-bold text-heading -mt-1 mb-2 md:mb-3 lg:mb-3.5 xl:mb-4">
-                  The ChawkBazar App
-                </h3>
-                <h2 className="mb-6 font-normal leading-7 text-heading text-md sm:text-xl md:text-3xl xl:text-4xl 2xl:text-5xl sm:leading-8 md:leading-snug xl:leading-relaxed 2xl:leading-snug md:mb-8 lg:mb-9 xl:mb-12 2xl:mb-14 ltr:lg:pr-20 ltr:2xl:pr-0 rtl:lg:pl-20 rtl:2xl:pl-0">
-                  <span>
-                    {" "}
-                    Share Your <strong>Ideas</strong> &amp; Shop Endless{" "}
-                    <strong>Inspiration</strong>{" "}
-                  </span>
-                </h2>
-                <div className="flex justify-center px-6 sm:justify-start gap-x-2 md:gap-x-3 sm:px-0">
-                  <a
-                    className="inline-flex transition duration-200 ease-in hover:box-shadow hover:opacity-80"
-                    href="/"
-                  >
-                    <img
-                      src="/assets/images/app-store.svg"
-                      alt="App Store"
-                      className="w-36 lg:w-44 xl:w-auto rounded-md"
-                      width={209}
-                      height={60}
-                    />
-                  </a>
-                  <a
-                    className="inline-flex transition duration-200 ease-in hover:box-shadow hover:opacity-80"
-                    href="/"
-                  >
-                    <img
-                      src="/assets/images/play-store.svg"
-                      alt="Play Store"
-                      className="w-36 lg:w-44 xl:w-auto rounded-md"
-                      width={209}
-                      height={60}
-                    />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="hidden sm:flex items-end ltr:pl-4 rtl:pr-4 ltr:-mr-0.5 rtl:-ml-0.5 ltr:2xl:-mr-1.5 rtl:2xl:-ml-1.5 w-60 md:w-72 lg:w-96 xl:w-auto">
-              <span
-                style={{
-                  boxSizing: "border-box",
-                  display: "inline-block",
-                  overflow: "hidden",
-                  width: "initial",
-                  height: "initial",
-                  background: "none",
-                  opacity: 1,
-                  border: 0,
-                  margin: 0,
-                  padding: 0,
-                  position: "relative",
-                  maxWidth: "100%"
-                }}
-              >
-                <span
-                  style={{
-                    boxSizing: "border-box",
-                    display: "block",
-                    width: "initial",
-                    height: "initial",
-                    background: "none",
-                    opacity: 1,
-                    border: 0,
-                    margin: 0,
-                    padding: 0,
-                    maxWidth: "100%"
-                  }}
-                >
-                  <img
-                    alt=""
-                    aria-hidden="true"
-                    src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27375%27%20height=%27430%27/%3e"
-                    style={{
-                      display: "block",
-                      maxWidth: "100%",
-                      width: "initial",
-                      height: "initial",
-                      background: "none",
-                      opacity: 1,
-                      border: 0,
-                      margin: 0,
-                      padding: 0
-                    }}
-                  />
-                </span>
-                <img
-                  alt="App Thumbnail"
-                  srcSet="/_next/image?url=%2Fassets%2Fimages%2Fapp.png&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fapp.png&w=750&q=75 2x"
-                  src="/_next/image?url=%2Fassets%2Fimages%2Fapp.png&w=750&q=75"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    boxSizing: "border-box",
-                    padding: 0,
-                    border: "none",
-                    margin: "auto",
-                    display: "block",
-                    width: 0,
-                    height: 0,
-                    minWidth: "100%",
-                    maxWidth: "100%",
-                    minHeight: "100%",
-                    maxHeight: "100%"
-                  }}
-                />
-              </span>
-            </div>
-          </div>
+
           <div className="my-8 md:my-12 lg:my-16 xl:my-20 3xl:my-24 pb-5 lg:pb-3.5 2xl:pb-5 pt-3 lg:pt-1.5 2xl:pt-2 3xl:pt-3 text-center">
             <div className="max-w-md mx-auto mb-4 md:mb-5 xl:mb-8 2xl:mb-10 3xl:mb-12">
               <h3 className="text-lg md:text-xl lg:text-2xl 2xl:text-3xl xl:leading-10 font-bold text-heading mb-2 md:mb-3 lg:mb-3.5">
@@ -3695,8 +596,7 @@ export default function Home() {
                 </span>
                 <img
                   alt="Support Thumbnail"
-                  srcSet="/_next/image?url=%2Fassets%2Fimages%2Fsupport.png&w=1080&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Fsupport.png&w=1920&q=75 2x"
-                  src="/_next/image?url=%2Fassets%2Fimages%2Fsupport.png&w=1920&q=75"
+                  src="/img/support.webp"
                   decoding="async"
                   data-nimg="intrinsic"
                   style={{
@@ -3719,7 +619,7 @@ export default function Home() {
             </div>
             <button
               data-variant="flat"
-              className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  bg-heading text-white px-5 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white hover:bg-gray-600 hover:shadow-cart"
+              className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  bg-black text-white px-5 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white hover:bg-gray-600 hover:shadow-cart"
             >
               Chat With Member Services
               <svg
@@ -3800,8 +700,7 @@ export default function Home() {
                 </span>
                 <img
                   alt="Man"
-                  srcSet="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F1.jpg&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Finstagram%2F1.jpg&w=640&q=75 2x"
-                  src="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F1.jpg&w=640&q=75"
+                  src="/img/1.webp"
                   decoding="async"
                   data-nimg="intrinsic"
                   className="bg-gray-300 object-cover"
@@ -3892,8 +791,7 @@ export default function Home() {
                 </span>
                 <img
                   alt="Woman"
-                  srcSet="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F2.jpg&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Finstagram%2F2.jpg&w=640&q=75 2x"
-                  src="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F2.jpg&w=640&q=75"
+                  src="/img/2.webp"
                   decoding="async"
                   data-nimg="intrinsic"
                   className="bg-gray-300 object-cover"
@@ -3984,8 +882,7 @@ export default function Home() {
                 </span>
                 <img
                   alt="Watch"
-                  srcSet="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F3.jpg&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Finstagram%2F3.jpg&w=640&q=75 2x"
-                  src="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F3.jpg&w=640&q=75"
+                  src="/img/3.webp"
                   decoding="async"
                   data-nimg="intrinsic"
                   className="bg-gray-300 object-cover"
@@ -4076,8 +973,7 @@ export default function Home() {
                 </span>
                 <img
                   alt="Man"
-                  srcSet="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F4.jpg&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Finstagram%2F4.jpg&w=640&q=75 2x"
-                  src="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F4.jpg&w=640&q=75"
+                  src="/img/4.webp"
                   decoding="async"
                   data-nimg="intrinsic"
                   className="bg-gray-300 object-cover"
@@ -4168,8 +1064,7 @@ export default function Home() {
                 </span>
                 <img
                   alt="Sports"
-                  srcSet="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F5.jpg&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Finstagram%2F5.jpg&w=640&q=75 2x"
-                  src="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F5.jpg&w=640&q=75"
+                  src="/img/5.webp"
                   decoding="async"
                   data-nimg="intrinsic"
                   className="bg-gray-300 object-cover"
@@ -4260,8 +1155,7 @@ export default function Home() {
                 </span>
                 <img
                   alt="Fashion"
-                  srcSet="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F6.jpg&w=384&q=75 1x, /_next/image?url=%2Fassets%2Fimages%2Finstagram%2F6.jpg&w=640&q=75 2x"
-                  src="/_next/image?url=%2Fassets%2Fimages%2Finstagram%2F6.jpg&w=640&q=75"
+                  src="/img/6.webp"
                   decoding="async"
                   data-nimg="intrinsic"
                   className="bg-gray-300 object-cover"
@@ -4302,10 +1196,10 @@ export default function Home() {
           <div className="px-5 py-12 bg-opacity-0 sm:px-16 xl:px-0 md:py-14 xl:py-16 flex flex-col xl:flex-row justify-center xl:justify-between items-center rounded-lg bg-gray-200 py-10 md:py-14 lg:py-16">
             <div className="lg:-mt-2 xl:-mt-0.5 text-center ltr:xl:text-left rtl:xl:text-right mb-7 md:mb-8 lg:mb-9 xl:mb-0">
               <h3 className="text-lg md:text-xl lg:text-2xl 2xl:text-3xl xl:leading-10 font-bold text-heading sm:mb-0 md:mb-2.5 lg:mb-3 xl:mb-3.5">
-                Get Expert Tips In Your Inbox
+                We gather your advice to make it better
               </h3>
               <p className="text-body text-xs md:text-sm leading-6 md:leading-7">
-                Subscribe to our newsletter and stay updated.
+                Send us a feedback to make our website better
               </p>
             </div>
             <form className="flex-shrink-0 w-full sm:w-96 md:w-[545px]" noValidate="">
@@ -4315,7 +1209,7 @@ export default function Home() {
                     id="subscription_email"
                     name="subscription_email"
                     type="email"
-                    placeholder="Write your email here"
+                    placeholder="Write an Feedback here"
                     className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 px-4 lg:px-7 h-12 lg:h-14 text-center ltr:sm:text-left rtl:sm:text-right bg-white rounded-md"
                     autoComplete="off"
                     spellCheck="false"
@@ -4324,9 +1218,9 @@ export default function Home() {
                 </div>
                 <button
                   data-variant="flat"
-                  className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  bg-heading text-white px-5 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white hover:bg-gray-600 hover:shadow-cart mt-3 sm:mt-0 w-full sm:w-auto ltr:sm:ml-2 rtl:sm:mr-2 md:h-full flex-shrink-0"
+                  className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  bg-black text-white px-5 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white hover:bg-gray-600 hover:shadow-cart mt-3 sm:mt-0 w-full sm:w-auto ltr:sm:ml-2 rtl:sm:mr-2 md:h-full flex-shrink-0"
                 >
-                  <span className="lg:py-0.5">Subscribe</span>
+                  <span className="lg:py-0.5">Feedback</span>
                 </button>
               </div>
             </form>
@@ -4339,3 +1233,4 @@ export default function Home() {
     </>
   );
 }
+
