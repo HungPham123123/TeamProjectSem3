@@ -1,4 +1,4 @@
-﻿namespace ProjectSem3.DTOs
+namespace ProjectSem3.DTOs
 {
     public class MovieDTO
     {
