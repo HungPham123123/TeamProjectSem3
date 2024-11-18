@@ -103,19 +103,34 @@ const TableOrders = () => {
     setOrders(filteredOrders);
   };
 
-  // Hàm cập nhật trạng thái đơn hàng
-  const handleStatusChange = async (orderId: number, status: string) => {
-    try {
-      const order = orders.find((o) => o.orderId === orderId);
-      if (order) {
-        order.status = status;
-        await axios.put(`https://localhost:7071/api/orders/${orderId}`, order);
-        fetchOrders();
-      }
-    } catch (error) {
-      console.error("Error updating order status:", error);
+  // Hàm chấp nhận đơn hàng
+const handleAccept = async (orderId: number) => {
+  try {
+    const order = orders.find((o) => o.orderId === orderId);
+    if (order) {
+      order.status = "Accept";
+      await axios.put(`https://localhost:7071/api/orders/${orderId}`, order);
+      fetchOrders(); // Cập nhật danh sách đơn hàng
     }
-  };
+  } catch (error) {
+    console.error("Error accepting order:", error);
+  }
+};
+
+// Hàm từ chối đơn hàng
+const handleReject = async (orderId: number) => {
+  try {
+    const order = orders.find((o) => o.orderId === orderId);
+    if (order) {
+      order.status = "Reject";
+      await axios.put(`https://localhost:7071/api/orders/${orderId}`, order);
+      fetchOrders(); // Cập nhật danh sách đơn hàng
+    }
+  } catch (error) {
+    console.error("Error rejecting order:", error);
+  }
+};
+
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -191,20 +206,26 @@ const TableOrders = () => {
             <p className="text-sm text-black dark:text-white">${order.totalAmount}</p>
           </div>
           <div className="col-span-1 flex items-center">
-            <select
-              value={order.status}
-              onChange={(e) =>
-                handleStatusChange(order.orderId, e.target.value)
-              }
-              className="px-2 py-1 border rounded-md"
-            >
-              <option value="Pending">Pending</option>
-              <option value="Accept">Accept</option>
-              <option value="Reject">Reject</option>
-            </select>
+            {/* Hiển thị status dưới dạng văn bản */}
+            <p className="text-sm text-black dark:text-white">{order.status}</p>
           </div>
           <div className="col-span-1 flex items-center gap-2">
-            {order.status.toLowerCase() === "accept" ? ( // So sánh không phân biệt hoa thường
+            {order.status.toLowerCase() === "pending" ? (
+              <>
+                <button
+                  className="px-2 py-1 text-xs font-medium text-white bg-green-500 rounded-md hover:bg-green-600"
+                  onClick={() => handleAccept(order.orderId)}
+                >
+                  Accept
+                </button>
+                <button
+                  className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+                  onClick={() => handleReject(order.orderId)}
+                >
+                  Reject
+                </button>
+              </>
+            ) : order.status.toLowerCase() === "accept" ? (
               <>
                 <button
                   className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
@@ -219,12 +240,13 @@ const TableOrders = () => {
                   DELETE
                 </button>
               </>
-            ) : order.status.toLowerCase() === "reject" ? ( // So sánh không phân biệt hoa thường
+            ) : order.status.toLowerCase() === "reject" ? (
               <p className="text-red-500 font-medium">Rejected</p>
             ) : null}
           </div>
         </div>
       ))}
+
 
       {/* Popup sửa đơn hàng */}
       {isModalOpen && selectedOrder && (
