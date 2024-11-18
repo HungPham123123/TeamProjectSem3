@@ -293,10 +293,9 @@ const handleReject = async (orderId: number) => {
                 className="w-full px-4 py-2 border rounded-md"
               >
                 <option value="Pending">Pending</option>
-                <option value="Accept">Accept</option>
-                <option value="Reject">Reject</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Delivered">Delivered</option>
+                <option value="Shipping">Shipping</option>
+                <option value="Arrived">Arrived</option>
+                <option value="Completed">Completed</option>
                 <option value="Cancelled">Cancelled</option>
               </select>
             </div>
