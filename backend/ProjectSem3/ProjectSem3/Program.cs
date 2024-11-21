@@ -38,7 +38,7 @@ builder.Services.AddScoped<IUserManageService, UserManageService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<IProductManageService, ProductManageService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<NewsService>();
 builder.Services.AddScoped<IReviewService, ProjectReviewService>(); // Specify the project ReviewService
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 builder.Services.AddScoped<PaymentService>();
@@ -46,6 +46,9 @@ builder.Services.AddScoped<FilterService>();
 builder.Services.AddScoped<UserOrderService>();
 builder.Services.AddScoped<UserReviewService>();
 builder.Services.AddScoped<CollectionService>();
+builder.Services.AddScoped<AlbumService>();
+builder.Services.AddScoped<PublisherService>();
+builder.Services.AddScoped<ProducerService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

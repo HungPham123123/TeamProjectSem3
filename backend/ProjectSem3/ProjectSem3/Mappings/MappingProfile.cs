@@ -7,6 +7,10 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<Album, AlbumDto>().ReverseMap();
+        CreateMap<AddAlbumDto, Album>()
+            .ForMember(dest => dest.Songs, opt => opt.Ignore()); // Bỏ qua việc ánh xạ danh sách bài hát
+        CreateMap<UpdateAlbumDto, Album>()
+            .ForMember(dest => dest.Songs, opt => opt.Ignore()); // Bỏ qua việc ánh xạ danh sách bài hát
 
         CreateMap<Artist, ArtistDTO>().ReverseMap()
             .ForMember(dest => dest.ArtistId, opt => opt.Ignore()); // Bỏ qua ID khi ánh xạ từ DTO về Entity
@@ -67,10 +71,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
             .ReverseMap();
 
-        CreateMap<News, NewsManageDTO>()
-                .ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.Username))
-                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
-                .ReverseMap();
 
         CreateMap<Review, ReviewManageDTO>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
@@ -82,6 +82,19 @@ public class MappingProfile : Profile
                 .ReverseMap();
         CreateMap<UpdateUserDTO, User>()
                 .ForMember(dest => dest.Username, opt => opt.Ignore()); // Không ánh xạ Username
+
+        CreateMap<Publisher, PublisherDto>().ReverseMap();
+        CreateMap<AddPublisherDto, Publisher>();
+        CreateMap<UpdatePublisherDto, Publisher>();
+
+        CreateMap<Producer, ProducerDto>();
+        CreateMap<AddProducerDto, Producer>();
+        CreateMap<UpdateProducerDto, Producer>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); // Đảm bảo chỉ cập nhật khi có dữ liệu
+
+        CreateMap<News,NewsDto>().ReverseMap();
+        CreateMap<AddNewsDto, News>();
+        CreateMap<UpdateNewsDto, News>();
     }
 
 }

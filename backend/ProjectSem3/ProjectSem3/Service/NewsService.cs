@@ -1,92 +1,109 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using ProjectSem3.Data;
 using ProjectSem3.DTOs;
 using ProjectSem3.Models;
-using ProjectSem3.Service.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace ProjectSem3.Service
+
+public class NewsService
 {
-    public class NewsService : INewsService
+    private readonly OnlineDvdsContext _context;
+    private readonly IMapper _mapper;
+
+    public NewsService(OnlineDvdsContext context, IMapper mapper)
     {
-        private readonly OnlineDvdsContext _context;
-        private readonly IMapper _mapper;
+        _context = context;
+        _mapper = mapper;
+    }
 
-        public NewsService(OnlineDvdsContext context, IMapper mapper)
+    // Lấy tất cả tin tức
+    public IEnumerable<NewsDto> GetAllNews()
+    {
+        var news = _context.News.Include(n => n.Category).Include(n => n.Author).ToList();
+        return news.Select(n => _mapper.Map<NewsDto>(n));
+    }
+
+    // Lấy tin tức theo ID
+    public NewsDto GetNewsById(int id)
+    {
+        var news = _context.News.Include(n => n.Category).Include(n => n.Author)
+            .FirstOrDefault(n => n.NewsId == id);
+
+        return news != null ? _mapper.Map<NewsDto>(news) : null;
+    }
+
+    // Thêm mới tin tức
+    public NewsDto AddNews(AddNewsDto addNewsDto)
+    {
+        var news = new News
         {
-            _context = context;
-            _mapper = mapper;
+            Title = addNewsDto.Title,
+            Content = addNewsDto.Content,
+            //CategoryId = addNewsDto.CategoryId,
+            ImageUrl = addNewsDto.ImageUrl,
+            Tags = addNewsDto.Tags,
+            Summary = addNewsDto.Summary,
+            PublishedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        _context.News.Add(news);
+        _context.SaveChanges();
+
+        return _mapper.Map<NewsDto>(news);
+    }
+
+    // Cập nhật tin tức
+    public NewsDto UpdateNews(int id, UpdateNewsDto updateNewsDto)
+    {
+        var news = _context.News.FirstOrDefault(n => n.NewsId == id);
+        if (news == null)
+        {
+            throw new Exception("News not found.");
         }
 
-        public async Task<List<NewsManageDTO>> GetAllNewsAsync()
+        // Cập nhật các thuộc tính với điều kiện nếu giá trị mới không null
+        news.Title = updateNewsDto.Title ?? news.Title;
+        news.Content = updateNewsDto.Content ?? news.Content;
+
+        // Kiểm tra nếu CategoryId có giá trị và gán vào news
+        //if (updateNewsDto.CategoryId.HasValue){news.CategoryId = updateNewsDto.CategoryId.Value;}
+
+        news.ImageUrl = updateNewsDto.ImageUrl ?? news.ImageUrl;
+        news.Tags = updateNewsDto.Tags ?? news.Tags;
+        news.Summary = updateNewsDto.Summary ?? news.Summary;
+        news.UpdatedAt = DateTime.UtcNow;
+
+        _context.SaveChanges();
+
+        return _mapper.Map<NewsDto>(news);
+    }
+
+
+    // Xóa tin tức
+    public async Task<bool> DeleteNews(int id)
+    {
+        var news = await _context.News.FindAsync(id);
+        if (news != null)
         {
-            var newsList = await _context.News.Include(n => n.Author).Include(n => n.Category).ToListAsync();
-            return _mapper.Map<List<NewsManageDTO>>(newsList);
-        }
-
-        public async Task<NewsManageDTO?> GetNewsByIdAsync(int newsId)
-        {
-            var news = await _context.News.Include(n => n.Author).Include(n => n.Category)
-                              .FirstOrDefaultAsync(n => n.NewsId == newsId);
-
-            if (news != null)
-            {
-                await IncrementViewsAsync(newsId);
-            }
-
-            return _mapper.Map<NewsManageDTO>(news);
-        }
-
-        public async Task AddNewsAsync(NewsManageDTO newsDto)
-        {
-            var news = _mapper.Map<News>(newsDto);
-            news.PublishedAt = DateTime.UtcNow;
-            news.UpdatedAt = DateTime.UtcNow;
-            _context.News.Add(news);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateNewsAsync(NewsManageDTO newsDto)
-        {
-            var news = await _context.News.FindAsync(newsDto.NewsId);
-            if (news == null) throw new KeyNotFoundException("News không tìm thấy.");
-
-            _mapper.Map(newsDto, news);
-            news.UpdatedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteNewsAsync(int newsId)
-        {
-            var news = await _context.News.FindAsync(newsId);
-            if (news == null) throw new KeyNotFoundException("News không tìm thấy.");
-
             _context.News.Remove(news);
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<List<NewsManageDTO>> SearchNewsAsync(string keyword)
-        {
-            var newsList = await _context.News
-                .Where(n => n.Title.Contains(keyword) || n.Tags.Contains(keyword) || n.Category.CategoryName.Contains(keyword))
-                .Include(n => n.Author)
-                .Include(n => n.Category)
-                .ToListAsync();
-
-            return _mapper.Map<List<NewsManageDTO>>(newsList);
-        }
-
-        public async Task IncrementViewsAsync(int newsId)
-        {
-            var news = await _context.News.FindAsync(newsId);
-            if (news == null) throw new KeyNotFoundException("News không tìm thấy.");
-
-            // Increment views count if it's not null
-            news.Views = (news.Views ?? 0) + 1;
-
-            // Save changes to the database
-            await _context.SaveChangesAsync();
-        }
-
+        return false;
     }
+
+    // Tìm kiếm tin tức theo tiêu đề hoặc nội dung
+    public IEnumerable<NewsDto> SearchNews(string keyword)
+    {
+        var news = _context.News
+            .Where(n => n.Title.Contains(keyword) || n.Content.Contains(keyword))
+            .Include(n => n.Category)
+            .Include(n => n.Author)
+            .ToList();
+
+        return news.Select(n => _mapper.Map<NewsDto>(n));
+    }
+
 }

@@ -1,70 +1,73 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
-using ProjectSem3.Service.Interfaces;
 
-namespace ProjectSem3.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class NewsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class NewsController : ControllerBase
+    private readonly NewsService _newsService;
+
+    public NewsController(NewsService newsService)
     {
-        private readonly INewsService _newsService;
+        _newsService = newsService;
+    }
 
-        public NewsController(INewsService newsService)
+    [HttpGet]
+    public IActionResult GetAllNews()
+    {
+        var news = _newsService.GetAllNews();
+        return Ok(news);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetNewsById(int id)
+    {
+        var news = _newsService.GetNewsById(id);
+        if (news == null)
         {
-            _newsService = newsService;
+            return NotFound();
         }
+        return Ok(news);
+    }
 
-        // Lấy danh sách tất cả tin tức
-        [HttpGet]
-        public async Task<IActionResult> GetAllNews()
+    [HttpPost]
+    public IActionResult AddNews([FromBody] AddNewsDto addNewsDto)
+    {
+        var news = _newsService.AddNews(addNewsDto);
+        return CreatedAtAction(nameof(GetNewsById), new { id = news.NewsId }, news);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateNews(int id, [FromBody] UpdateNewsDto updateNewsDto)
+    {
+        try
         {
-            var news = await _newsService.GetAllNewsAsync();
-            return Ok(news);
+            var updatedNews = _newsService.UpdateNews(id, updateNewsDto);
+            return Ok(updatedNews);
         }
-
-        // Lấy tin tức theo ID
-        [HttpGet("{newsId}")]
-        public async Task<IActionResult> GetNewsById(int newsId)
+        catch (Exception)
         {
-            var news = await _newsService.GetNewsByIdAsync(newsId);
-            if (news == null) return NotFound("News không tìm thấy.");
-
-            return Ok(news);
+            return NotFound();
         }
+    }
 
-        // Thêm mới tin tức
-        [HttpPost]
-        public async Task<IActionResult> AddNews([FromBody] NewsManageDTO newsDto)
-        {
-            await _newsService.AddNewsAsync(newsDto);
-            return CreatedAtAction(nameof(GetNewsById), new { newsId = newsDto.NewsId }, newsDto);
-        }
 
-        // Cập nhật tin tức
-        [HttpPut("{newsId}")]
-        public async Task<IActionResult> UpdateNews(int newsId, [FromBody] NewsManageDTO newsDto)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteNews(int id)
+    {
+        var result = await _newsService.DeleteNews(id);  
+        if (result)
         {
-            if (newsId != newsDto.NewsId) return BadRequest("ID tin tức không khớp.");
-            await _newsService.UpdateNewsAsync(newsDto);
             return NoContent();
         }
-
-        // Xóa tin tức
-        [HttpDelete("{newsId}")]
-        public async Task<IActionResult> DeleteNews(int newsId)
-        {
-            await _newsService.DeleteNewsAsync(newsId);
-            return NoContent();
-        }
+        return NotFound();
+    }
 
 
-        // Tìm kiếm tin tức
-        [HttpGet("search")]
-        public async Task<IActionResult> SearchNews([FromQuery] string keyword)
-        {
-            var news = await _newsService.SearchNewsAsync(keyword);
-            return Ok(news);
-        }
+    [HttpPost("search")]
+    public IActionResult SearchNews([FromBody] string keyword)
+    {
+        var news = _newsService.SearchNews(keyword);
+        return Ok(news);
     }
 }
