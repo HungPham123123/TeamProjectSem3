@@ -22,6 +22,7 @@ const StripeCheckoutModal = ({ totalAmount, onClose, onSuccess }) => {
 
     if (error) {
       console.error(error.message);
+      console.log(error);
     } else {
       if (paymentIntent.status === 'succeeded') {
         // Payment successful, trigger onSuccess callback

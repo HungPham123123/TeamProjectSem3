@@ -311,26 +311,35 @@ function Checkout() {
                 </div>
               </div>
               <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0">
-                <div className="w-full lg:w-1/2 ">
-                  <label
-                    htmlFor="city"
-                    className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer"
-                  >
-                    City/Town
-                  </label>
-                  <input
-                    id="city"
-                    name="city"
-                    type="text"
-                    placeholder=""
-                    value={formData.city}
-                    onChange={handleChange}
-                    className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
-                    autoComplete="off"
-                    spellCheck="false"
-                    aria-invalid="false"
-                  />
-                </div>
+              <div className="w-full lg:w-1/2 ">
+  <label
+    htmlFor="city"
+    className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer"
+  >
+    City/Town
+  </label>
+  <select
+    id="city"
+    name="city"
+    value={formData.city}
+    onChange={handleChange}
+    className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 transition duration-200 ease-in-out bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
+    aria-invalid="false"
+  >
+    <option value="">Select a City</option>
+    <option value="Hanoi">Hanoi</option>
+    <option value="Ho Chi Minh City">Ho Chi Minh City</option>
+    <option value="Da Nang">Da Nang</option>
+    <option value="Hai Phong">Hai Phong</option>
+    <option value="Can Tho">Can Tho</option>
+    <option value="Vinh">Vinh</option>
+    <option value="Nha Trang">Nha Trang</option>
+    <option value="Hue">Hue</option>
+    <option value="Quy Nhon">Quy Nhon</option>
+    <option value="Rach Gia">Rach Gia</option>
+    {/* Add more cities as needed */}
+  </select>
+</div>
                 <div className="w-full lg:w-1/2 lg:ml-3 lg:mr-3 mt-2 md:mt-0">
                   <label
                     htmlFor="zipCode"

@@ -206,44 +206,86 @@ const handleReject = async (orderId: number) => {
             <p className="text-sm text-black dark:text-white">${order.totalAmount}</p>
           </div>
           <div className="col-span-1 flex items-center">
-            {/* Hiển thị status dưới dạng văn bản */}
             <p className="text-sm text-black dark:text-white">{order.status}</p>
           </div>
           <div className="col-span-1 flex items-center gap-2">
-            {order.status.toLowerCase() === "pending" ? (
-              <>
-                <button
-                  className="px-2 py-1 text-xs font-medium text-white bg-green-500 rounded-md hover:bg-green-600"
-                  onClick={() => handleAccept(order.orderId)}
-                >
-                  Accept
-                </button>
-                <button
-                  className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
-                  onClick={() => handleReject(order.orderId)}
-                >
-                  Reject
-                </button>
-              </>
-            ) : order.status.toLowerCase() === "accept" ? (
-              <>
-                <button
-                  className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
-                  onClick={() => handleEdit(order.orderId)}
-                >
-                  EDIT
-                </button>
-                <button
-                  className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
-                  onClick={() => handleDelete(order.orderId)}
-                >
-                  DELETE
-                </button>
-              </>
-            ) : order.status.toLowerCase() === "reject" ? (
-              <p className="text-red-500 font-medium">Rejected</p>
-            ) : null}
-          </div>
+  {order.status.toLowerCase() === "pending" ? (
+    <>
+      <button
+        className="px-2 py-1 text-xs font-medium text-white bg-green-500 rounded-md hover:bg-green-600"
+        onClick={() => handleAccept(order.orderId)}
+      >
+        Accept
+      </button>
+      <button
+        className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+        onClick={() => handleReject(order.orderId)}
+      >
+        Reject
+      </button>
+    </>
+  ) : order.status.toLowerCase() === "accept" ? (
+    <>
+      <button
+        className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+        onClick={() => handleEdit(order.orderId)}
+      >
+        Edit
+      </button>
+      <button
+        className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+        onClick={() => handleDelete(order.orderId)}
+      >
+        Delete
+      </button>
+    </>
+  ) : order.status.toLowerCase() === "shipping" ? (
+    <>
+      <button
+        className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+        onClick={() => handleEdit(order.orderId)}
+      >
+        Edit
+      </button>
+      <button
+        className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+        onClick={() => handleDelete(order.orderId)}
+      >
+        Delete
+      </button>
+    </>
+  ) : order.status.toLowerCase() === "arrived" ? (
+    <>
+      <button
+        className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+        onClick={() => handleEdit(order.orderId)}
+      >
+        Edit
+      </button>
+      <button
+        className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+        onClick={() => handleDelete(order.orderId)}
+      >
+        Delete
+      </button>
+    </>
+    ) : order.status.toLowerCase() === "completed" ? (
+      <p className="text-green-700 font-medium">Completed</p>
+    ) : order.status.toLowerCase() === "cancelled" ? (
+      <>
+        <p className="text-red-500 font-medium">Cancelled</p>
+        <button
+          className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+          onClick={() => handleDelete(order.orderId)}
+        >
+          Delete
+        </button>
+      </>
+    ) : order.status.toLowerCase() === "reject" ? (
+      <p className="text-red-500 font-medium">Rejected</p>
+    ) : null}
+  </div>
+
         </div>
       ))}
 
@@ -292,7 +334,7 @@ const handleReject = async (orderId: number) => {
                 onChange={handleInputChange}
                 className="w-full px-4 py-2 border rounded-md"
               >
-                <option value="Pending">Pending</option>
+                <option value="Accept">Accept</option>
                 <option value="Shipping">Shipping</option>
                 <option value="Arrived">Arrived</option>
                 <option value="Completed">Completed</option>
