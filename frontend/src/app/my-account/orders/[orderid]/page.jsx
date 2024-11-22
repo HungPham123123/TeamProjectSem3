@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import axios from "@/utils/axios"; // Adjust the path if needed
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { jsPDF } from "jspdf";
+import 'jspdf-autotable';
 
 function OrderDetail() {
   const { orderid } = useParams();
@@ -97,6 +99,90 @@ function OrderDetail() {
     }
   };
 
+  const downloadInvoice = () => {
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(24);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Waves", 20, 20);
+
+    // Invoice Info
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Invoice", 150, 20);
+    doc.text(`Invoice No: ${order.orderId || "N/A"}`, 150, 25);
+    doc.text(`Order Date: ${order.createdAt ? new Date(order.createdAt).toLocaleDateString() : "N/A"}`, 150, 30);
+    doc.text(`Status: ${order.status || "N/A"}`, 150, 35);
+
+    doc.setFillColor(0, 0, 0);
+    doc.rect(20, 50, 170, 10, "F");
+    doc.setFontSize(12);
+    doc.setTextColor(255, 255, 255);
+    doc.text("CUSTOMER DETAILS", 25, 56);
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`${order.firstName || "N/A"} ${order.lastName || "N/A"}`, 25, 70);
+    doc.text(order.address || "No address provided", 25, 75);
+    doc.text(`${order.city || "N/A"}, ${order.country || "N/A"}`, 25, 80);
+    doc.text(`Email: ${order.email || "N/A"}`, 25, 85);
+    doc.text(`Phone: ${order.phoneNumber || "N/A"}`, 25, 90);
+
+    doc.setFillColor(0, 0, 0);
+    doc.rect(20, 100, 170, 10, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.text("NOTES", 25, 106);
+    doc.setTextColor(0, 0, 0);
+    doc.text(order.optional || "Thank you for shopping with us!", 25, 116);
+
+    const tableColumn = ["DVD TITLE", "QUANTITY", "PRICE PER DVD", "TOTAL"];
+    const tableRows = [];
+
+    if (Array.isArray(order.orderItems)) {
+      order.orderItems.forEach((item) => {
+        const price = item.price || 0;
+        const quantity = item.quantity || 0;
+        const total = price * quantity;
+
+        const row = [
+          item.productTitle || "N/A",
+          quantity,
+          price ? `$${price.toFixed(2)}` : "$0.00",
+          `$${total.toFixed(2)}`,
+        ];
+        tableRows.push(row);
+      });
+    } else {
+      console.log("orderItems is undefined or not an array");
+    }
+
+    if (tableRows.length > 0) {
+      doc.autoTable({
+        startY: 130,
+        head: [tableColumn],
+        body: tableRows,
+        theme: "grid",
+        headStyles: { fillColor: [0, 0, 0], textColor: 255, halign: "center" },
+        bodyStyles: { halign: "center" },
+        footStyles: { fillColor: [0, 0, 0], textColor: 255 },
+        didDrawCell: (data) => {
+          if (data.section === "body" && data.column.index === 3) {
+            data.cell.styles.halign = "right";
+          }
+        },
+      });
+    }
+
+    const finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY : 150;
+    const totalAmount = (order.totalAmount && !isNaN(order.totalAmount)) ? order.totalAmount.toFixed(2) : '0.00';
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`ORDER TOTAL: $${totalAmount}`, 150, finalY + 10);
+
+    // Save PDF
+    doc.save("waves-order-invoice.pdf");
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -292,6 +378,16 @@ function OrderDetail() {
                 <p className="text-sm">Status: {order.status}</p>
               </div>
 
+              {/* Download Invoice Button */}
+              <div className="mb-4">
+                <button
+                  onClick={downloadInvoice}
+                  className="text-blue-600 hover:underline"
+                >
+                  Download Invoice
+                </button>
+              </div>
+
               {/* Status Progress */}
               <div className="flex justify-between items-center mb-6">
                 {["Pending", "Accept", "Shipping", "Arrived", "Completed", "Cancelled"].map((step, index) => (
@@ -312,19 +408,10 @@ function OrderDetail() {
               <div className="grid grid-cols-3 gap-4 text-sm mb-6">
                 <div>
                   <h2 className="text-gray-700 font-medium mb-2">Customer Details</h2>
-                  <p>
-                    {order.firstName} {order.lastName}
-                  </p>
+                  <p>{order.firstName} {order.lastName}</p>
                   <p>{order.address}</p>
-                  <p>
-                    {order.city}, {order.country}
-                  </p>
-                  <p>
-                    Email:{" "}
-                    <a href={`mailto:${order.email}`} className="text-blue-600">
-                      {order.email}
-                    </a>
-                  </p>
+                  <p>{order.city}, {order.country}</p>
+                  <p>Email: <a href={`mailto:${order.email}`} className="text-blue-600">{order.email}</a></p>
                   <p>Phone: {order.phoneNumber}</p>
                 </div>
                 <div>
@@ -338,7 +425,6 @@ function OrderDetail() {
                 </div>
               </div>
 
-
               <h2 className="text-lg font-medium mb-4">Order Items</h2>
               <ul>
                 {order.orderItems.map((item) => (
@@ -346,36 +432,42 @@ function OrderDetail() {
                     <div className="flex items-center">
                       <img src={item.productImage} alt={item.productTitle} className="w-20 h-20 object-cover mr-4" />
                       <div>
-                        <p className="font-medium">{item.productTitle}</p>
-                        <p>Quantity: {item.quantity}</p>
-                        <p>Price: ${item.price}</p>
-                        {!reviewStatus[item.productId] && order.status === "Completed" && (
-                          <button
-                            onClick={() => openReviewSidebar(item)}
-                            className="text-blue-600 hover:underline"
-                          >
-                            Write a Review
-                          </button>
-                        )}
+                        <h3 className="text-sm font-medium">{item.productTitle}</h3>
+                        <p className="text-xs">{item.productDescription}</p>
                       </div>
+                    </div>
+                    <div className="flex justify-between items-center mt-2">
+                      <p className="text-sm">Price: ${item.price}</p>
+                      <p className="text-sm">Quantity: {item.quantity}</p>
+                    </div>
+                    <div className="mt-2">
+                      {order.status === 'Completed' && (
+                        <button
+                          onClick={() => openReviewSidebar(item)}
+                          className={`${reviewStatus[item.productId] ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"
+                            } text-white px-4 py-2 rounded`}
+                          disabled={reviewStatus[item.productId]}
+                        >
+                          {reviewStatus[item.productId] ? "Reviewed" : "Write Review"}
+                        </button>
+                      )}
                     </div>
                   </li>
                 ))}
               </ul>
 
-              {order.status === "Arrived" && (
-                <div className="mt-6">
+              <div className="flex justify-end mt-6">
+                {order.status === 'Arrived' && (
                   <button
                     onClick={markAsReceived}
                     className="bg-black text-white px-4 py-2 rounded"
                   >
                     Received
                   </button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
-
 
 
 
