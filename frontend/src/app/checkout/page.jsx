@@ -20,6 +20,7 @@ function Checkout() {
     city: '',
     zipCode: '',
     note: '',
+    country: '',
   });
   const [errors, setErrors] = useState({});
   const [clientSecret, setClientSecret] = useState('');
@@ -78,6 +79,7 @@ function Checkout() {
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
+    if (!formData.country) newErrors.country = 'Country is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -99,7 +101,7 @@ function Checkout() {
         const payload = {
             firstName: formData.firstName,
             lastName: formData.lastName,
-            country: "USA",
+            country: formData.country,
             city: formData.city,
             address: formData.address,
             optional: formData.note,
@@ -148,7 +150,7 @@ function Checkout() {
         const payload = {
             firstName: formData.firstName,
             lastName: formData.lastName,
-            country: "USA",
+            country: formData.country,
             city: formData.city,
             address: formData.address,
             optional: formData.note,
@@ -305,6 +307,31 @@ function Checkout() {
                   {errors.email && <p className="my-2 text-xs text-red-500">{errors.email}</p>}
                 </div>
               </div>
+              <div className="w-full">
+    <label
+      htmlFor="country"
+      className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer"
+    >
+      Country *
+    </label>
+    <select
+      id="country"
+      name="country"
+      value={formData.country || ""}
+      onChange={handleChange}
+      className="py-2 px-4 md:px-5 w-full appearance-none transition duration-150 ease-in-out border text-input text-xs lg:text-sm font-body placeholder-body min-h-12 bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
+      aria-invalid="true"
+    >
+      <option value="" disabled>
+        Select your country
+      </option>
+      <option value="USA">Vietnam</option>
+
+    </select>
+    {errors.country && (
+      <p className="my-2 text-xs text-red-500">{errors.country}</p>
+    )}
+  </div>
               <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0">
               <div className="w-full lg:w-1/2 ">
   <label

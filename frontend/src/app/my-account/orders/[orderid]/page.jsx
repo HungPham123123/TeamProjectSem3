@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import axios from "@/utils/axios"; // Adjust the path if needed
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { jsPDF } from "jspdf";
+import 'jspdf-autotable';
 
 function OrderDetail() {
   const { orderid } = useParams();
@@ -80,6 +82,106 @@ function OrderDetail() {
     } catch (error) {
       alert("Failed to submit review.");
     }
+  };
+
+  const markAsReceived = async () => {
+    try {
+      const token = Cookies.get("token");
+      await axios.post(
+        `/api/UserOrder/${orderid}/received`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Order marked as received.");
+      setOrder((prev) => ({ ...prev, status: "Completed" }));
+    } catch (err) {
+      alert("Failed to mark order as received.");
+    }
+  };
+
+  const downloadInvoice = () => {
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(24);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Waves", 20, 20);
+
+    // Invoice Info
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Invoice", 150, 20);
+    doc.text(`Invoice No: ${order.orderId || "N/A"}`, 150, 25);
+    doc.text(`Order Date: ${order.createdAt ? new Date(order.createdAt).toLocaleDateString() : "N/A"}`, 150, 30);
+    doc.text(`Status: ${order.status || "N/A"}`, 150, 35);
+
+    doc.setFillColor(0, 0, 0);
+    doc.rect(20, 50, 170, 10, "F");
+    doc.setFontSize(12);
+    doc.setTextColor(255, 255, 255);
+    doc.text("CUSTOMER DETAILS", 25, 56);
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`${order.firstName || "N/A"} ${order.lastName || "N/A"}`, 25, 70);
+    doc.text(order.address || "No address provided", 25, 75);
+    doc.text(`${order.city || "N/A"}, ${order.country || "N/A"}`, 25, 80);
+    doc.text(`Email: ${order.email || "N/A"}`, 25, 85);
+    doc.text(`Phone: ${order.phoneNumber || "N/A"}`, 25, 90);
+
+    doc.setFillColor(0, 0, 0);
+    doc.rect(20, 100, 170, 10, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.text("NOTES", 25, 106);
+    doc.setTextColor(0, 0, 0);
+    doc.text(order.optional || "Thank you for shopping with us!", 25, 116);
+
+    const tableColumn = ["DVD TITLE", "QUANTITY", "PRICE PER DVD", "TOTAL"];
+    const tableRows = [];
+
+    if (Array.isArray(order.orderItems)) {
+      order.orderItems.forEach((item) => {
+        const price = item.price || 0;
+        const quantity = item.quantity || 0;
+        const total = price * quantity;
+
+        const row = [
+          item.productTitle || "N/A",
+          quantity,
+          price ? `$${price.toFixed(2)}` : "$0.00",
+          `$${total.toFixed(2)}`,
+        ];
+        tableRows.push(row);
+      });
+    } else {
+      console.log("orderItems is undefined or not an array");
+    }
+
+    if (tableRows.length > 0) {
+      doc.autoTable({
+        startY: 130,
+        head: [tableColumn],
+        body: tableRows,
+        theme: "grid",
+        headStyles: { fillColor: [0, 0, 0], textColor: 255, halign: "center" },
+        bodyStyles: { halign: "center" },
+        footStyles: { fillColor: [0, 0, 0], textColor: 255 },
+        didDrawCell: (data) => {
+          if (data.section === "body" && data.column.index === 3) {
+            data.cell.styles.halign = "right";
+          }
+        },
+      });
+    }
+
+    const finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY : 150;
+    const totalAmount = (order.totalAmount && !isNaN(order.totalAmount)) ? order.totalAmount.toFixed(2) : '0.00';
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`ORDER TOTAL: $${totalAmount}`, 150, finalY + 10);
+
+    // Save PDF
+    doc.save("waves-order-invoice.pdf");
   };
 
   if (loading) {
@@ -271,26 +373,32 @@ function OrderDetail() {
               </div>
 
               <div className="text-gray-500 mb-4">
-              <p className="text-sm">Order ID: #{order.orderId}</p>
+                <p className="text-sm">Order ID: #{order.orderId}</p>
                 <p className="text-sm">Order Date: {order.createdAt}</p>
                 <p className="text-sm">Status: {order.status}</p>
               </div>
 
+              {/* Download Invoice Button */}
+              <div className="mb-4">
+                <button
+                  onClick={downloadInvoice}
+                  className="text-blue-600 hover:underline"
+                >
+                  Download Invoice
+                </button>
+              </div>
+
+              {/* Status Progress */}
               <div className="flex justify-between items-center mb-6">
-                {["Accept", "Preparing", "Shipping", "Completed", "Reject"].map((step, index) => (
+                {["Accept", "Shipping", "Arrived", "Completed", "Cancelled"].map((step, index) => (
                   <div key={index} className="flex flex-col items-center">
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center ${step === order.status
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-200 text-gray-500"
+                      className={`w-10 h-10 rounded-full flex items-center justify-center ${step === order.status ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
                         }`}
                     >
                       {index + 1}
                     </div>
-                    <p
-                      className={`text-sm mt-2 ${step === order.status ? "text-blue-600" : "text-gray-500"
-                        }`}
-                    >
+                    <p className={`text-sm mt-2 ${step === order.status ? "text-blue-600" : "text-gray-500"}`}>
                       {step}
                     </p>
                   </div>
@@ -324,25 +432,42 @@ function OrderDetail() {
                     <div className="flex items-center">
                       <img src={item.productImage} alt={item.productTitle} className="w-20 h-20 object-cover mr-4" />
                       <div>
-                        <p className="font-medium">{item.productTitle}</p>
-                        <p>Quantity: {item.quantity}</p>
-                        <p>Price: ${item.price}</p>
-                        {!reviewStatus[item.productId] && order.status === "Completed" && (
-                          <button
-                            onClick={() => openReviewSidebar(item)}
-                            className="text-blue-600 hover:underline"
-                          >
-                            Write a Review
-                          </button>
-                        )}
+                        <h3 className="text-sm font-medium">{item.productTitle}</h3>
+                        <p className="text-xs">{item.productDescription}</p>
                       </div>
+                    </div>
+                    <div className="flex justify-between items-center mt-2">
+                      <p className="text-sm">Price: ${item.price}</p>
+                      <p className="text-sm">Quantity: {item.quantity}</p>
+                    </div>
+                    <div className="mt-2">
+                      {order.status === 'Completed' && (
+                        <button
+                          onClick={() => openReviewSidebar(item)}
+                          className={`${reviewStatus[item.productId] ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"
+                            } text-white px-4 py-2 rounded`}
+                          disabled={reviewStatus[item.productId]}
+                        >
+                          {reviewStatus[item.productId] ? "Reviewed" : "Write Review"}
+                        </button>
+                      )}
                     </div>
                   </li>
                 ))}
               </ul>
+
+              <div className="flex justify-end mt-6">
+                {order.status === 'Arrived' && (
+                  <button
+                    onClick={markAsReceived}
+                    className="bg-black text-white px-4 py-2 rounded"
+                  >
+                    Received
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-
 
 
 

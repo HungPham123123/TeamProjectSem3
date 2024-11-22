@@ -57,6 +57,20 @@ namespace ProjectSem3.Controllers
             }
         }
 
+        [HttpPost("{orderId}/received")]
+        public async Task<IActionResult> MarkOrderAsReceived(int orderId)
+        {
+            var userId = GetUserId(); // Get authenticated user ID
+            if (userId == null)
+                return Unauthorized("User not authorized.");
+
+            var result = await _userOrderService.MarkOrderAsReceivedAsync(orderId, userId.Value);
+            if (!result)
+                return NotFound("Order not found or you do not have permission to update this order.");
+
+            return Ok("Order marked as received successfully.");
+        }
+
 
         private int? GetUserId()
         {
