@@ -56,7 +56,7 @@ namespace ProjectSem3.Service
             }
         }
 
-        public async Task CreateOrderWithCashOnDelivery(OrderDto dto, int userId)
+        public async Task<int> CreateOrderWithCashOnDelivery(OrderDto dto, int userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
 
@@ -67,7 +67,7 @@ namespace ProjectSem3.Service
 
             var payment = new Payment
             {
-                PaymentMethod = "Stripe",
+                PaymentMethod = "Cash On Delivery",
                 PaymentStatus = "Not Paid",
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
@@ -125,9 +125,12 @@ namespace ProjectSem3.Service
             {
                 throw new Exception("No items in cart");
             }
+
+            return order.OrderId; // Return the OrderId
         }
 
-        public async Task CreateOrderWithPaidSuccess(OrderDto dto, int userId)
+
+        public async Task<int> CreateOrderWithPaidSuccess(OrderDto dto, int userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
 
@@ -196,6 +199,9 @@ namespace ProjectSem3.Service
             {
                 throw new Exception("No items in cart");
             }
+
+            return order.OrderId; // Return the OrderId
         }
+
     }
 }

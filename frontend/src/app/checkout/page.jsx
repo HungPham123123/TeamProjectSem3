@@ -94,41 +94,37 @@ function Checkout() {
   };
 
   const handlePaymentSuccessWithCashOnDelivery = async () => {
-    const totalAmount = cart?.cartItems?.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    const totalAmount = cart?.cartItems?.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
     try {
-      
-      const payload = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        country: 'USA',
-        city: formData.city,
-        address: formData.address,
-        optional: formData.note,
-        zipCode: formData.zipCode,
-        email: formData.email,
-        phoneNumber: formData.phone,
-        tax: 10,
-        totalAmount: totalAmount
-      };
-  
-      const response = await axios.post(
-        `/api/Payment/create-order-cash-on-delivery`,
-        payload
-      );
-  
-      if (response.status === 200) {
-        alert('Payment successful and order created!');
-        setShowPaymentModal(false);
-        console.log(response.data);
-        window.location.href = '/order-success';
-      } else {
-        alert('Payment confirmation failed.');
-      }
+        const payload = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            country: "USA",
+            city: formData.city,
+            address: formData.address,
+            optional: formData.note,
+            zipCode: formData.zipCode,
+            email: formData.email,
+            phoneNumber: formData.phone,
+            tax: 10,
+            totalAmount: totalAmount,
+        };
+
+        const response = await axios.post(`/api/Payment/create-order-cash-on-delivery`, payload);
+
+        if (response.status === 200) {
+            const { orderId } = response.data;
+            alert("Order created successfully with Cash on Delivery!");
+            setShowPaymentModal(false);
+            window.location.href = `/order-success/${orderId}`;
+        } else {
+            alert("Order creation failed.");
+        }
     } catch (error) {
-      console.error('Error confirming payment:', error);
-      alert('Error confirming payment.');
+        console.error("Error creating order:", error);
+        alert("Error creating order.");
     }
-  };
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,41 +143,40 @@ function Checkout() {
   };
 
   const handlePaymentSuccess = async (paymentIntent) => {
-    const totalAmount = cart?.cartItems?.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    const totalAmount = cart?.cartItems?.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
     try {
-      
-      const payload = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        country: 'USA',
-        city: formData.city,
-        address: formData.address,
-        optional: formData.note,
-        zipCode: formData.zipCode,
-        email: formData.email,
-        phoneNumber: formData.phone,
-        tax: 10,
-        totalAmount: totalAmount
-      };
-  
-      const response = await axios.post(
-        `/api/Payment/confirm-payment-and-create-order?paymentIntentId=${paymentIntent.id}`,
-        payload
-      );
-  
-      if (response.status === 200) {
-        alert('Payment successful and order created!');
-        setShowPaymentModal(false);
-        console.log(response.data);
-        window.location.href = '/order-success';
-      } else {
-        alert('Payment confirmation failed.');
-      }
+        const payload = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            country: "USA",
+            city: formData.city,
+            address: formData.address,
+            optional: formData.note,
+            zipCode: formData.zipCode,
+            email: formData.email,
+            phoneNumber: formData.phone,
+            tax: 10,
+            totalAmount: totalAmount,
+        };
+
+        const response = await axios.post(
+            `/api/Payment/confirm-payment-and-create-order?paymentIntentId=${paymentIntent.id}`,
+            payload
+        );
+
+        if (response.status === 200) {
+            const { orderId } = response.data;
+            alert("Payment successful and order created!");
+            setShowPaymentModal(false);
+            window.location.href = `/order-success/${orderId}`;
+        } else {
+            alert("Payment confirmation failed.");
+        }
     } catch (error) {
-      console.error('Error confirming payment:', error);
-      alert('Error confirming payment.');
+        console.error("Error confirming payment:", error);
+        alert("Error confirming payment.");
     }
-  };
+};
 
   const closeModal = () => {
     setShowPaymentModal(false);

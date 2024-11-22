@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const NewsPage = () => {
   const [news, setNews] = useState([]);
-  
+
   // Fetch news data from the API
   useEffect(() => {
     const fetchNews = async () => {
@@ -53,12 +53,12 @@ const NewsPage = () => {
               </Link>
               <div className="flex flex-wrap gap-3 items-center mt-6">
                 <div className="flex flex-wrap gap-3">
-                  <a
+                  <Link
                     className="text-xs font-medium uppercase rounded-full py-1.5 px-2.5 border border-black text-black hover:bg-black hover:text-white tracking-wide whitespace-nowrap"
-                    href={`/category/${item.categoryName.toLowerCase()}`}
+                    href={`/category/${item.categoryName ? item.categoryName.toLowerCase() : ''}`}
                   >
                     {item.tags}
-                  </a>
+                  </Link>
                 </div>
                 <div className="text-sm data-color flex items-center">
                   <span className="whitespace-nowrap"> {new Date(item.publishedAt).toLocaleDateString()}</span>

@@ -50,8 +50,8 @@ namespace ProjectSem3.Controllers
 
             try
             {
-                await _paymentService.ConfirmPaymentAndCreateOrder(orderDto, userId, paymentIntentId);
-                return Ok("Order created successfully");
+                int orderId = await _paymentService.CreateOrderWithPaidSuccess(orderDto, userId);
+                return Ok(new { message = "Order created successfully", orderId });
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace ProjectSem3.Controllers
         }
 
         [HttpPost("create-order-cash-on-delivery")]
-        public async Task<IActionResult> CreateOrderWithCashOnDelivery(OrderDto orderDto)
+        public async Task<IActionResult> CreateOrderWithCashOnDelivery([FromBody] OrderDto orderDto)
         {
             var userIdClaim = User.FindFirst("UserId")?.Value;
 
@@ -73,8 +73,8 @@ namespace ProjectSem3.Controllers
 
             try
             {
-                await _paymentService.CreateOrderWithCashOnDelivery(orderDto, userId);
-                return Ok("Order created successfully with Cash on Delivery");
+                int orderId = await _paymentService.CreateOrderWithCashOnDelivery(orderDto, userId);
+                return Ok(new { message = "Order created successfully with Cash on Delivery", orderId });
             }
             catch (Exception ex)
             {
