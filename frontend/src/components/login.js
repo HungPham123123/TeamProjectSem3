@@ -20,7 +20,7 @@ const LoginPages = () => {
     try {
       const response = await axios.post('/api/Auth/login', { email, password });
       const { token } = response.data;
-      Cookies.set('token', token, { expires: 1 });
+      Cookies.set('token', token, { expires: 1 / 48 });
       window.location.href = '/';
     } catch (error) {
       setErrorMessage(error.response?.data?.message || 'Login Failed, Please try again later');

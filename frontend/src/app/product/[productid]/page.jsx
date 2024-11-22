@@ -29,7 +29,7 @@ function ProductDetail({ params }) {
     const handleQuantityChange = (type) => {
         setQuantity((prevQuantity) => {
             if (type === 'increment') {
-                return prevQuantity + 1;
+                return Math.min(prevQuantity + 1, product.stockQuantity);
             } else if (type === 'decrement' && prevQuantity > 1) {
                 return prevQuantity - 1;
             }
@@ -38,6 +38,11 @@ function ProductDetail({ params }) {
     };
 
     const addToCart = () => {
+        if (quantity > product.stockQuantity) {
+            alert(`You can't add more than ${product.stockQuantity} to the cart.`);
+            return;
+        }
+    
         axios.post('/api/Cart/add', {
             productId: productid,
             quantity
@@ -120,12 +125,12 @@ function ProductDetail({ params }) {
       {quantity}
     </span>
     <button
-      onClick={() => handleQuantityChange('increment')}
-      className="w-10 md:w-12 flex justify-center items-center border-l"
-      disabled={product.stockQuantity === 0}
-    >
-      +
-    </button>
+    onClick={() => handleQuantityChange('increment')}
+    className="w-10 md:w-12 flex justify-center items-center border-l"
+    disabled={quantity >= product.stockQuantity || product.stockQuantity === 0}
+>
+    +
+</button>
   </div>
 
   <button

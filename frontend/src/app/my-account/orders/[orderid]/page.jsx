@@ -82,6 +82,22 @@ function OrderDetail() {
     }
   };
 
+  const markAsReceived = async () => {
+    try {
+      const token = Cookies.get("token");
+      await axios.post(
+        `/api/UserOrder/${orderid}/received`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Order marked as received.");
+      setOrder((prev) => ({ ...prev, status: "Completed" }));
+    } catch (err) {
+      alert("Failed to mark order as received.");
+    }
+  };
+
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -271,26 +287,22 @@ function OrderDetail() {
               </div>
 
               <div className="text-gray-500 mb-4">
-              <p className="text-sm">Order ID: #{order.orderId}</p>
+                <p className="text-sm">Order ID: #{order.orderId}</p>
                 <p className="text-sm">Order Date: {order.createdAt}</p>
                 <p className="text-sm">Status: {order.status}</p>
               </div>
 
+              {/* Status Progress */}
               <div className="flex justify-between items-center mb-6">
-                {["Accept", "Shipping", "Arrived", "Completed", "Cancelled"].map((step, index) => (
+                {["Pending", "Accept", "Shipping", "Arrived", "Completed", "Cancelled"].map((step, index) => (
                   <div key={index} className="flex flex-col items-center">
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center ${step === order.status
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-200 text-gray-500"
+                      className={`w-10 h-10 rounded-full flex items-center justify-center ${step === order.status ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
                         }`}
                     >
                       {index + 1}
                     </div>
-                    <p
-                      className={`text-sm mt-2 ${step === order.status ? "text-blue-600" : "text-gray-500"
-                        }`}
-                    >
+                    <p className={`text-sm mt-2 ${step === order.status ? "text-blue-600" : "text-gray-500"}`}>
                       {step}
                     </p>
                   </div>
@@ -300,10 +312,19 @@ function OrderDetail() {
               <div className="grid grid-cols-3 gap-4 text-sm mb-6">
                 <div>
                   <h2 className="text-gray-700 font-medium mb-2">Customer Details</h2>
-                  <p>{order.firstName} {order.lastName}</p>
+                  <p>
+                    {order.firstName} {order.lastName}
+                  </p>
                   <p>{order.address}</p>
-                  <p>{order.city}, {order.country}</p>
-                  <p>Email: <a href={`mailto:${order.email}`} className="text-blue-600">{order.email}</a></p>
+                  <p>
+                    {order.city}, {order.country}
+                  </p>
+                  <p>
+                    Email:{" "}
+                    <a href={`mailto:${order.email}`} className="text-blue-600">
+                      {order.email}
+                    </a>
+                  </p>
                   <p>Phone: {order.phoneNumber}</p>
                 </div>
                 <div>
@@ -316,6 +337,7 @@ function OrderDetail() {
                   <p>Total Amount: ${order.totalAmount}</p>
                 </div>
               </div>
+
 
               <h2 className="text-lg font-medium mb-4">Order Items</h2>
               <ul>
@@ -340,6 +362,17 @@ function OrderDetail() {
                   </li>
                 ))}
               </ul>
+
+              {order.status === "Arrived" && (
+                <div className="mt-6">
+                  <button
+                    onClick={markAsReceived}
+                    className="bg-black text-white px-4 py-2 rounded"
+                  >
+                    Received
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

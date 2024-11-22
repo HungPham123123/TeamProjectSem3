@@ -116,6 +116,17 @@ namespace ProjectSem3.Service
                     };
 
                     _context.OrderItems.Add(orderItem);
+
+                    // Deduct stock quantity
+                    var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == cartItem.ProductId);
+                    if (product != null)
+                    {
+                        product.StockQuantity -= cartItem.Quantity;
+                        if (product.StockQuantity < 0)
+                        {
+                            throw new Exception($"Insufficient stock for product: {product.Title}");
+                        }
+                    }
                 }
 
                 _context.CartItems.RemoveRange(cart.CartItems);
@@ -190,6 +201,17 @@ namespace ProjectSem3.Service
                     };
 
                     _context.OrderItems.Add(orderItem);
+
+                    // Deduct stock quantity
+                    var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == cartItem.ProductId);
+                    if (product != null)
+                    {
+                        product.StockQuantity -= cartItem.Quantity;
+                        if (product.StockQuantity < 0)
+                        {
+                            throw new Exception($"Insufficient stock for product: {product.Title}");
+                        }
+                    }
                 }
 
                 _context.CartItems.RemoveRange(cart.CartItems);

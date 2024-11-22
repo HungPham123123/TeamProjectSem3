@@ -17,6 +17,7 @@ function Navbar() {
   const [token, setToken] = useState(null);
   const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
   const [cart, setCart] = useState(null);
+  const [productDetails, setProductDetails] = useState({}); // Store product details keyed by productId
 
   useEffect(() => {
     const tokenFromCookie = Cookies.get('token');
@@ -33,6 +34,20 @@ function Navbar() {
     try {
       const response = await axios.get('/api/Cart');
       setCart(response.data);
+
+      // Fetch product details for each cart item
+      const productIds = response.data.cartItems.map(item => item.productId);
+      const productRequests = productIds.map(id => axios.get(`/api/Products/${id}`));
+
+      // Wait for all product requests to complete
+      const productResponses = await Promise.all(productRequests);
+
+      // Store the product details in state
+      const products = productResponses.reduce((acc, response) => {
+        acc[response.data.productId] = response.data;
+        return acc;
+      }, {});
+      setProductDetails(products);
     } catch (error) {
       console.log("Error fetching cart data:", error);
     }
@@ -49,10 +64,7 @@ function Navbar() {
 
   const updateCartItem = async (productId, quantity) => {
     try {
-      await axios.put('/api/Cart/update', {
-        productId,
-        quantity
-      });
+      await axios.put('/api/Cart/update', { productId, quantity });
       fetchCartData();
     } catch (error) {
       console.log("Error updating cart item:", error);
@@ -61,7 +73,14 @@ function Navbar() {
 
   const handleQuantityChange = (item, delta) => {
     const newQuantity = item.quantity + delta;
+    const product = productDetails[item.productId];
+
     if (newQuantity < 1) return;
+
+    if (newQuantity > product?.stockQuantity) {
+      alert(`Cannot add more than ${product?.stockQuantity} items. Only ${product?.stockQuantity} items are in stock.`);
+      return;
+    }
 
     setCart(prevCart => ({
       ...prevCart,
@@ -71,7 +90,6 @@ function Navbar() {
           : cartItem
       )
     }));
-
     updateCartItem(item.productId, newQuantity);
   };
 
@@ -427,23 +445,24 @@ function Navbar() {
                             Unit Price: &nbsp; ${item.price.toFixed(2)}
                           </span>
                           <div className="flex items-end justify-between">
-                            <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 h-8 md:h-9 shadow-navigation bg-heading bg-black">
-                              <button
-                                onClick={() => handleQuantityChange(item, -1)}
-                                className="flex items-center justify-center flex-shrink-0 h-full transition ease-in-out duration-300 focus:outline-none w-8 md:w-9 text-white bg-heading hover:bg-gray-600"
-                              >
-                                -
-                              </button>
-                              <span className="font-semibold flex items-center justify-center h-full cursor-default text-sm text-white w-8 md:w-10">
-                                {item.quantity}
-                              </span>
-                              <button
-                                onClick={() => handleQuantityChange(item, 1)}
-                                className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-9 text-white bg-heading hover:bg-gray-600"
-                              >
-                                +
-                              </button>
-                            </div>
+                          <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 h-8 md:h-9 shadow-navigation bg-heading bg-black">
+        <button
+          onClick={() => handleQuantityChange(item, -1)}
+          className="flex items-center justify-center flex-shrink-0 h-full transition ease-in-out duration-300 focus:outline-none w-8 md:w-9 text-white bg-heading hover:bg-gray-600"
+        >
+          -
+        </button>
+        <span className="font-semibold flex items-center justify-center h-full cursor-default text-sm text-white w-8 md:w-10">
+          {item.quantity}
+        </span>
+        <button
+          onClick={() => handleQuantityChange(item, 1)}
+          className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-9 text-white bg-heading hover:bg-gray-600"
+        >
+          +
+        </button>
+      </div>
+
                             <span className="text-sm font-semibold leading-5 md:text-base text-heading">
                               ${(item.quantity * item.price).toFixed(2)}
                             </span>

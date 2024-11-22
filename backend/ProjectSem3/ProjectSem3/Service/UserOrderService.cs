@@ -80,6 +80,26 @@ namespace ProjectSem3.Service
             return orders;
         }
 
+        public async Task<bool> MarkOrderAsReceivedAsync(int orderId, int userId)
+        {
+            // Find the order belonging to the user
+            var order = await _context.Orders
+                .FirstOrDefaultAsync(o => o.OrderId == orderId && o.UserId == userId);
+
+            if (order == null)
+                return false;
+
+            // Update the order status to "Received"
+            order.Status = "Completed"; // Use a predefined status constant or enum if available
+            order.UpdatedAt = DateTime.UtcNow;
+
+            // Save changes
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<OrderDto> GetOrderById(int orderId)
         {
             var userId = GetUserIdFromToken();
