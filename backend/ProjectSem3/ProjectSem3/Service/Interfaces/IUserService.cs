@@ -13,5 +13,6 @@ namespace ProjectSem3.Service.Interfaces
         Task ResendVerificationEmailAsync(string email);
         Task<UserDto> GetUserInfoAsync(int userId);
         Task<UserDto> UpdateUserInfoAsync(int userId, UserDto updateUserDto);
+        Task<string> LoginAdminAsync(LoginDto loginDto);
     }
 }

@@ -19,10 +19,15 @@ const Albums = () => {
   });
 
   // Fetch danh sách albums
+  const token = localStorage.getItem('adminToken')
   const fetchAlbums = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://localhost:7071/api/Albums");
+      const response = await axios.get("https://localhost:7071/api/Albums",{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setAlbums(response.data);
       setAllAlbums(response.data);
     } catch (error) {
@@ -39,7 +44,11 @@ const Albums = () => {
   // Hàm xóa album
   const handleDelete = async (albumId: number) => {
     try {
-      await axios.delete(`https://localhost:7071/api/Albums/${albumId}`);
+      await axios.delete(`https://localhost:7071/api/Albums/${albumId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setAlbums(albums.filter((album) => album.albumId !== albumId));
     } catch (error) {
       console.error("Error deleting album:", error);
@@ -112,11 +121,19 @@ const Albums = () => {
   
       if (formData.albumId === 0) {
         // Add new album
-        const response = await axios.post("https://localhost:7071/api/Albums", payload);
+        const response = await axios.post("https://localhost:7071/api/Albums", payload,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setAlbums([...albums, response.data]);
       } else {
         // Edit existing album
-        await axios.put(`https://localhost:7071/api/Albums/${formData.albumId}`, payload);
+        await axios.put(`https://localhost:7071/api/Albums/${formData.albumId}`, payload,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setAlbums(
           albums.map((album) =>
             album.albumId === formData.albumId ? { ...album, ...payload } : album

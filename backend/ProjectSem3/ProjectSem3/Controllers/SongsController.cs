@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
 using ProjectSem3.Service.Interfaces;
 
@@ -30,6 +31,7 @@ namespace ProjectSem3.Controllers
             return Ok(song);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] SongDTO songDto)
         {
@@ -37,6 +39,7 @@ namespace ProjectSem3.Controllers
             return CreatedAtAction(nameof(GetById), new { id = songDto.SongId }, songDto);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] SongDTO songDto)
         {
@@ -45,6 +48,7 @@ namespace ProjectSem3.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

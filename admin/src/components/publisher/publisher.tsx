@@ -15,12 +15,16 @@ const Publishers = () => {
     name: "",
     contactInfo: "",
   });
-
+  const token = localStorage.getItem('adminToken')
   // Fetch danh sách publishers
   const fetchPublishers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://localhost:7071/api/Publisher");
+      const response = await axios.get("https://localhost:7071/api/Publisher",{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setPublishers(response.data);
       setAllPublishers(response.data);
     } catch (error) {
@@ -37,7 +41,11 @@ const Publishers = () => {
   // Hàm xóa publisher
   const handleDelete = async (publisherId: number) => {
     try {
-      await axios.delete(`https://localhost:7071/api/Publisher/${publisherId}`);
+      await axios.delete(`https://localhost:7071/api/Publisher/${publisherId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setPublishers(publishers.filter((publisher) => publisher.publisherId !== publisherId));
     } catch (error) {
       console.error("Error deleting publisher:", error);
@@ -101,11 +109,19 @@ const Publishers = () => {
 
       if (formData.publisherId === 0) {
         // Add new publisher
-        const response = await axios.post("https://localhost:7071/api/Publisher", payload);
+        const response = await axios.post("https://localhost:7071/api/Publisher", payload,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setPublishers([...publishers, response.data]);
       } else {
         // Edit existing publisher
-        await axios.put(`https://localhost:7071/api/Publisher/${formData.publisherId}`, payload);
+        await axios.put(`https://localhost:7071/api/Publisher/${formData.publisherId}`, payload,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setPublishers(
           publishers.map((publisher) =>
             publisher.publisherId === formData.publisherId ? { ...publisher, ...payload } : publisher

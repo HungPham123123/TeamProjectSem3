@@ -39,7 +39,7 @@ builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<IProductManageService, ProductManageService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<NewsService>();
-builder.Services.AddScoped<IReviewService, ProjectReviewService>(); // Specify the project ReviewService
+builder.Services.AddScoped<ProjectReviewService>(); // Specify the project ReviewService
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<FilterService>();

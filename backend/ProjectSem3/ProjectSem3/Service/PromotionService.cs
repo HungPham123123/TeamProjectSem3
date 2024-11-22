@@ -24,11 +24,16 @@ namespace ProjectSem3.Service
             return _mapper.Map<List<PromotionManageDTO>>(promotions);
         }
 
-        public async Task AddPromotionAsync(PromotionManageDTO promotionDto)
+        public async Task AddPromotionAsync(PromotionCreateDTO promotionDto)
         {
+            // Mapping từ PromotionCreateDTO sang Promotion
             var promotion = _mapper.Map<Promotion>(promotionDto);
+
+            // Gán các trường tự động
             promotion.CreatedAt = DateTime.UtcNow;
             promotion.UpdatedAt = DateTime.UtcNow;
+
+            // Thêm vào context và lưu
             _context.Promotions.Add(promotion);
             await _context.SaveChangesAsync();
         }

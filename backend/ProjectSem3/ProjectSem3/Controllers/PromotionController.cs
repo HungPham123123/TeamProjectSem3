@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
 using ProjectSem3.Service.Interfaces;
 
@@ -6,6 +7,7 @@ namespace ProjectSem3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class PromotionController : ControllerBase
     {
         private readonly IPromotionService _promotionService;
@@ -15,7 +17,7 @@ namespace ProjectSem3.Controllers
             _promotionService = promotionService;
         }
 
-        // Lấy danh sách tất cả promotion
+        // Lấy danh sách tất cả promotions
         [HttpGet]
         public async Task<IActionResult> GetAllPromotions()
         {
@@ -25,10 +27,15 @@ namespace ProjectSem3.Controllers
 
         // Thêm mới promotion
         [HttpPost]
-        public async Task<IActionResult> AddPromotion([FromBody] PromotionManageDTO promotionDto)
+        public async Task<IActionResult> AddPromotion([FromBody] PromotionCreateDTO promotionDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             await _promotionService.AddPromotionAsync(promotionDto);
-            return CreatedAtAction(nameof(GetAllPromotions), new { promotionId = promotionDto.PromotionId }, promotionDto);
+            return StatusCode(201, new { message = "Promotion created successfully." });
         }
     }
 }

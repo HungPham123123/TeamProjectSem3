@@ -1,21 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
-using ProjectSem3.Service.Interfaces;
+using ProjectSem3.Service;
 
 namespace ProjectSem3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ReviewController : ControllerBase
     {
-        private readonly IReviewService _reviewService;
+        private readonly ReviewService _reviewService;
 
-        public ReviewController(IReviewService reviewService)
+        public ReviewController(ReviewService reviewService)
         {
             _reviewService = reviewService;
         }
 
-        // Lấy danh sách tất cả review
+        // Lấy danh sách tất cả reviews
         [HttpGet]
         public async Task<IActionResult> GetAllReviews()
         {
@@ -27,38 +29,58 @@ namespace ProjectSem3.Controllers
         [HttpGet("{reviewId}")]
         public async Task<IActionResult> GetReviewById(int reviewId)
         {
-            var review = await _reviewService.GetReviewByIdAsync(reviewId);
-            if (review == null) return NotFound("Review không tìm thấy.");
-
-            return Ok(review);
+            try
+            {
+                var review = await _reviewService.GetReviewByIdAsync(reviewId);
+                return Ok(review);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // Thêm mới review
+        // Thêm review mới
         [HttpPost]
-        public async Task<IActionResult> AddReview([FromBody] ReviewManageDTO reviewDto)
+        public async Task<IActionResult> AddReview([FromBody] AddReviewDTO reviewDto)
         {
-            await _reviewService.AddReviewAsync(reviewDto);
-            return CreatedAtAction(nameof(GetReviewById), new { reviewId = reviewDto.ReviewId }, reviewDto);
+            var reviewId = await _reviewService.AddReviewAsync(reviewDto);
+            return CreatedAtAction(nameof(GetReviewById), new { reviewId }, reviewDto);
         }
+
 
         // Cập nhật review
         [HttpPut("{reviewId}")]
-        public async Task<IActionResult> UpdateReview(int reviewId, [FromBody] ReviewManageDTO reviewDto)
+        public async Task<IActionResult> UpdateReview(int reviewId, [FromBody] UpdateReviewDto reviewDto)
         {
-            if (reviewId != reviewDto.ReviewId) return BadRequest("ID review không khớp.");
-            await _reviewService.UpdateReviewAsync(reviewDto);
-            return NoContent();
+            try
+            {
+                await _reviewService.UpdateReviewAsync(reviewId, reviewDto);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
+
 
         // Xóa review
         [HttpDelete("{reviewId}")]
         public async Task<IActionResult> DeleteReview(int reviewId)
         {
-            await _reviewService.DeleteReviewAsync(reviewId);
-            return NoContent();
+            try
+            {
+                await _reviewService.DeleteReviewAsync(reviewId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // Tìm kiếm review
+        // Tìm kiếm reviews
         [HttpGet("search")]
         public async Task<IActionResult> SearchReviews([FromQuery] string keyword)
         {

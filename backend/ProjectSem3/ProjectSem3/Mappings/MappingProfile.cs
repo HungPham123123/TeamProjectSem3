@@ -65,7 +65,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
             .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems))
             .ReverseMap();
-
+        CreateMap<Order, OrderManageDTO>().ReverseMap();
+        CreateMap<Order, OrderDto>().ReverseMap();
         // Cấu hình OrderUpdateDTO -> Order
         CreateMap<OrderUpdateDTO, Order>()
             .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
@@ -76,10 +77,17 @@ public class MappingProfile : Profile
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                 .ForMember(dest => dest.ProductTitle, opt => opt.MapFrom(src => src.Product.Title))
                 .ReverseMap();
+        CreateMap<AddReviewDTO, Review>()
+                  .ForMember(dest => dest.ReviewId, opt => opt.Ignore()) // Bỏ qua ReviewId nếu nó được tự động sinh
+                  .ForMember(dest => dest.CreatedAt, opt => opt.Ignore()); // Hoặc đặt giá trị mặc định nếu cần
+
+        CreateMap<UpdateReviewDto, Review>();
 
         CreateMap<Promotion, PromotionManageDTO>()
                 .ForMember(dest => dest.ProductTitle, opt => opt.MapFrom(src => src.Product.Title))
                 .ReverseMap();
+        CreateMap<PromotionCreateDTO, Promotion>();
+
         CreateMap<UpdateUserDTO, User>()
                 .ForMember(dest => dest.Username, opt => opt.Ignore()); // Không ánh xạ Username
 

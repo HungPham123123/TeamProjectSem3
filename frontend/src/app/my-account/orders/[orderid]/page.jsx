@@ -277,7 +277,7 @@ function OrderDetail() {
               </div>
 
               <div className="flex justify-between items-center mb-6">
-                {["Accept", "Shipping", "Arrived", "Completed", "Cancelled"].map((step, index) => (
+                {["Accept", "Preparing", "Shipping", "Completed", "Reject"].map((step, index) => (
                   <div key={index} className="flex flex-col items-center">
                     <div
                       className={`w-10 h-10 rounded-full flex items-center justify-center ${step === order.status

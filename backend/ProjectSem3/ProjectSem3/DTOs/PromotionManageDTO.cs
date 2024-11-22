@@ -11,4 +11,11 @@
         public DateTime? UpdatedAt { get; set; }
         public string? ProductTitle { get; set; } // Để hiển thị tên sản phẩm
     }
+    public class PromotionCreateDTO
+    {
+        public int? ProductId { get; set; } // ID của sản phẩm được áp dụng khuyến mãi
+        public decimal? DiscountPercentage { get; set; } // Phần trăm giảm giá
+        public DateTime? StartDate { get; set; } // Ngày bắt đầu
+        public DateTime? EndDate { get; set; } // Ngày kết thúc
+    }
 }

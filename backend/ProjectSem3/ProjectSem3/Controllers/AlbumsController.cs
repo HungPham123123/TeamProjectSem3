@@ -2,6 +2,7 @@
 using ProjectSem3.Models;
 using ProjectSem3.DTOs;
 using ProjectSem3.Service;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -23,6 +24,7 @@ public class AlbumsController : ControllerBase
     }
 
     // Add a new album
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public IActionResult AddAlbum([FromBody] AddAlbumDto addAlbumDto)
     {
@@ -38,6 +40,7 @@ public class AlbumsController : ControllerBase
     }
 
     // update album
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public IActionResult UpdateAlbum(int id, [FromBody] UpdateAlbumDto updateAlbumDto)
     {
@@ -52,6 +55,7 @@ public class AlbumsController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAlbum(int id)
     {
@@ -65,6 +69,7 @@ public class AlbumsController : ControllerBase
 
 
     // Get album by ID
+    [Authorize(Roles = "Admin")]
     [HttpGet("{id}")]
     public IActionResult GetAlbumById(int id)
     {

@@ -155,5 +155,27 @@ namespace ProjectSem3.Controllers
             }
             return int.Parse(userIdClaim);
         }
+
+        // Login for Admin
+        [HttpPost("admin-auth")]
+        public async Task<IActionResult> AdminLogin([FromBody] LoginDto loginDto)
+        {
+            try
+            {
+                // Check if the login credentials match an admin account
+                var token = await _userService.LoginAdminAsync(loginDto);
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    return Unauthorized(new { message = "Invalid login credentials or insufficient privileges." });
+                }
+
+                return Ok(new { Token = token });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
     }
 }

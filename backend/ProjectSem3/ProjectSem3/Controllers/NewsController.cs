@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
 
 [Route("api/[controller]")]
@@ -30,6 +31,8 @@ public class NewsController : ControllerBase
         return Ok(news);
     }
 
+
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public IActionResult AddNews([FromBody] AddNewsDto addNewsDto)
     {
@@ -37,6 +40,8 @@ public class NewsController : ControllerBase
         return CreatedAtAction(nameof(GetNewsById), new { id = news.NewsId }, news);
     }
 
+
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public IActionResult UpdateNews(int id, [FromBody] UpdateNewsDto updateNewsDto)
     {
@@ -51,7 +56,7 @@ public class NewsController : ControllerBase
         }
     }
 
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteNews(int id)
     {

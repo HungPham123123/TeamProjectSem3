@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjectSem3.DTOs;
 using ProjectSem3.Service;
 
@@ -34,6 +35,7 @@ public class ProducerController : ControllerBase
     }
 
     // Thêm nhà sản xuất mới
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public IActionResult AddProducer([FromBody] AddProducerDto addProducerDto)
     {
@@ -47,6 +49,7 @@ public class ProducerController : ControllerBase
     }
 
     // Cập nhật thông tin nhà sản xuất
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public IActionResult UpdateProducer(int id, [FromBody] UpdateProducerDto updateProducerDto)
     {
@@ -67,6 +70,7 @@ public class ProducerController : ControllerBase
     }
 
     // Xóa nhà sản xuất
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProducer(int id)
     {

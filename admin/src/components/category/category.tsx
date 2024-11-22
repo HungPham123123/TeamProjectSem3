@@ -14,9 +14,14 @@ const Categories = () => {
   const [searchTerm, setSearchTerm] = useState(""); 
 
   // Fetch danh mục
+  const token = localStorage.getItem('adminToken')
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("https://localhost:7071/api/Categories");
+      const response = await axios.get("https://localhost:7071/api/Categories",{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setCategories(response.data);
       setAllCategories(response.data);
     } catch (error) {
@@ -40,7 +45,11 @@ const Categories = () => {
   // Hàm xóa danh mục
   const handleDelete = async (categoryId: number) => {
     try {
-      await axios.delete(`https://localhost:7071/api/Categories/?id=${categoryId}`);
+      await axios.delete(`https://localhost:7071/api/Categories/?id=${categoryId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setCategories(categories.filter((category) => category.categoryId !== categoryId));
     } catch (error) {
       console.error("Error deleting category:", error);
@@ -68,8 +77,12 @@ const Categories = () => {
     if (selectedCategory) {
       try {
         await axios.put(
-          `https://localhost:7071/api/Categories/${selectedCategory.categoryId}`,
-          selectedCategory
+          `https://localhost:7071/api/Categories/${selectedCategory.categoryId}`, selectedCategory,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, 
+            }
+          }
         );
 
         await fetchCategories(); 
@@ -85,7 +98,11 @@ const Categories = () => {
   // Thêm danh mục mới
   const handleAddCategory = async () => {
     try {
-      await axios.post("https://localhost:7071/api/Categories", newCategory);
+      await axios.post("https://localhost:7071/api/Categories", newCategory,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
 
       await fetchCategories();
 

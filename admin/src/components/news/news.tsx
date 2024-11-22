@@ -21,10 +21,15 @@ const NewsList = () => {
   });
 
   // Fetch danh sách news
+  const token = localStorage.getItem('adminToken')
   const fetchNews = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://localhost:7071/api/News");
+      const response = await axios.get("https://localhost:7071/api/News",{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setNewsList(response.data);
       setAllNews(response.data);
     } catch (error) {
@@ -106,11 +111,19 @@ const NewsList = () => {
 
       if (formData.newsId === 0) {
         // Add new news
-        const response = await axios.post("https://localhost:7071/api/News", payload);
+        const response = await axios.post("https://localhost:7071/api/News", payload,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setNewsList([...newsList, response.data]);
       } else {
         // Edit existing news
-        await axios.put(`https://localhost:7071/api/News/${formData.newsId}`, payload);
+        await axios.put(`https://localhost:7071/api/News/${formData.newsId}`, payload,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setNewsList(
           newsList.map((news) =>
             news.newsId === formData.newsId ? { ...news, ...payload } : news
