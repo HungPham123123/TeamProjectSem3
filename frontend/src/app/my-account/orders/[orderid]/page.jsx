@@ -28,6 +28,7 @@ function OrderDetail() {
 
         setOrder(response.data);
         console.log(response.data);
+        
         // Fetch review status for each product
         const status = {};
         for (let item of response.data.orderItems) {
@@ -78,7 +79,12 @@ function OrderDetail() {
       );
       alert("Review submitted successfully!");
       closeReviewSidebar();
-      // Optionally update the order state to mark the product as reviewed
+
+      // Update the review status for the specific product in the state
+      setReviewStatus((prevStatus) => ({
+        ...prevStatus,
+        [selectedProduct.productId]: true,
+      }));
     } catch (error) {
       alert("Failed to submit review.");
     }
@@ -100,7 +106,6 @@ function OrderDetail() {
   };
 
   const downloadInvoice = () => {
-
     const doc = new jsPDF();
 
     doc.setFontSize(24);
@@ -196,6 +201,7 @@ function OrderDetail() {
     Cookies.remove("token");
     window.location.href = "/";
   };
+
 
   return (
     <main>
@@ -390,7 +396,7 @@ function OrderDetail() {
 
               {/* Status Progress */}
               <div className="flex justify-between items-center mb-6">
-                {["Accept", "Shipping", "Arrived", "Completed", "Cancelled"].map((step, index) => (
+                {["Pending", "Preparing", "Shipping", "Completed", "Reject"].map((step, index) => (
                   <div key={index} className="flex flex-col items-center">
                     <div
                       className={`w-10 h-10 rounded-full flex items-center justify-center ${step === order.status ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-500"
@@ -441,23 +447,25 @@ function OrderDetail() {
                       <p className="text-sm">Quantity: {item.quantity}</p>
                     </div>
                     <div className="mt-2">
-                      {order.status === 'Completed' && (
-                        <button
-                          onClick={() => openReviewSidebar(item)}
-                          className={`${reviewStatus[item.productId] ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"
-                            } text-white px-4 py-2 rounded`}
-                          disabled={reviewStatus[item.productId]}
-                        >
-                          {reviewStatus[item.productId] ? "Reviewed" : "Write Review"}
-                        </button>
-                      )}
-                    </div>
+      {order.status === 'Completed' && order.orderItems.map((item) => (
+        <div key={item.productId}>
+          <button
+            onClick={() => openReviewSidebar(item)}
+            className={`${reviewStatus[item.productId] ? "bg-gray-400 cursor-not-allowed" : "bg-green-500"
+              } text-white px-4 py-2 rounded`}
+            disabled={reviewStatus[item.productId]}
+          >
+            {reviewStatus[item.productId] ? "Reviewed" : "Write Review"}
+          </button>
+        </div>
+      ))}
+    </div>
                   </li>
                 ))}
               </ul>
 
               <div className="flex justify-end mt-6">
-                {order.status === 'Arrived' && (
+                {order.status === 'Shipping' && (
                   <button
                     onClick={markAsReceived}
                     className="bg-black text-white px-4 py-2 rounded"

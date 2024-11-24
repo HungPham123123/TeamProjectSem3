@@ -157,12 +157,13 @@ const handleShipped = async (orderId: number) => {
   try {
     const order = orders.find((o) => o.orderId === orderId);
     if (order) {
-      order.status = "Delivering";
+      order.status = "Shipping";
       await axios.put(`https://localhost:7071/api/orders/${orderId}`, order,{
         headers: {
           Authorization: `Bearer ${token}`, 
         }
       });
+      setIsModalOpen(false);
       fetchOrders(); // Cập nhật danh sách đơn hàng
     }
   } catch (error) {
@@ -330,44 +331,40 @@ const handleShipped = async (orderId: number) => {
               <table className="w-full text-sm text-left text-gray-600">
                 <thead className="bg-gray-100 text-gray-800">
                   <tr>
-                    <th className="py-2 px-4">Items Name</th>
+                    <th className="py-2 px-4">IMG</th>
+                    <th className="py-2 px-4">Item Name</th>
                     <th className="py-2 px-4">SKU</th>
-                    <th className="py-2 px-4">Location</th>
                     <th className="py-2 px-4">Quantity</th>
                     <th className="py-2 px-4">Price</th>
                     <th className="py-2 px-4">Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="py-2 px-4">Smooth lather</td>
-                    <td className="py-2 px-4">6473FGDH7</td>
-                    <td className="py-2 px-4">Shop 34 floor CA, US</td>
-                    <td className="py-2 px-4">14</td>
-                    <td className="py-2 px-4">$45.00</td>
-                    <td className="py-2 px-4">$45.00</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 px-4">PVC Plastic</td>
-                    <td className="py-2 px-4">183GD9983</td>
-                    <td className="py-2 px-4">Shop 34 floor CA, US</td>
-                    <td className="py-2 px-4">12</td>
-                    <td className="py-2 px-4">$49.65</td>
-                    <td className="py-2 px-4">$49.65</td>
-                  </tr>
+                  {/* Lặp qua danh sách OrderItems */}
+                  {selectedOrder.orderItems.map((item, index) => (
+                    <tr key={index}>
+                      <img src={item.productImage} alt="" className="py-2 px-4 w-20 h-15" />
+                      <td className="py-2 px-4">{item.productTitle}</td>
+                      <td className="py-2 px-4">{item.productId}</td> 
+                      <td className="py-2 px-4">{item.quantity}</td>
+                      <td className="py-2 px-4">${item.price}</td> 
+                      <td className="py-2 px-4">${(item.quantity * item.price).toFixed(2)}</td> 
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
 
+
             {/* Summary */}
             <div className="mt-6 flex justify-between items-center">
               <div>
-                <p className="text-sm text-gray-700">
+                {/* <p className="text-sm text-gray-700">
                   <strong>Free Shipping:</strong> Yes
                 </p>
                 <p className="text-sm text-gray-700">
                   <strong>Tax Amount:</strong> 10%
-                </p>
+                </p> */}
               </div>
               <div>
                 <h3 className="text-lg font-bold text-gray-800">${selectedOrder.totalAmount}</h3>
@@ -393,7 +390,7 @@ const handleShipped = async (orderId: number) => {
               )}
               {selectedOrder.status === 'Preparing' && (
                 <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => handleShipped(selectedOrder.orderId)}>
-                  Delivering
+                  Shipping
                 </button>
               )}
             </div>

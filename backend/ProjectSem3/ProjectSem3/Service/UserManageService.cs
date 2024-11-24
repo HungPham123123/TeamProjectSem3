@@ -109,6 +109,18 @@ namespace ProjectSem3.Service
             await _context.SaveChangesAsync();  // Lưu thay đổi
         }
 
+       /* public async Task<bool> DeleteSuper(int userId)
+        {
+            var user = _context.Users.Find(userId);
+            if(user == null)
+            {
+                throw new KeyNotFoundException("not found User");
+            }
+
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+            return true;
+        }*/
 
         public async Task<List<UserManageDTO>> SearchUsersAsync(string keyword)
         {

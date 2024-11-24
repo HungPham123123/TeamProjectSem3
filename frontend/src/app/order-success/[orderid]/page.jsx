@@ -11,7 +11,7 @@ function OrderSuccess() {
 
   useEffect(() => {
     axios
-      .get(`/api/orders/user/order/${orderid}`)
+      .get(`/api/UserOrder/user/orders/${orderid}`)
       .then((response) => {
         setOrderDetails(response.data);
       })

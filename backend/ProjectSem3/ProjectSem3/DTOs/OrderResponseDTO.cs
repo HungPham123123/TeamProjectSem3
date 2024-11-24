@@ -33,10 +33,10 @@ namespace ProjectSem3.DTOs
 
     public class OrderItemDTO
     {
-        public int OrderItemId { get; set; }
         public int ProductId { get; set; }
-        public string Title { get; set; }
+        public string ProductTitle { get; set; } = string.Empty;
         public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
+        public decimal Price { get; set; }
+        public string ProductImage { get; set; } = string.Empty;
     }
 }

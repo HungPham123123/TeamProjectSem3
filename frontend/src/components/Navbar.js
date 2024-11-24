@@ -402,76 +402,76 @@ function Navbar() {
                 </div>
 
                 <div data-overlayscrollbars-initialize="" className="os-theme-thin flex-grow w-full cart-scrollbar overflow-y-auto" data-overlayscrollbars="host">
-                  <div className="w-full px-5 md:pr-7">
-                    {cart && cart.cartItems.map(item => (
-                      <div
-                        key={item.cartItemId}
-                        className="group w-full h-auto flex justify-start items-center bg-white py-4 md:py-7 border-b border-gray-100 relative last:border-b-0"
-                        title={item.productTitle}
-                      >
-                        <div className="relative flex flex-shrink-0 w-24 h-24 overflow-hidden bg-gray-200 rounded-md cursor-pointer md:w-28 md:h-28 ltr:mr-4 rtl:ml-4 m-3">
-                          <img
-                            alt={item.productTitle}
-                            src={item.productImage}
-                            className="object-cover bg-gray-300 w-full h-full"
-                          />
-                          <button
-                            onClick={() => handleDelete(item)}
-                            className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            style={{ cursor: "pointer" }}
-                            aria-label="Delete item"
-                          >
-                            <svg
-                              className="w-6 h-6"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                        <div className="flex flex-col w-full overflow-hidden">
-                          <span className="truncate text-sm text-heading mb-1.5 -mt-1">
-                            {item.productTitle}
-                          </span>
-                          <span className="text-sm text-gray-400 mb-2.5">
-                            Unit Price: &nbsp; ${item.price.toFixed(2)}
-                          </span>
-                          <div className="flex items-end justify-between">
-                            <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 h-8 md:h-9 shadow-navigation bg-heading bg-black">
-                              <button
-                                onClick={() => handleQuantityChange(item, -1)}
-                                className="flex items-center justify-center flex-shrink-0 h-full transition ease-in-out duration-300 focus:outline-none w-8 md:w-9 text-white bg-heading hover:bg-gray-600"
-                              >
-                                -
-                              </button>
-                              <span className="font-semibold flex items-center justify-center h-full cursor-default text-sm text-white w-8 md:w-10">
-                                {item.quantity}
-                              </span>
-                              <button
-                                onClick={() => handleQuantityChange(item, 1)}
-                                className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-9 text-white bg-heading hover:bg-gray-600"
-                              >
-                                +
-                              </button>
-                            </div>
+                <div className="w-full px-5 md:pr-7 overflow-y-auto max-h-[500px]"> {/* Add overflow and max-height here */}
+  {cart && cart.cartItems.map(item => (
+    <div
+      key={item.cartItemId}
+      className="group w-full h-auto flex justify-start items-center bg-white py-4 md:py-7 border-b border-gray-100 relative last:border-b-0"
+      title={item.productTitle}
+    >
+      <div className="relative flex flex-shrink-0 w-24 h-24 overflow-hidden bg-gray-200 rounded-md cursor-pointer md:w-28 md:h-28 ltr:mr-4 rtl:ml-4 m-3">
+        <img
+          alt={item.productTitle}
+          src={item.productImage}
+          className="object-cover bg-gray-300 w-full h-full"
+        />
+        <button
+          onClick={() => handleDelete(item)}
+          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ cursor: "pointer" }}
+          aria-label="Delete item"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+      <div className="flex flex-col w-full overflow-hidden">
+        <span className="truncate text-sm text-heading mb-1.5 -mt-1">
+          {item.productTitle}
+        </span>
+        <span className="text-sm text-gray-400 mb-2.5">
+          Unit Price: &nbsp; ${item.price.toFixed(2)}
+        </span>
+        <div className="flex items-end justify-between">
+          <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 h-8 md:h-9 shadow-navigation bg-heading bg-black">
+            <button
+              onClick={() => handleQuantityChange(item, -1)}
+              className="flex items-center justify-center flex-shrink-0 h-full transition ease-in-out duration-300 focus:outline-none w-8 md:w-9 text-white bg-heading hover:bg-gray-600"
+            >
+              -
+            </button>
+            <span className="font-semibold flex items-center justify-center h-full cursor-default text-sm text-white w-8 md:w-10">
+              {item.quantity}
+            </span>
+            <button
+              onClick={() => handleQuantityChange(item, 1)}
+              className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-9 text-white bg-heading hover:bg-gray-600"
+            >
+              +
+            </button>
+          </div>
 
-                            <span className="text-sm font-semibold leading-5 md:text-base text-heading">
-                              ${(item.quantity * item.price).toFixed(2)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+          <span className="text-sm font-semibold leading-5 md:text-base text-heading">
+            ${(item.quantity * item.price).toFixed(2)}
+          </span>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
 
-                    ))}
-                  </div>
                 </div>
 
                 <div className="px-5 pb-5 md:px-7 fixed bottom-0 w-full bg-white">

@@ -325,7 +325,7 @@ function Checkout() {
       <option value="" disabled>
         Select your country
       </option>
-      <option value="USA">Vietnam</option>
+      <option value="Vietnam">Vietnam</option>
 
     </select>
     {errors.country && (
@@ -383,17 +383,7 @@ function Checkout() {
                   />
                 </div>
               </div>
-              <div className="relative flex items-center ">
-                <label className="group flex items-center text-heading text-sm cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox w-5 h-5 border border-gray-300 rounded cursor-pointer transition duration-500 ease-in-out focus:ring-offset-0 hover:border-heading focus:outline-none focus:ring-0 focus-visible:outline-none checked:bg-heading checked:hover:bg-heading checked:focus:bg-heading"
-                  />
-                  <span className="ms-4 -mt-0.5">
-                    Save this information for next time
-                  </span>
-                </label>
-              </div>
+             
               <div className="relative pt-3 xl:pt-6">
                 <label
                   htmlFor="note"
