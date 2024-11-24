@@ -83,16 +83,7 @@ function OrderDetail() {
   
       alert("Review submitted successfully!");
       closeReviewSidebar();
-<<<<<<< HEAD
       // Optionally update the review status for this product
-=======
-
-      // Update the review status for the specific product in the state
-      setReviewStatus((prevStatus) => ({
-        ...prevStatus,
-        [selectedProduct.productId]: true,
-      }));
->>>>>>> 402651a5df4270d5ec3756f21dc6faa7d3546102
     } catch (error) {
       alert("Failed to submit review.");
     }
