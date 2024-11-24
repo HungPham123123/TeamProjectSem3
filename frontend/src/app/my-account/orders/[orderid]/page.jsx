@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
+import DOMPurify from 'dompurify';
 
 function OrderDetail() {
   const { orderid } = useParams();
@@ -70,15 +71,18 @@ function OrderDetail() {
 
   const handleSubmitReview = async () => {
     try {
+      const sanitizedComment = DOMPurify.sanitize(reviewData.comment);
       const token = Cookies.get("token");
+  
       await axios.post(
         "/api/UserReview/add",
-        { productId: selectedProduct.productId, ...reviewData },
+        { productId: selectedProduct.productId, ...reviewData, comment: sanitizedComment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+  
       alert("Review submitted successfully!");
       closeReviewSidebar();
-      // Optionally update the order state to mark the product as reviewed
+      // Optionally update the review status for this product
     } catch (error) {
       alert("Failed to submit review.");
     }
