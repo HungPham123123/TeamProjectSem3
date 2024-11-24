@@ -93,9 +93,17 @@ namespace ProjectSem3.Service
 
         public async Task<List<OrderResponseDTO>> GetAllOrdersAsync()
         {
-            var orders = await _context.Orders.Include(o => o.User).Include(o => o.Payment).ToListAsync();
+            // Bao gồm OrderItems cùng với Orders
+            var orders = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.Payment)
+                .Include(o => o.OrderItems) // Thêm dòng này để bao gồm OrderItems
+                .ThenInclude(oi => oi.Product) // Nếu OrderItem có liên kết với Product, bạn có thể bao gồm Product
+                .ToListAsync();
+
             return _mapper.Map<List<OrderResponseDTO>>(orders);
         }
+
 
 
         public async Task<OrderResponseDTO> GetOrderByIdAsync(int orderId)

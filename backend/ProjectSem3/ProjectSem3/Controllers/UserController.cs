@@ -82,6 +82,20 @@ namespace ProjectSem3.Controllers
 
             return Ok("Deleted");
         }
+/*
+        [HttpDelete("{userId}")]*/
+       /* public async Task<IActionResult> DeleteSuper(int userId)
+        {
+            var isDeleted = await _userManageService.DeleteUser(userId);
+
+            if (!isDeleted)
+            {
+                return NotFound(new { message = "User not found or error during deletion" });
+            }
+
+            // Return a success response
+            return Ok(new { message = "User and related data deleted successfully" });
+        }*/
 
         // Tìm kiếm người dùng
         [HttpGet("search")]

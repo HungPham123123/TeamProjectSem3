@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import axios from "@/utils/axios";
-import LoginPages from './login';
 import { useRouter } from 'next/navigation';
 
 const SignUpPage = () => {
@@ -21,18 +19,45 @@ const SignUpPage = () => {
         setShowPassword(!showPassword);
     };
 
+    // Email validation regex pattern
+    const validateEmail = (email) => {
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailPattern.test(email);
+    };
+
+    // Username validation: ensure it's not empty
+    const validateUsername = (username) => {
+        return username.trim().length > 0;
+    };
+
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        // Validate email and username
+        if (!validateEmail(email)) {
+            setErrorMessage("Please enter a valid email address.");
+            setSuccessMessage("");
+            return;
+        }
+
+        if (!validateUsername(username)) {
+            setErrorMessage("Username cannot be empty.");
+            setSuccessMessage("");
+            return;
+        }
+
         try {
             const response = await axios.post('/api/Auth/register', {
                 username,
                 email,
                 password,
             });
-            setSuccessMessage("Registration successful!");
+            // Show success message after registration
+            setSuccessMessage("Your account has been created successfully! Please check your email for verification.");
             setErrorMessage("");
             setIsSignUpModalOpen(false);
-            router.push(`/resend-verification?email=${(email)}`);
+            // Redirect to resend verification page
+            router.push(`/resend-verification?email=${email}`);
         } catch (error) {
             setErrorMessage(error.response?.data?.message || "Registration failed. Please try again.");
             setSuccessMessage("");
@@ -121,71 +146,75 @@ const SignUpPage = () => {
                                         </p>
                                     </div>
                                     <form className="flex flex-col justify-center" onSubmit={handleRegister} noValidate>
-                                        <div className="flex flex-col space-y-3.5">
-                                            <div className="block">
-                                                <label className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer">Name</label>
-                                                <input
-                                                    id="username"
-                                                    name="username"
-                                                    type="text"
-                                                    value={username}
-                                                    onChange={(e) => setUsername(e.target.value)}
-                                                    className="py-2 px-4 md:px-5 w-full appearance-none border text-input text-xs lg:text-sm font-body bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
-                                                />
-                                            </div>
-                                            <div className="block">
-                                                <label className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer">Email</label>
-                                                <input
-                                                    id="email"
-                                                    name="email"
-                                                    type="email"
-                                                    value={email}
-                                                    onChange={(e) => setEmail(e.target.value)}
-                                                    className="py-2 px-4 md:px-5 w-full appearance-none border text-input text-xs lg:text-sm font-body bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
-                                                />
-                                            </div>
-                                            <div className="block">
-                                                <label className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer">Password</label>
-                                                <div className="relative">
-                                                    <input
-                                                        id="password"
-                                                        name="password"
-                                                        type={showPassword ? "text" : "password"}
-                                                        value={password}
-                                                        onChange={(e) => setPassword(e.target.value)}
-                                                        className="py-2 px-4 md:px-5 w-full appearance-none border text-input text-xs lg:text-sm font-body bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        onClick={togglePasswordVisibility}
-                                                        className="absolute inset-y-0 right-4 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
-                                                    >
-                                                        {showPassword ? (
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7C3.732 7.943 7.523 5 12 5c.615 0 1.215.05 1.807.145M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
-                                                            </svg>
-                                                        ) : (
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                            </svg>
-                                                        )}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className="relative">
-                                                <button
-                                                    type="submit"
-                                                    className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  bg-black text-white px-5 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white hover:bg-gray-600 hover:shadow-cart h-11 md:h-12 w-full mt-1.5"
-                                                >
-                                                    Register
-                                                </button>
-                                            </div>
-                                            {successMessage && <p className="text-green-500 text-xs mt-2">{successMessage}</p>}
-                                            {errorMessage && <p className="text-red-500 text-xs mt-2">{errorMessage}</p>}
-                                        </div>
-                                    </form>
+                                    <div className="flex flex-col space-y-3.5">
+            <div className="block">
+                <label className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer">Name</label>
+                <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="py-2 px-4 md:px-5 w-full appearance-none border text-input text-xs lg:text-sm font-body bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
+                />
+            </div>
+            <div className="block">
+                <label className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer">Email</label>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="off"
+                    spellCheck="false"
+                    aria-invalid="false"
+                    className="py-2 px-4 md:px-5 w-full appearance-none border text-input text-xs lg:text-sm font-body bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
+                    required
+                />
+            </div>
+            <div className="block">
+                <label className="block text-gray-600 font-semibold text-sm leading-none mb-3 cursor-pointer">Password</label>
+                <div className="relative">
+                    <input
+                        id="password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="py-2 px-4 md:px-5 w-full appearance-none border text-input text-xs lg:text-sm font-body bg-white border-gray-300 focus:outline-none focus:border-heading h-11 md:h-12 rounded-md"
+                    />
+                    <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="absolute inset-y-0 right-4 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
+                    >
+                        {showPassword ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7C3.732 7.943 7.523 5 12 5c.615 0 1.215.05 1.807.145M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3l18 18" />
+                            </svg>
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        )}
+                    </button>
+                </div>
+            </div>
+            <div className="relative">
+                <button
+                    type="submit"
+                    className="text-[13px] md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-body text-center justify-center border-0 border-transparent placeholder-white focus-visible:outline-none focus:outline-none rounded-md  bg-black text-white px-5 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white hover:bg-gray-600 hover:shadow-cart h-11 md:h-12 w-full mt-1.5"
+                >
+                    Register
+                </button>
+            </div>
+            {successMessage && <p className="text-green-500 text-xs mt-2">{successMessage}</p>}
+            {errorMessage && <p className="text-red-500 text-xs mt-2">{errorMessage}</p>}
+        </div>
+        </form>
                                     <div className="flex flex-col items-center justify-center relative text-sm text-heading mt-6 mb-3.5">
                                         <hr className="w-full border-gray-300" />
                                         <span className="absolute -top-2.5 px-2 bg-white">Or</span>

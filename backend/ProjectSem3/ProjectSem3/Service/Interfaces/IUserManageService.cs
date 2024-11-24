@@ -11,5 +11,6 @@ namespace ProjectSem3.Service.Interfaces
         Task DeleteUserAsync(int userId);
         Task<List<UserManageDTO>> SearchUsersAsync(string keyword);
         Task RecoverUserAsync(int userId);
+        /*Task<bool> DeleteUser(int userId);*/
     }
 }

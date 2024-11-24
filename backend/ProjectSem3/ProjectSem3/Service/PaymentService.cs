@@ -4,8 +4,10 @@ using ProjectSem3.Models;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Stripe.Checkout;
+using Microsoft.Extensions.Configuration;
 
 namespace ProjectSem3.Service
 {
@@ -13,41 +15,39 @@ namespace ProjectSem3.Service
     {
         private readonly OnlineDvdsContext _context;
         private readonly string _stripeSecretKey;
+        private readonly EmailService _emailService;
 
-        public PaymentService(OnlineDvdsContext context, IConfiguration configuration)
+        public PaymentService(OnlineDvdsContext context, IConfiguration configuration, EmailService emailService)
         {
             _context = context;
             _stripeSecretKey = configuration["Stripe:SecretKey"];
+            _emailService = emailService;
         }
 
         public async Task<string> CreatePaymentIntent(decimal amount, string currency = "usd")
         {
             StripeConfiguration.ApiKey = _stripeSecretKey;
 
-            // Create the PaymentIntent
             var options = new PaymentIntentCreateOptions
             {
                 Amount = (long)(amount * 100), // Convert to smallest currency unit (e.g., cents)
                 Currency = currency,
-                PaymentMethodTypes = new List<string> { "card" }, // You can add other methods if needed
+                PaymentMethodTypes = new List<string> { "card" },
             };
 
             var service = new PaymentIntentService();
             var paymentIntent = await service.CreateAsync(options);
 
-            return paymentIntent.ClientSecret; // Return the client secret for frontend use
+            return paymentIntent.ClientSecret;
         }
-
 
         public async Task ConfirmPaymentAndCreateOrder(OrderDto dto, int userId, string paymentIntentId)
         {
-            // Retrieve the payment intent to check its status
             var service = new PaymentIntentService();
             var paymentIntent = await service.GetAsync(paymentIntentId);
 
             if (paymentIntent.Status == "succeeded")
             {
-                // If payment was successful, create the order with cash on delivery method
                 await CreateOrderWithPaidSuccess(dto, userId);
             }
             else
@@ -117,7 +117,6 @@ namespace ProjectSem3.Service
 
                     _context.OrderItems.Add(orderItem);
 
-                    // Deduct stock quantity
                     var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == cartItem.ProductId);
                     if (product != null)
                     {
@@ -137,9 +136,15 @@ namespace ProjectSem3.Service
                 throw new Exception("No items in cart");
             }
 
-            return order.OrderId; // Return the OrderId
-        }
+            // Prepare order details for email
+            var orderItems = await _context.OrderItems.Where(oi => oi.OrderId == order.OrderId).ToListAsync();
+            var orderDetailsHtml = GenerateOrderDetailsHtml(order, orderItems);
 
+            // Send order confirmation email with order details
+            await _emailService.SendMailAsync(dto.Email, "Order Confirmation", orderDetailsHtml);
+
+            return order.OrderId;
+        }
 
         public async Task<int> CreateOrderWithPaidSuccess(OrderDto dto, int userId)
         {
@@ -202,7 +207,6 @@ namespace ProjectSem3.Service
 
                     _context.OrderItems.Add(orderItem);
 
-                    // Deduct stock quantity
                     var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == cartItem.ProductId);
                     if (product != null)
                     {
@@ -222,8 +226,130 @@ namespace ProjectSem3.Service
                 throw new Exception("No items in cart");
             }
 
-            return order.OrderId; // Return the OrderId
+            // Prepare order details for email
+            var orderItems = await _context.OrderItems.Where(oi => oi.OrderId == order.OrderId).ToListAsync();
+            var orderDetailsHtml = GenerateOrderDetailsHtml(order, orderItems);
+
+            // Send order confirmation email with order details
+            await _emailService.SendMailAsync(dto.Email, "Order Confirmation", orderDetailsHtml);
+
+            return order.OrderId;
         }
 
+        private string GenerateOrderDetailsHtml(Order order, List<OrderItem> orderItems)
+        {
+            // Start the HTML structure
+            var html = $@"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Order Confirmation</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }}
+        h2 {{
+            color: #000;
+            text-align: center;
+            padding-top: 20px;
+        }}
+        p {{
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin: 10px 0;
+        }}
+        .order-summary {{
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }}
+        .order-summary th, .order-summary td {{
+            text-align: left;
+            padding: 8px;
+        }}
+        .order-summary th {{
+            background-color: #000;
+            color: #fff;
+        }}
+        .order-summary tr:nth-child(even) {{
+            background-color: #f9f9f9;
+        }}
+        .order-summary td {{
+            border-bottom: 1px solid #ddd;
+        }}
+        .total-amount {{
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            color: #000;
+        }}
+        .footer {{
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 14px;
+        }}
+        .footer a {{
+            color: #333;
+            text-decoration: none;
+        }}
+    </style>
+</head>
+<body>
+    <div class='order-summary'>
+        <h2>Order Confirmation</h2>
+        <p>Thank you for your order, <strong>{order.FirstName} {order.LastName}</strong>.</p>
+        <p><strong>Order ID:</strong> {order.OrderId}</p>
+        <p><strong>Shipping Address:</strong></p>
+        <p>{order.Address}, {order.City}, {order.Country} - {order.ZipCode}</p>
+        
+        <p><strong>Order Summary:</strong></p>
+        <table class='order-summary'>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>";
+
+            // Add order items to the email body
+            foreach (var item in orderItems)
+            {
+                var product = _context.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
+                html += $@"
+                <tr>
+                    <td>{product?.Title}</td>
+                    <td>{item.Quantity}</td>
+                    <td>{item.Price:C}</td>
+                </tr>";
+            }
+
+            html += $@"
+        </table>
+        <p class='total-amount'>Total Amount: {order.TotalAmount:C}</p>
+        <p>We will notify you once your order is shipped.</p>
+        <p>If you have any questions, feel free to <a href='mailto:contact@yourstore.com'>contact us</a>.</p>
+    </div>
+
+    <div class='footer'>
+        <p>Thank you for shopping with us!</p>
+        <p><a href='https://www.yourstore.com'>Visit our store</a></p>
+    </div>
+</body>
+</html>";
+
+            return html;
+
+        }
     }
 }

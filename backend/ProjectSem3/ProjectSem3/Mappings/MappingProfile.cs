@@ -67,6 +67,11 @@ public class MappingProfile : Profile
             .ReverseMap();
         CreateMap<Order, OrderManageDTO>().ReverseMap();
         CreateMap<Order, OrderDto>().ReverseMap();
+        CreateMap<OrderItem, OrderItemDTO>()
+            .ForMember(dest => dest.ProductTitle, opt => opt.MapFrom(src => src.Product.Title))
+            .ForMember(dest => dest.ProductImage, opt => opt.MapFrom(src => src.Product.Image1));
+
+
         // Cấu hình OrderUpdateDTO -> Order
         CreateMap<OrderUpdateDTO, Order>()
             .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
