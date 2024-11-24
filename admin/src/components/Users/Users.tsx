@@ -12,17 +12,24 @@ const Users = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false); 
   const [searchTerm, setSearchTerm] = useState(""); 
   
-
+  const token = localStorage.getItem('adminToken');
   // Fetch danh sách người dùng
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("https://localhost:7071/api/User");
+      // Kiểm tra nếu token tồn tại, thêm vào header Authorization
+      const response = await axios.get("https://localhost:7071/api/User", {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
+  
       setUsers(response.data);
       setAllUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
   };
+  
 
   useEffect(() => {
     fetchUsers();
@@ -40,7 +47,11 @@ const Users = () => {
   // Hàm xóa người dùng
   const handleDelete = async (userId: number) => {
     try {
-      await axios.delete(`https://localhost:7071/api/User/${userId}`);
+      await axios.delete(`https://localhost:7071/api/User/${userId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setUsers(users.filter((user) => user.userId !== userId));
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -75,7 +86,11 @@ const handleSaveEdit = async () => {
   };
 
   try {
-    await axios.put(`https://localhost:7071/api/User/${selectedUser.userId}`, updateData);
+    await axios.put(`https://localhost:7071/api/User/${selectedUser.userId}`, updateData,{
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      }
+    });
     setIsModalOpen(false); // Ẩn popup khi cập nhật thành công
     fetchUsers();
   } catch (error) {
@@ -98,7 +113,11 @@ const handleSaveEdit = async () => {
     };
   
     try {
-      await axios.post("https://localhost:7071/api/User", userData);
+      await axios.post("https://localhost:7071/api/User", userData,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       console.log(userData);
       setIsAddModalOpen(false); // Đóng modal khi thêm thành công
       fetchUsers(); // Tải lại danh sách người dùng

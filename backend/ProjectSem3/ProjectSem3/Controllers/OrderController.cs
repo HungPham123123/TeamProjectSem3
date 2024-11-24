@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using ProjectSem3.Service.Interfaces;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectSem3.Controllers
 {
     [ApiController]
     [Route("api/orders")]
+    [Authorize(Roles = "Admin")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;

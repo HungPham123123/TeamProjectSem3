@@ -34,6 +34,16 @@ namespace ProjectSem3.Service
             _emailService = emailService;
             _jwtSettings = jwtSettings.Value;
         }
+        private string GetUserRoles(int userId)
+        {
+            var roles = _context.UserRoles
+                .Where(ur => ur.UserId == userId)
+                .Select(ur => ur.Role.RoleName)
+                .ToList();
+
+            return string.Join(",", roles);
+        }
+
 
         public async Task<UserDto> GetUserInfoAsync(int userId)
         {
@@ -300,12 +310,15 @@ namespace ProjectSem3.Service
 
         private string GenerateJwtToken(User user)
         {
+            var roleNames = GetUserRoles(user.UserId); // Lấy các vai trò của người dùng
+
             var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, user.Email),
-        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-        new Claim("UserId", user.UserId.ToString())  // Add this claim
-    };
+                {
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim("UserId", user.UserId.ToString()),
+                    new Claim("role", roleNames) // Thêm vai trò vào token
+                };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -314,11 +327,75 @@ namespace ProjectSem3.Service
                 _jwtSettings.Issuer,
                 _jwtSettings.Audience,
                 claims,
-                expires: DateTime.UtcNow.AddMinutes(30),
+                expires: DateTime.UtcNow.AddMinutes(90),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        //login admin
+        public async Task<string> LoginAdminAsync(LoginDto loginDto)
+        {
+            if (loginDto == null)
+            {
+                _logger.LogError("LoginDto is null.");
+                throw new ArgumentNullException(nameof(loginDto));
+            }
+
+            if (string.IsNullOrWhiteSpace(loginDto.Email))
+            {
+                _logger.LogError("Email is null or empty.");
+                throw new ArgumentException("Email cannot be null or empty.", nameof(loginDto.Email));
+            }
+
+            if (string.IsNullOrWhiteSpace(loginDto.Password))
+            {
+                _logger.LogError("Password is null or empty.");
+                throw new ArgumentException("Password cannot be null or empty.", nameof(loginDto.Password));
+            }
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == loginDto.Email)
+                ?? throw new Exception("User not found.");
+
+            if (!VerifyPassword(loginDto.Password, user.Password))
+            {
+                _logger.LogWarning("Invalid password attempt for email {Email}.", loginDto.Email);
+                throw new Exception("Invalid password.");
+            }
+
+            // Kiểm tra xem người dùng có phải là ADMIN hay không
+            var userRole = await _context.UserRoles
+                .Include(ur => ur.Role) // Load Role liên quan
+                .FirstOrDefaultAsync(ur => ur.UserId == user.UserId);
+
+            if (userRole == null)
+            {
+                _logger.LogWarning("No UserRole found for UserId {UserId}.", user.UserId);
+                throw new Exception("No UserRole found.");
+            }
+
+            if (userRole.Role == null)
+            {
+                _logger.LogWarning("Role is null for UserRoleId {UserRoleId}.", userRole.UserRoleId);
+                throw new Exception("Role is null.");
+            }
+
+            if (userRole.Role.RoleName != "Admin")
+            {
+                _logger.LogWarning("User with UserId {UserId} does not have Admin role.", user.UserId);
+                throw new Exception("You do not have admin privileges.");
+            }
+
+
+
+
+            var token = GenerateJwtToken(user);
+            _logger.LogInformation("Admin {Email} logged in successfully.", user.Email);
+            return token;
+        }
+
+
 
 
         private string HashPassword(string password)

@@ -2,11 +2,13 @@
 using ProjectSem3.DTOs;
 using ProjectSem3.Service.Interfaces;
 using ProjectSem3.Service;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectSem3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ArtistController : ControllerBase
     {
         private readonly IArtistService _artistService;

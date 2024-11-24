@@ -13,10 +13,16 @@ const TableTwo = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Điều khiển popup thêm sản phẩm
   const [searchTerm, setSearchTerm] = useState(""); // Tìm kiếm sản phẩm
 
+
+  const token = localStorage.getItem('adminToken');
   // Fetch sản phẩm
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("https://localhost:7071/api/Product");
+      const response = await axios.get("https://localhost:7071/api/Product",{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setProducts(response.data);
       setAllProducts(response.data);
     } catch (error) {
@@ -40,7 +46,11 @@ const TableTwo = () => {
   // Hàm gọi API xóa sản phẩm
   const handleDelete = async (productId: number) => {
     try {
-      await axios.delete(`https://localhost:7071/api/Product/${productId}`);
+      await axios.delete(`https://localhost:7071/api/Product/${productId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setProducts(products.filter((product) => product.productId !== productId)); // Cập nhật lại danh sách sản phẩm
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -69,8 +79,12 @@ const TableTwo = () => {
       try {
         // Gọi API PUT để sửa sản phẩm
         await axios.put(
-          `https://localhost:7071/api/Product/${selectedProduct.productId}`,
-          selectedProduct
+          `https://localhost:7071/api/Product/${selectedProduct.productId}`, selectedProduct,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, 
+            }
+          }
         );
 
         // Tải lại danh sách sản phẩm mới từ server
@@ -89,7 +103,11 @@ const TableTwo = () => {
   const handleAddProduct = async () => {
     try {
       // Gọi API POST để thêm sản phẩm mới
-      await axios.post("https://localhost:7071/api/Product", newProduct);
+      await axios.post("https://localhost:7071/api/Product", newProduct,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
 
       // Tải lại danh sách sản phẩm mới từ server
       await fetchProducts();

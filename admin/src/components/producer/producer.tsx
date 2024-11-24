@@ -17,10 +17,15 @@ const Producers = () => {
   });
 
   // Fetch danh sách producers
+  const token = localStorage.getItem('adminToken')
   const fetchProducers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://localhost:7071/api/Producer");
+      const response = await axios.get("https://localhost:7071/api/Producer",{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setProducers(response.data);
       setAllProducers(response.data);
     } catch (error) {
@@ -37,7 +42,11 @@ const Producers = () => {
   // Hàm xóa producer
   const handleDelete = async (producerId: number) => {
     try {
-      await axios.delete(`https://localhost:7071/api/Producer/${producerId}`);
+      await axios.delete(`https://localhost:7071/api/Producer/${producerId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setProducers(producers.filter((producer) => producer.producerId !== producerId));
     } catch (error) {
       console.error("Error deleting producer:", error);
@@ -101,11 +110,19 @@ const Producers = () => {
 
       if (formData.producerId === 0) {
         // Add new producer
-        const response = await axios.post("https://localhost:7071/api/Producer", payload);
+        const response = await axios.post("https://localhost:7071/api/Producer", payload,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setProducers([...producers, response.data]);
       } else {
         // Edit existing producer
-        await axios.put(`https://localhost:7071/api/Producer/${formData.producerId}`, payload);
+        await axios.put(`https://localhost:7071/api/Producer/${formData.producerId}`, payload,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setProducers(
           producers.map((producer) =>
             producer.producerId === formData.producerId ? { ...producer, ...payload } : producer

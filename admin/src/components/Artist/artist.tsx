@@ -21,10 +21,15 @@ const Artists = () => {
   });
 
   // Fetch danh sách artists
+  const token = localStorage.getItem('adminToken')
   const fetchArtists = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://localhost:7071/api/Artist");
+      const response = await axios.get("https://localhost:7071/api/Artist",{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setArtists(response.data);
       setAllArtists(response.data);
     } catch (error) {
@@ -41,7 +46,11 @@ const Artists = () => {
   // Hàm xóa artist
   const handleDelete = async (artistId: number) => {
     try {
-      await axios.delete(`https://localhost:7071/api/Artist/${artistId}`);
+      await axios.delete(`https://localhost:7071/api/Artist/${artistId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setArtists(artists.filter((artist) => artist.artistId !== artistId));
     } catch (error) {
       console.error("Error deleting artist:", error);
@@ -107,11 +116,19 @@ const Artists = () => {
     try {
       if (formData.artistId === 0) {
         // Add new artist
-        const response = await axios.post("https://localhost:7071/api/Artist", formData);
+        const response = await axios.post("https://localhost:7071/api/Artist", formData,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setArtists([...artists, response.data]);
       } else {
         // Edit existing artist
-        await axios.put(`https://localhost:7071/api/Artist/${formData.artistId}`, formData);
+        await axios.put(`https://localhost:7071/api/Artist/${formData.artistId}`, formData,{
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        });
         setArtists(
           artists.map((artist) =>
             artist.artistId === formData.artistId ? formData : artist

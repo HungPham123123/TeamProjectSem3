@@ -10,10 +10,16 @@ const TableOrders = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Tìm kiếm đơn hàng
   const [isModalOpen, setIsModalOpen] = useState(false); // Điều khiển hiển thị popup
 
+
+  const token = localStorage.getItem('adminToken');
   // Fetch đơn hàng
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("https://localhost:7071/api/orders");
+      const response = await axios.get("https://localhost:7071/api/orders",{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setOrders(response.data);
       setAllOrders(response.data);
     } catch (error) {
@@ -37,7 +43,11 @@ const TableOrders = () => {
   // Hàm gọi API xóa đơn hàng
   const handleDelete = async (orderId: number) => {
     try {
-      await axios.delete(`https://localhost:7071/api/orders/${orderId}`);
+      await axios.delete(`https://localhost:7071/api/orders/${orderId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       setOrders(orders.filter((order) => order.orderId !== orderId)); // Cập nhật lại danh sách đơn hàng
     } catch (error) {
       console.error("Error deleting order:", error);
@@ -61,8 +71,11 @@ const TableOrders = () => {
       try {
         // Gọi API PUT để sửa đơn hàng
         await axios.put(
-          `https://localhost:7071/api/orders/${selectedOrder.orderId}`,
-          selectedOrder
+          `https://localhost:7071/api/orders/${selectedOrder.orderId}`,selectedOrder,{
+            headers: {
+              Authorization: `Bearer ${token}`, 
+            }
+          }
         );
 
         // Tải lại danh sách đơn hàng mới từ server
@@ -108,8 +121,12 @@ const handleAccept = async (orderId: number) => {
   try {
     const order = orders.find((o) => o.orderId === orderId);
     if (order) {
-      order.status = "Accept";
-      await axios.put(`https://localhost:7071/api/orders/${orderId}`, order);
+      order.status = "Preparing";
+      await axios.put(`https://localhost:7071/api/orders/${orderId}`, order,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       fetchOrders(); // Cập nhật danh sách đơn hàng
     }
   } catch (error) {
@@ -123,7 +140,29 @@ const handleReject = async (orderId: number) => {
     const order = orders.find((o) => o.orderId === orderId);
     if (order) {
       order.status = "Reject";
-      await axios.put(`https://localhost:7071/api/orders/${orderId}`, order);
+      await axios.put(`https://localhost:7071/api/orders/${orderId}`, order,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
+      fetchOrders(); // Cập nhật danh sách đơn hàng
+    }
+  } catch (error) {
+    console.error("Error rejecting order:", error);
+  }
+};
+
+
+const handleShipped = async (orderId: number) => {
+  try {
+    const order = orders.find((o) => o.orderId === orderId);
+    if (order) {
+      order.status = "Delivering";
+      await axios.put(`https://localhost:7071/api/orders/${orderId}`, order,{
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        }
+      });
       fetchOrders(); // Cập nhật danh sách đơn hàng
     }
   } catch (error) {
@@ -206,168 +245,162 @@ const handleReject = async (orderId: number) => {
             <p className="text-sm text-black dark:text-white">${order.totalAmount}</p>
           </div>
           <div className="col-span-1 flex items-center">
-            <p className="text-sm text-black dark:text-white">{order.status}</p>
+            <p
+              className={`text-sm ${
+                order.status.toLowerCase() === 'completed'
+                  ? 'text-green-500' 
+                  : order.status.toLowerCase() === 'reject'
+                  ? 'text-red-500' 
+                  : 'text-black' 
+              } dark:text-white`}
+            >
+              {order.status}
+            </p>
           </div>
           <div className="col-span-1 flex items-center gap-2">
-  {order.status.toLowerCase() === "pending" ? (
-    <>
-      <button
-        className="px-2 py-1 text-xs font-medium text-white bg-green-500 rounded-md hover:bg-green-600"
-        onClick={() => handleAccept(order.orderId)}
-      >
-        Accept
-      </button>
-      <button
-        className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
-        onClick={() => handleReject(order.orderId)}
-      >
-        Reject
-      </button>
-    </>
-  ) : order.status.toLowerCase() === "accept" ? (
-    <>
-      <button
-        className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
-        onClick={() => handleEdit(order.orderId)}
-      >
-        Edit
-      </button>
-      <button
-        className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
-        onClick={() => handleDelete(order.orderId)}
-      >
-        Delete
-      </button>
-    </>
-  ) : order.status.toLowerCase() === "shipping" ? (
-    <>
-      <button
-        className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
-        onClick={() => handleEdit(order.orderId)}
-      >
-        Edit
-      </button>
-      <button
-        className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
-        onClick={() => handleDelete(order.orderId)}
-      >
-        Delete
-      </button>
-    </>
-  ) : order.status.toLowerCase() === "arrived" ? (
-    <>
-      <button
-        className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
-        onClick={() => handleEdit(order.orderId)}
-      >
-        Edit
-      </button>
-      <button
-        className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
-        onClick={() => handleDelete(order.orderId)}
-      >
-        Delete
-      </button>
-    </>
-    ) : order.status.toLowerCase() === "completed" ? (
-      <p className="text-green-700 font-medium">Completed</p>
-    ) : order.status.toLowerCase() === "cancelled" ? (
-      <>
-        <p className="text-red-500 font-medium">Cancelled</p>
-        <button
-          className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
-          onClick={() => handleDelete(order.orderId)}
-        >
-          Delete
-        </button>
-      </>
-    ) : order.status.toLowerCase() === "reject" ? (
-      <p className="text-red-500 font-medium">Rejected</p>
-    ) : null}
-  </div>
+            {/* Nút Detail luôn hiển thị */}
+            <button
+              className="px-2 py-1 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+              onClick={() => handleEdit(order.orderId)}
+            >
+              Detail
+            </button>
 
+            {/* Nút Delete chỉ hiển thị khi status là Completed hoặc Rejected */}
+            {order.status.toLowerCase() === 'completed' || order.status.toLowerCase() === 'rejected' ? (
+              <button
+                className="px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+                onClick={() => handleDelete(order.orderId)}
+              >
+                Delete
+              </button>
+            ) : null}
+          </div>
         </div>
       ))}
 
 
+
+
       {/* Popup sửa đơn hàng */}
       {isModalOpen && selectedOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg w-1/3">
-            <h2 className="text-xl font-semibold mb-4">Edit Order</h2>
-            <div className="mb-4">
-              <label className="block text-sm font-medium">Order ID</label>
-              <input
-                type="number"
-                name="orderId"
-                value={selectedOrder.orderId}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border rounded-md"
-                disabled
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={selectedOrder.email}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border rounded-md"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium">Phone Number</label>
-              <input
-                type="text"
-                name="phoneNumber"
-                value={selectedOrder.phoneNumber}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border rounded-md"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium">Status</label>
-              <select
-                name="status"
-                value={selectedOrder.status}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border rounded-md"
-              >
-                <option value="Accept">Accept</option>
-                <option value="Shipping">Shipping</option>
-                <option value="Arrived">Arrived</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium">Address</label>
-              <input
-                type="text"
-                name="address"
-                value={selectedOrder.address}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border rounded-md"
-              />
-            </div>
-            <div className="mb-4">
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                onClick={handleSaveEdit}
-              >
-                Save
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white w-[800px] max-w-full rounded-lg shadow-lg p-6">
+            {/* Popup Header */}
+            <div className="flex justify-between items-center border-b pb-4 mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">Order# {selectedOrder.orderId}</h2>
+              <button className="text-gray-500 hover:text-gray-800" onClick={() => setIsModalOpen(false)}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
-              <button
-                className="ml-2 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
-                onClick={() => setIsModalOpen(false)}
-              >
+            </div>
+
+            {/* Order Information */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <h3 className="text-sm font-medium text-gray-600 mb-1">Customer & Order</h3>
+                <p className="text-sm text-gray-700">
+                  <strong>Name:</strong> {selectedOrder.firstName} {selectedOrder.lastName}
+                </p>
+                <p className="text-sm text-gray-700">
+                  <strong>Email:</strong> {selectedOrder.email}
+                </p>
+                <p className="text-sm text-gray-700">
+                  <strong>Phone:</strong> {selectedOrder.phoneNumber}
+                </p>
+                <p className="text-sm text-gray-700">
+                  <strong>Payment terms:</strong> {selectedOrder.paymentMethod}
+                </p>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-gray-600 mb-1">Shipping Address</h3>
+                <p className="text-sm text-gray-700">{selectedOrder.city}</p>
+                <p className="text-sm text-gray-700">{selectedOrder.address}</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-gray-600 mb-1">Order Notes</h3>
+                <p className="text-sm text-gray-700">{selectedOrder.optional}</p>
+              </div>
+            </div>
+
+            {/* Items Ordered */}
+            <div className="mt-6">
+              <h3 className="text-sm font-medium text-gray-600 mb-2">Items Ordered</h3>
+              <table className="w-full text-sm text-left text-gray-600">
+                <thead className="bg-gray-100 text-gray-800">
+                  <tr>
+                    <th className="py-2 px-4">Items Name</th>
+                    <th className="py-2 px-4">SKU</th>
+                    <th className="py-2 px-4">Location</th>
+                    <th className="py-2 px-4">Quantity</th>
+                    <th className="py-2 px-4">Price</th>
+                    <th className="py-2 px-4">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="py-2 px-4">Smooth lather</td>
+                    <td className="py-2 px-4">6473FGDH7</td>
+                    <td className="py-2 px-4">Shop 34 floor CA, US</td>
+                    <td className="py-2 px-4">14</td>
+                    <td className="py-2 px-4">$45.00</td>
+                    <td className="py-2 px-4">$45.00</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-4">PVC Plastic</td>
+                    <td className="py-2 px-4">183GD9983</td>
+                    <td className="py-2 px-4">Shop 34 floor CA, US</td>
+                    <td className="py-2 px-4">12</td>
+                    <td className="py-2 px-4">$49.65</td>
+                    <td className="py-2 px-4">$49.65</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Summary */}
+            <div className="mt-6 flex justify-between items-center">
+              <div>
+                <p className="text-sm text-gray-700">
+                  <strong>Free Shipping:</strong> Yes
+                </p>
+                <p className="text-sm text-gray-700">
+                  <strong>Tax Amount:</strong> 10%
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-800">${selectedOrder.totalAmount}</h3>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-6 flex justify-end gap-4">
+              <button className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300" onClick={() => setIsModalOpen(false)}>
                 Cancel
               </button>
+              
+              {/* Display buttons based on order status */}
+              {selectedOrder.status === 'Pending' && (
+                <>
+                  <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => handleReject(selectedOrder.orderId)}>
+                    Reject
+                  </button>
+                  <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" onClick={() => handleAccept(selectedOrder.orderId)}>
+                    Accept
+                  </button>
+                </>
+              )}
+              {selectedOrder.status === 'Preparing' && (
+                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => handleShipped(selectedOrder.orderId)}>
+                  Delivering
+                </button>
+              )}
             </div>
           </div>
         </div>
       )}
+
 
     </div>
   );
